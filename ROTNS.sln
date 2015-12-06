@@ -1,11 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual C# Express 2010
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cardamom", "..\Cardamom\Cardamom\Cardamom.csproj", "{A416D343-545A-40B0-9AE3-A5AAA9D47E79}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cardamom", "Cardamom\Cardamom.csproj", "{A416D343-545A-40B0-9AE3-A5AAA9D47E79}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AndrassyII", "AndrassyII\AndrassyII.csproj", "{DF27BB73-F4C8-40FB-B776-270E894F1456}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Venetia", "..\Venetia\Venetia\Venetia.csproj", "{55A2A930-C2DF-4238-9DEA-E4B7E3E94BF5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Venetia", "Venetia\Venetia.csproj", "{55A2A930-C2DF-4238-9DEA-E4B7E3E94BF5}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ROTNS", "ROTNS\ROTNS.csproj", "{3B03A34E-835C-42DB-8DA1-D19415B09981}"
 EndProject
