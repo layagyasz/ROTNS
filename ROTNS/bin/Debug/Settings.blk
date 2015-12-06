@@ -1,0 +1,8 @@
+Resources
+{
+	Iron
+	{
+		Rarity { 1 }
+		Function { if not Region.Oceanic then return (Noise * Region.Height + Noise) / 2 else return 0 end }
+	}
+}

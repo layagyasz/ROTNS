@@ -1,0 +1,142 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{3B03A34E-835C-42DB-8DA1-D19415B09981}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>ROTNS</RootNamespace>
+    <AssemblyName>Column</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="KopiLua, Version=1.3.5449.31779, Culture=neutral, PublicKeyToken=e25f4af1e4f7b31c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\PostDiesPeriapt\PostDiesPeriapt\bin\Debug\KopiLua.dll</HintPath>
+    </Reference>
+    <Reference Include="NLua, Version=1.3.2.0, Culture=neutral, PublicKeyToken=8df2ab518030ea95, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\PostDiesPeriapt\PostDiesPeriapt\bin\Debug\NLua.dll</HintPath>
+    </Reference>
+    <Reference Include="sfmlnet-graphics-2, Version=0.0.0.0, Culture=neutral, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\SFML.Net-master\SFML.Net-2.0\lib\x86\sfmlnet-graphics-2.dll</HintPath>
+    </Reference>
+    <Reference Include="sfmlnet-window-2, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\SFML.Net-master\SFML.Net-2.0\lib\x86\sfmlnet-window-2.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Core\Biome.cs" />
+    <Compile Include="Core\BiomeMap.cs" />
+    <Compile Include="Core\MicroRegion.cs" />
+    <Compile Include="Core\MapGeneratorSettings.cs" />
+    <Compile Include="OverMapping\InteractionController.cs" />
+    <Compile Include="OverMapping\Nation.cs" />
+    <Compile Include="Core\NoiseSettings.cs" />
+    <Compile Include="OverMapping\OverMap.cs" />
+    <Compile Include="OverMapping\MapRegion.cs" />
+    <Compile Include="Core\NaturalResource.cs" />
+    <Compile Include="Core\Administration.cs" />
+    <Compile Include="Core\Agent.cs" />
+    <Compile Include="Core\ClusterAdministration.cs" />
+    <Compile Include="Core\ComputerPlayer.cs" />
+    <Compile Include="Core\Culture.cs" />
+    <Compile Include="Core\HumanPlayer.cs" />
+    <Compile Include="Core\Law.cs" />
+    <Compile Include="Core\LawSet.cs" />
+    <Compile Include="Core\LevyLaw.cs" />
+    <Compile Include="Core\Region.cs" />
+    <Compile Include="Core\RegionAdministration.cs" />
+    <Compile Include="Core\World.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Core\TaxLaw.cs" />
+    <Compile Include="Core\Training.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Cardamom\Cardamom\Cardamom.csproj">
+      <Project>{A416D343-545A-40B0-9AE3-A5AAA9D47E79}</Project>
+      <Name>Cardamom</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Venetia\Venetia\Venetia.csproj">
+      <Project>{55A2A930-C2DF-4238-9DEA-E4B7E3E94BF5}</Project>
+      <Name>Venetia</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\AndrassyII\AndrassyII.csproj">
+      <Project>{DF27BB73-F4C8-40FB-B776-270E894F1456}</Project>
+      <Name>AndrassyII</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="csfml-audio-2.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="csfml-graphics-2.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="csfml-window-2.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Language.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Core\WorldGen\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Economy\Goods.blk">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Economy\Processes.blk">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Economy\Services.blk">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Theme.blk">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

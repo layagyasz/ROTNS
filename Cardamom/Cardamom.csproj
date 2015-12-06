@@ -1,0 +1,155 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{A416D343-545A-40B0-9AE3-A5AAA9D47E79}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Cardamom</RootNamespace>
+    <AssemblyName>Cardamom</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x86\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisIgnoreBuiltInRuleSets>false</CodeAnalysisIgnoreBuiltInRuleSets>
+    <CodeAnalysisIgnoreBuiltInRules>false</CodeAnalysisIgnoreBuiltInRules>
+    <WarningLevel>4</WarningLevel>
+    <Optimize>false</Optimize>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <OutputPath>bin\x86\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisIgnoreBuiltInRuleSets>false</CodeAnalysisIgnoreBuiltInRuleSets>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="KopiLua">
+      <HintPath>..\..\PostDiesPeriapt\PostDiesPeriapt\bin\Debug\KopiLua.dll</HintPath>
+    </Reference>
+    <Reference Include="NLua">
+      <HintPath>..\..\PostDiesPeriapt\PostDiesPeriapt\bin\Debug\NLua.dll</HintPath>
+    </Reference>
+    <Reference Include="S-hull">
+      <HintPath>..\..\Antiquity\Antiquity\bin\Debug\S-hull.dll</HintPath>
+    </Reference>
+    <Reference Include="sfmlnet-audio-2">
+      <HintPath>..\..\..\..\SFML.Net-master\SFML.Net-2.0\lib\x86\sfmlnet-audio-2.dll</HintPath>
+    </Reference>
+    <Reference Include="sfmlnet-graphics-2">
+      <HintPath>..\..\..\..\SFML.Net-master\SFML.Net-2.0\lib\x86\sfmlnet-graphics-2.dll</HintPath>
+    </Reference>
+    <Reference Include="sfmlnet-window-2">
+      <HintPath>..\..\..\..\SFML.Net-master\SFML.Net-2.0\lib\x86\sfmlnet-window-2.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Graphing\ANode.cs" />
+    <Compile Include="Graphing\DijkstraPool.cs" />
+    <Compile Include="Graphing\DijkstraRegion.cs" />
+    <Compile Include="Graphing\DNode.cs" />
+    <Compile Include="Graphing\Graph.cs" />
+    <Compile Include="Graphing\GraphNode.cs" />
+    <Compile Include="Graphing\Node.cs" />
+    <Compile Include="Graphing\Pathable.cs" />
+    <Compile Include="Graphing\Path.cs" />
+    <Compile Include="Interface\Container.cs" />
+    <Compile Include="Interface\Input.cs" />
+    <Compile Include="Interface\Items\Button.cs" />
+    <Compile Include="Interface\Items\GuiConstruct.cs" />
+    <Compile Include="Interface\Items\GuiInput.cs" />
+    <Compile Include="Interface\Items\PaneFrame.cs" />
+    <Compile Include="Interface\Items\Subcomponents\BorderComponent.cs" />
+    <Compile Include="Interface\Items\Subcomponents\Component.cs" />
+    <Compile Include="Interface\MouseEventArgs.cs" />
+    <Compile Include="Interface\Items\Pane.cs" />
+    <Compile Include="Network\DirectedMessage.cs" />
+    <Compile Include="Network\Message.cs" />
+    <Compile Include="Network\MessageDirector.cs" />
+    <Compile Include="Network\MessageFactory.cs" />
+    <Compile Include="Network\MessageReceivedEventArgs.cs" />
+    <Compile Include="Network\NetworkedComponent.cs" />
+    <Compile Include="Network\Query.cs" />
+    <Compile Include="Network\Response.cs" />
+    <Compile Include="Network\TCPClient.cs" />
+    <Compile Include="Network\TCPConnection.cs" />
+    <Compile Include="Network\TCPReceiver.cs" />
+    <Compile Include="Network\TCPSender.cs" />
+    <Compile Include="Network\TCPServer.cs" />
+    <Compile Include="Planar\Collision.cs" />
+    <Compile Include="Planar\CollisionPolygon.cs" />
+    <Compile Include="Planar\CollisionRadius.cs" />
+    <Compile Include="Planar\Segment.cs" />
+    <Compile Include="Planar\Polygon.cs" />
+    <Compile Include="Interface\Interface.cs" />
+    <Compile Include="Interface\LoadingScreen.cs" />
+    <Compile Include="Interface\Pod.cs" />
+    <Compile Include="Interface\Screen.cs" />
+    <Compile Include="Planar\PlanarTransformMatrix.cs" />
+    <Compile Include="Planar\Ray.cs" />
+    <Compile Include="Planar\VNode.cs" />
+    <Compile Include="Serialization\Parse.cs" />
+    <Compile Include="Serialization\Serializable.cs" />
+    <Compile Include="Serialization\SerializationInputStream.cs" />
+    <Compile Include="Serialization\SerializationOutputStream.cs" />
+    <Compile Include="Serialization\SerializationStream.cs" />
+    <Compile Include="Serialization\XmlReadable.cs" />
+    <Compile Include="Spatial\Camera.cs" />
+    <Compile Include="Spatial\Face.cs" />
+    <Compile Include="Spatial\Model.cs" />
+    <Compile Include="Spatial\SpatialTranformMatrix.cs" />
+    <Compile Include="Spatial\Vector4f.cs" />
+    <Compile Include="Interface\Class.cs" />
+    <Compile Include="Interface\ClassedGuiItem.cs" />
+    <Compile Include="Interface\ClassLibrary.cs" />
+    <Compile Include="Interface\GuiItem.cs" />
+    <Compile Include="Interface\Items\Subcomponents\RectComponent.cs" />
+    <Compile Include="Interface\Items\Subcomponents\TextComponent.cs" />
+    <Compile Include="Interface\KeyController.cs" />
+    <Compile Include="Interface\Interactive.cs" />
+    <Compile Include="Interface\MouseController.cs" />
+    <Compile Include="Interface\UpdateEventArgs.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Utilities\ColorMath.cs" />
+    <Compile Include="Utilities\Filter.cs" />
+    <Compile Include="Utilities\Noise\ElasticNoiseMap.cs" />
+    <Compile Include="Utilities\Noise\NoiseMap.cs" />
+    <Compile Include="Utilities\Noise\PerlinNoiseGenerator.cs" />
+    <Compile Include="Utilities\Noise\SmoothNoiseMap.cs" />
+    <Compile Include="Utilities\Pair.cs" />
+    <Compile Include="Serialization\ParseBlock.cs" />
+    <Compile Include="Utilities\Heap.cs" />
+    <Compile Include="Utilities\PriorityQueue.cs" />
+    <Compile Include="Utilities\Triplet.cs" />
+    <Compile Include="Utilities\WeightedVector.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Utilities\Voronoi\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

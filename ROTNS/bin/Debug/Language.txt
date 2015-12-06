@@ -1,0 +1,36 @@
+sounds
+{
+	p { Consonant : Plosive : Unvoiced : Bilabial }
+	b { Consonant : Plosive : Voiced : Bilabial }
+	.4 * f { Consonant : Fricative : Unvoiced : Labiodental }
+	.4 * v { Consonant : Fricative : Voiced : Labiodental }
+	s { Consonant : Fricative : Unvoiced : Alveolar }
+	.4 * z { Consonant : Fricative : Voiced : Alveolar }
+	t { Consonant : Plosive : Unvoiced : Alveolar }
+	d { Consonant : Plosive : Voiced : Alveolar }
+	k { Consonant : Plosive : Unvoiced : Velar }
+	g { Consonant : Plosive : Voiced : Velar }
+	m { Consonant : Voiced : Nasal : Bilabial }
+	n { Consonant : Voiced : Nasal : Alveolar }
+	l { Consonant }
+	r { Consonant }
+	1.5 * a { Vowel : Front : Open : Unrounded }
+	3 * e { Vowel : Front  : MidOpen : Unrounded }
+	i { Vowel : Front : Closed : Unrounded }
+	o { Vowel : Open : Back : Rounded }
+	.4 * u { Vowel : Closed : Back : Rounded }
+}
+generators
+{
+	lead { 8 @ Consonant | Fricative - Voiced + Plosive : l + r | s : Nasal | 4 @ None}
+	tail { 2 @ s : Unvoiced * Plosive | 4 @ Consonant | m : p | 2 @ n : Alveolar  - n }
+	syll { 6 @ lead : Vowel  | lead : Vowel : tail }
+	main { syll : syll | syll | syll : syll : syll }
+}
+replacers
+{
+	{ $ : Vowel : $ => syll : syll }
+	{ s : r => Consonant }
+	{ Vowel : Vowel => Vowel : Consonant : Vowel }
+	{ s : b => s : Unvoiced }
+}
