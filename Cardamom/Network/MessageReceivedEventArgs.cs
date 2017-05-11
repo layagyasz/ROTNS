@@ -9,13 +9,13 @@ namespace Cardamom.Network
 {
     public class MessageReceivedEventArgs
     {
-        Message _Message;
+		SerializationInputStream _Stream;
 
-        public Message Message { get { return _Message; } }
+        public SerializationInputStream Stream { get { return _Stream; } }
 
-        public MessageReceivedEventArgs(Message Message)
+        public MessageReceivedEventArgs(SerializationInputStream Stream)
         {
-            _Message = Message;
+            _Stream = Stream;
         }
     }
 }

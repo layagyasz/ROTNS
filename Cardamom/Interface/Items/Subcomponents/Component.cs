@@ -7,6 +7,6 @@ namespace Cardamom.Interface.Items.Subcomponents
 {
     public interface Component : Pod
     {
-        void PerformTransitions(Dictionary<string, float> Transitions, Class From, Class To);
+        void PerformTransitions(Dictionary<string, float> Transitions, SubClass From, SubClass To);
     }
 }

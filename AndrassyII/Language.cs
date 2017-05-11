@@ -17,8 +17,9 @@ namespace AndrassyII
             new Operator<Sound>('*', 2, delegate(Generator<Sound> s1, Generator<Sound> s2) { return (Set<Sound>)s1 * (Set<Sound>)s2;})
         };
 
-        Dictionary<string, Generator<Sound>> _Generators = new Dictionary<string, Generator<Sound>>() { { "None", new Set<Sound>() } };
+        Dictionary<string, Generator<Sound>> _Generators = new Dictionary<string, Generator<Sound>>() { {"*", new Set<Sound>() }, { "none", new Set<Sound>() } };
         List<ReplaceRule<Sound>> _Replacers = new List<ReplaceRule<Sound>>();
+        List<PrintRule<Sound>> _Printers = new List<PrintRule<Sound>>();
         Generator<Sound> _Primary;
 
         public Language(ParseBlock Block)
@@ -30,6 +31,7 @@ namespace AndrassyII
                     case "sounds": ReadSounds(B); break;
                     case "generators": ReadGenerators(B); break;
                     case "replacers": ReadReplacers(B); break;
+                    case "orthography": ReadPrinters(B); break;
                 }
             }
         }
@@ -48,7 +50,8 @@ namespace AndrassyII
                 }
                 Set<Sound> NS = new Set<Sound>();
                 NS.Add(S, S.Frequency);
-                _Generators.Add(B.Name, NS);
+                _Generators.Add(S.ToString(), NS);
+                ((Set<Sound>)_Generators["*"]).Add(S, S.Frequency);
             }
         }
 
@@ -70,16 +73,46 @@ namespace AndrassyII
             }
         }
 
+        private void ReadPrinters(ParseBlock Block)
+        {
+            foreach (ParseBlock B in Block.Break())
+            {
+                _Printers.Add(new PrintRule<Sound>(B, Operators, _Generators));
+            }
+        }
+
         public Word Generate(Random Random)
         {
-            Word W = new Word(_Primary.Generate(Random));
+            Word W = new Word(_Primary.Generate(Random), Random, _Printers);
             W.RemoveDoubles();
             foreach (ReplaceRule<Sound> R in _Replacers)
             {
-                for (int i = -1; i <= W.Length; ++i) R.Replace(Random, W, i);
+                for (int i = 0; i <= W.Length; ++i) R.Replace(Random, W, i);
             }
             W.RemoveDoubles();
+            MakePrintable(W, Random, _Printers);
             return W;
+        }
+
+        private void MakePrintable(Word Word, Random Random, List<PrintRule<Sound>> Rules)
+        {
+            string R = "";
+            for (int i = 0; i < Word.Length;)
+            {
+                bool Matched = false;
+                foreach (PrintRule<Sound> Rule in Rules)
+                {
+                    if (Rule.Match(Word, i))
+                    {
+                        i += Rule.Length;
+                        R += Rule.Get(Random.NextDouble());
+                        Matched = true;
+                        break;
+                    }
+                }
+                if (!Matched) R += Word[i++].ToString();
+            }
+            Word.Orthography = R;
         }
     }
 }

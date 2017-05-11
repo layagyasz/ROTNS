@@ -18,13 +18,15 @@ namespace Venetia
         EconomySet<Resource> _Resources = new EconomySet<Resource>();
         EconomySet<Tangible> _All= new EconomySet<Tangible>();
 
-        public IEnumerator<Process> Processes { get { foreach (KeyValuePair<string, Process> P in _Processes) yield return P.Value; } }
-        public IEnumerator<Good> Goods { get { foreach (KeyValuePair<string, Good> P in _Goods) yield return P.Value; } }
-        public IEnumerator<Service> Services { get { foreach (KeyValuePair<string, Service> P in _Services) yield return P.Value; } }
-        public IEnumerator<Resource> Resources { get { foreach (KeyValuePair<string, Resource> P in _Resources) yield return P.Value; } }
-        public IEnumerator<Tangible> All { get { foreach (KeyValuePair<string, Tangible> P in _All) yield return P.Value; } }
+        public IEnumerable<Process> Processes { get { foreach (KeyValuePair<string, Process> P in _Processes) yield return P.Value; } }
+        public IEnumerable<Good> Goods { get { foreach (KeyValuePair<string, Good> P in _Goods) yield return P.Value; } }
+        public IEnumerable<Service> Services { get { foreach (KeyValuePair<string, Service> P in _Services) yield return P.Value; } }
+        public IEnumerable<Resource> Resources { get { foreach (KeyValuePair<string, Resource> P in _Resources) yield return P.Value; } }
+        public IEnumerable<Tangible> All { get { foreach (KeyValuePair<string, Tangible> P in _All) yield return P.Value; } }
         public Service Labor { get { return _Labor; } }
         public Resource Property { get { return _Property; } }
+
+        public Tangible this[string Name] { get { return _All[Name]; } }
 
         public Economy()
         {

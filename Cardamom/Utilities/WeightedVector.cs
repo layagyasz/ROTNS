@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Cardamom.Utilities
 {
-    public class WeightedVector<T>
+    public class WeightedVector<T> : IEnumerable<T>
     {
         T[] _Values;
         double[] _Keys;
@@ -37,9 +37,10 @@ namespace Cardamom.Utilities
             }
         }
 
-        public IEnumerator<T> GetEnumerator()
+        public IEnumerator<T> GetEnumerator() { for (int i = 0; i < _Length; ++i) yield return _Values[i]; }
+        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
         {
-            return _Values.GetEnumerator() as IEnumerator<T>;
+            return GetEnumerator();
         }
 
         public void Add(double Weight, T Value)

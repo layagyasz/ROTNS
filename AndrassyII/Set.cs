@@ -102,5 +102,12 @@ namespace AndrassyII
             }
             return S;
         }
+
+        public override string ToString()
+        {
+            string R = "[Set]";
+            foreach (T S in _Selector) R += S + " ";
+            return R;
+        }
     }
 }

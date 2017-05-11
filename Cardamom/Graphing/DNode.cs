@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Cardamom.Graphing
 {
-    class DNode<T> : ANode<T> where T : Pathable
+    class DNode<T> : ANode<T> where T : Pathable<T>
     {
         bool _Center;
 

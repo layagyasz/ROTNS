@@ -13,6 +13,7 @@ namespace Venetia
         protected double _Supply;
         protected double _Demand;
         protected double _LivingStandard;
+        protected double _IncomeReduction;
 
         public double Coefficient { get { return _Coefficient; } set { _Coefficient = value; } }
         public double Exponent { get { return _Exponent; } set { _Exponent = value; } }
@@ -20,6 +21,7 @@ namespace Venetia
         public double Supply { get { return _Supply; } set { _Supply = value; } }
         public double Demand { get { return _Demand; } set { _Demand = value; } }
         public double LivingStandard { get { return _LivingStandard; } set { _LivingStandard = value; } }
+        public double IncomeReduction { get { return _IncomeReduction; } set { _IncomeReduction = value; } }
 
         public EconomicAttributes(double Coefficient, double Exponent, double Decay, double Supply, double Demand, double LivingStandard)
         {
@@ -29,22 +31,40 @@ namespace Venetia
             _Supply = Supply;
             _Demand = Demand;
             _LivingStandard = LivingStandard;
+            _IncomeReduction = 0;
         }
 
         public EconomicAttributes(double Coefficient, double Exponent, double Decay, double LivingStandard)
         {
+            _Supply = 0;
+            _Demand = 0;
             _Coefficient = Coefficient;
             _Exponent = Exponent;
             _LivingStandard = LivingStandard;
             _Decay = Decay;
+            _IncomeReduction = 0;
         }
 
         public EconomicAttributes(Tangible Tangible, double LivingStandard)
         {
+            _Supply = 0;
+            _Demand = 0;
             _Coefficient = Tangible.Coefficient;
             _Exponent = Tangible.Exponent;
             _LivingStandard = LivingStandard;
-            _Decay = Decay;
+            _Decay = Tangible.Decay;
+            _IncomeReduction = 0;
+        }
+
+        public EconomicAttributes(EconomicAttributes Clone)
+        {
+            _Supply = Clone.Supply;
+            _Demand = Clone.Demand;
+            _Coefficient = Clone.Coefficient;
+            _Exponent = Clone.Exponent;
+            _LivingStandard = Clone.LivingStandard;
+            _Decay = Clone.Decay;
+            _IncomeReduction = Clone.IncomeReduction;
         }
 
         public virtual double MaxNewProduction(double Population)
@@ -54,12 +74,15 @@ namespace Venetia
 
         public virtual double Price(double Population)
         {
-            return _LivingStandard * Math.Log((_Supply - _Demand) / (_Coefficient * Population)) / Math.Log(_Exponent);
+            return -_LivingStandard* Math.Log(
+				1 + Math.Exp(1 - 2 * (_Supply - _Demand) / (_Coefficient* Population))) / Math.Log(_Exponent);
         }
 
         public virtual double SupplyPrice(double IncreaseSupply, double Population)
         {
-            return _LivingStandard * Math.Log((_Supply + IncreaseSupply - _Demand) / (_Coefficient * Population)) / Math.Log(_Exponent);
+			return -_LivingStandard * Math.Log(
+				1 + Math.Exp(1 - 2 * (_Supply + IncreaseSupply - _Demand) / (_Coefficient * Population)))
+              / Math.Log(_Exponent);
         }
 
         public void Smooth(double Constant, EconomicAttributes Upper)

@@ -7,18 +7,9 @@ using Cardamom.Interface.Items.Subcomponents;
 
 namespace Cardamom.Interface.Items
 {
-    public class Button : GuiConstruct
+    public class Button : StandardItem<object>
     {
         public Button(string ClassName)
-            : base(ClassName)
-        {
-            RectComponent R = new RectComponent(_Class);
-            _Box = R.GetBoundingBox();
-
-            _Components = new Component[]
-            {
-                R
-            };
-        }
+            : base(ClassName, Series.NoFocus) { }
     }
 }

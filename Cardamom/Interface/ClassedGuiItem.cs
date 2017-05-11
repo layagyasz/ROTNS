@@ -4,17 +4,19 @@ using System.Linq;
 using System.Text;
 
 using SFML.Window;
-
-using Cardamom.Planar;
+using SFML.Graphics;
 
 namespace Cardamom.Interface
 {
     public abstract class ClassedGuiItem : Interactive
     {
+        public enum Series { Standard, NoFocus, Selectable };
+
         protected Class _Class;
         protected Class.Mode _Mode;
         protected Class.Mode _LastMode;
         protected Class.Mode _ThirdMode;
+        protected Series _Series;
 
         private Dictionary<string, float> _Transitions;
         private bool _Transitioning;
@@ -33,26 +35,31 @@ namespace Cardamom.Interface
                 ScaleTransitions();
             }
         }
+        public Class Class { get { return _Class; } }
 
-        public ClassedGuiItem()
+        public ClassedGuiItem(Series Series = Series.Standard)
             : base()
         {
-            this.Clicked += new EventHandler<MouseEventArgs>(HandleClick);
-            this.MouseOut += new EventHandler<MouseEventArgs>(HandleMouseOut);
-            this.MouseOver += new EventHandler<MouseEventArgs>(HandleMouseOver);
-            this.Leave += new EventHandler<MouseEventArgs>(HandleLeave);
+            _Series = Series;
+            this.OnMouseOut += HandleMouseOut;
+            this.OnMouseOver += HandleMouseOver;
+            if (Series != Series.NoFocus)
+            {
+                this.OnClick += HandleClick;
+                this.OnLeave += HandleLeave;
+            }
         }
 
-        public ClassedGuiItem(string ClassName)
-            : this()
+        public ClassedGuiItem(Class Class, Series Series = Series.Standard)
+            : this(Series)
         {
-            _Class = ClassLibrary.Instance[ClassName];
+			_Class = Class;
             _Transitions = new Dictionary<string, float>();
-            IEnumerator<string> I = _Class.IncrementedAttributes;
-            while (I.MoveNext())
+			foreach (string Transition in _Class.IncrementedAttributes)
             {
-                _Transitions.Add(I.Current, 1);
+                _Transitions.Add(Transition, 1);
             }
+            Mode = Class.Mode.None;
             Mode = Class.Mode.None;
             Mode = Class.Mode.None;
         }
@@ -60,34 +67,36 @@ namespace Cardamom.Interface
         private void HandleMouseOver(object Sender, EventArgs E)
         {
             if (Mode == Class.Mode.None) Mode = Class.Mode.Hover;
+            else if (Mode == Class.Mode.Selected) Mode = Class.Mode.SelectedHover;
         }
 
         private void HandleMouseOut(object Sender, EventArgs E)
         {
             if (Mode == Class.Mode.Hover) Mode = Class.Mode.None;
+            else if (Mode == Class.Mode.SelectedHover) Mode = Class.Mode.Selected;
         }
 
         private void HandleClick(object Sender, EventArgs E)
         {
-            Mode = Class.Mode.Focus;
+            if (_Series == Series.Selectable) Mode = Class.Mode.SelectedHover;
+            else Mode = Class.Mode.Focus;
         }
 
         private void HandleLeave(object Sender, EventArgs E)
         {
-            Mode = Class.Mode.None;
+            if (_Series != Series.Selectable) Mode = Class.Mode.None;
         }
 
         private void IncrementTransitions(int DeltaT)
         {
             bool c = false;
-            IEnumerator<string> I = _Class.IncrementedAttributes;
-            while (I.MoveNext())
+			foreach (string Transition in _Class.IncrementedAttributes)
             {
-                int t = (int)_Class[_Mode][I.Current];
-                float n = _Transitions[I.Current] + (float)DeltaT / t;
+                int t = (int)_Class[_Mode][Transition];
+                float n = _Transitions[Transition] + (float)DeltaT / t;
                 if (n >= 1) n = 1;
                 else c = true;
-                _Transitions[I.Current] = n;
+                _Transitions[Transition] = n;
             }
             _Transitioning = c;
         }
@@ -96,23 +105,21 @@ namespace Cardamom.Interface
         {
             if (_ThirdMode == _Mode)
             {
-                IEnumerator<string> I = _Class.IncrementedAttributes;
-                while (I.MoveNext())
+                foreach (string Transition in _Class.IncrementedAttributes)
                 {
-                    _Transitions[I.Current] = 1 - _Transitions[I.Current];
+                    _Transitions[Transition] = 1 - _Transitions[Transition];
                 }
             }
             else
             {
-                IEnumerator<string> I = _Class.IncrementedAttributes;
-                while (I.MoveNext())
+                foreach (string Transition in _Class.IncrementedAttributes)
                 {
-                    _Transitions[I.Current] = 0;
+                    _Transitions[Transition] = 0;
                 }
             }
         }
 
-        public override void Update(MouseController MouseController, KeyController KeyController, int DeltaT, PlanarTransformMatrix Transform)
+        public override void Update(MouseController MouseController, KeyController KeyController, int DeltaT, Transform Transform)
         {
             base.Update(MouseController, KeyController, DeltaT, Transform);
 

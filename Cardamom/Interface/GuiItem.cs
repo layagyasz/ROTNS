@@ -7,8 +7,6 @@ using SFML.Window;
 using SFML.Graphics;
 using NLua;
 
-using Cardamom.Planar;
-
 namespace Cardamom.Interface
 {
     public abstract class GuiItem : Pod
@@ -21,6 +19,7 @@ namespace Cardamom.Interface
 
         public Vector2f Position { get { return _Position; } set { _Position = value; } }
         public bool Visible { get { return _Visible; } set { _Visible = value; } }
+        public abstract Vector2f Size { get; }
 
         public GuiItem() { _Visible = true; }
 
@@ -39,11 +38,11 @@ namespace Cardamom.Interface
             if (EventType.ToLower() == "update") OnUpdate += new UpdateEventHandler(delegate(object s, UpdateEventArgs e) { Event.Call(s, e); });
         }
 
-        public virtual void Update(MouseController MouseController, KeyController KeyController, int DeltaT, PlanarTransformMatrix Transform)
+        public virtual void Update(MouseController MouseController, KeyController KeyController, int DeltaT, Transform Transform)
         {
             if (OnUpdate != null) OnUpdate(this, new UpdateEventArgs(MouseController, KeyController, DeltaT, Transform));
         }
 
-        public abstract void Draw(RenderTarget Target, PlanarTransformMatrix Transform);
+        public abstract void Draw(RenderTarget Target, Transform Transform);
     }
 }

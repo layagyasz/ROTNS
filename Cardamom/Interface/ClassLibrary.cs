@@ -18,6 +18,7 @@ namespace Cardamom.Interface
     {
         public static readonly Color NullColor = new Color(0, 0, 0, 0);
         public static readonly Color[] NullColors = new Color[] { NullColor, NullColor, NullColor, NullColor };
+        public static readonly int[] NullArray = new int[] { 0, 0, 0, 0 };
         public static readonly Vector2f NullVector = new Vector2f(0, 0);
         public static readonly byte[] NullBytes = new byte[] { 0, 0, 0, 0 };
 
@@ -29,6 +30,7 @@ namespace Cardamom.Interface
         Dictionary<string, Sound> _Sounds = new Dictionary<string, Sound>();
         Dictionary<string, Color> _Colors = new Dictionary<string, Color>();
         Dictionary<string, Font> _Fonts = new Dictionary<string, Font>();
+        Dictionary<string, Texture> _Textures = new Dictionary<string, Texture>();
 
         Dictionary<string, Func<XmlReader, XmlReadable>> _ItemGenerators = new Dictionary<string, Func<XmlReader, XmlReadable>>();
 
@@ -39,54 +41,23 @@ namespace Cardamom.Interface
 
         public void ReadBlock(ParseBlock Block)
         {
-            foreach (ParseBlock B in Block.Break())
-            {
-                switch (B.Name.ToLower())
-                {
-                    case "classes": ReadClasses(B); break;
-                    case "fonts": ReadFonts(B); break;
-                    case "colors": ReadColors(B); break;
-                    case "sounds": ReadSounds(B); break;
-                }
-            }
-        }
+			Block.AddParser<Color>("color", i => ClassLibrary.Instance.ParseColor(i.String), false);
+			Block.AddParser<List<Color>>("color[]", i => ClassLibrary.Instance.ParseColors(i.String), false);
+			Block.AddParser<Dictionary<string, Color>>("color<>", i => i.BreakToDictionary<Color>(), false);
+			Block.AddParser<Vector2f>("vector2f", i => ClassLibrary.Instance.ParseVector2f(i.String), false);
+			Block.AddParser<List<Vector2f>>("vector2f[]", i => ClassLibrary.Instance.ParseVector2fs(i.String), false);
+			Block.AddParser<Font>("font", i => ClassLibrary.Instance.ParseFont(i.String));
+			Block.AddParser<Sound>("sound", i => ClassLibrary.Instance.ParseSound(i.String));
+			Block.AddParser<Texture>("texture", i => ClassLibrary.Instance.ParseTexture(i.String));
+			Block.AddParser<Class>("class", i => new Class(i));
+			Block.AddParser<SubClass>("mode", i => new SubClass(i));
 
-        private void ReadClasses(ParseBlock Block)
-        {
-            foreach (ParseBlock B in Block.Break())
-            {
-                string[] def = B.Name.Split(':');
-                string Name = "";
-                if (def.Length > 1) Name = def[1].Trim();
-                else Name = def[0].Trim();
-
-                Class newClass = new Class(B);
-                _Classes.Add(Name, newClass);
-            }
-        }
-
-        private void ReadSounds(ParseBlock Block)
-        {
-            foreach (ParseBlock B in Block.Break())
-            {
-                _Sounds.Add(B.Name, new Sound(new SoundBuffer(Block.String)));
-            }
-        }
-
-        private void ReadFonts(ParseBlock Block)
-        {
-            foreach (ParseBlock B in Block.Break())
-            {
-                _Fonts.Add(B.Name, new Font(B.String));
-            }
-        }
-
-        private void ReadColors(ParseBlock Block)
-        {
-            foreach (ParseBlock B in Block.Break())
-            {
-                _Colors.Add(B.Name, ParseColor(B.String));
-            }
+            Dictionary<string, object> D = Block.BreakToDictionary<object>(true);
+			if (D.ContainsKey("classes")) foreach (var P in (Dictionary<string, object>)D["classes"]) _Classes.Add(P.Key, (Class)P.Value);
+			if (D.ContainsKey("colors")) foreach (var P in (Dictionary<string, object>)D["colors"]) _Colors.Add(P.Key, (Color)P.Value);
+			if (D.ContainsKey("sounds")) foreach (var P in (Dictionary<string, object>)D["sounds"]) _Sounds.Add(P.Key, (Sound)P.Value);
+			if (D.ContainsKey("fonts")) foreach (var P in (Dictionary<string, object>)D["fonts"]) _Fonts.Add(P.Key, (Font)P.Value);
+			if (D.ContainsKey("textures")) foreach (var P in (Dictionary<string, object>)D["textures"]) _Textures.Add(P.Key, (Texture)P.Value);
         }
 
         public void AddItemGenerator(string Type, Func<XmlReader, XmlReadable> Constructor) { _ItemGenerators.Add(Type, Constructor); }
@@ -97,16 +68,19 @@ namespace Cardamom.Interface
             get { return _Classes[Name]; }
         }
 
+        public Texture ParseTexture(string Code)
+        {
+            return new Texture(Code);
+        }
+
         public Sound ParseSound(string Code)
         {
-            if (Code[0] == '&') return new Sound(new SoundBuffer(Code.Substring(1)));
-            else return _Sounds[Code];
+            return new Sound(new SoundBuffer(Code));
         }
 
         public Font ParseFont(string Code)
         {
-            if (Code[0] == '&') return new Font(Code);
-            else return _Fonts[Code];
+			return new Font(Code);
         }
 
         public Vector2f[] ParseVector2fs(string Code)
@@ -144,11 +118,23 @@ namespace Cardamom.Interface
             {
                 if (Code[0] == '#')
                 {
-                    return new Color(
-                        Convert.ToByte(Code.Substring(1, 2), 16),
-                        Convert.ToByte(Code.Substring(3, 2), 16),
-                        Convert.ToByte(Code.Substring(5, 2), 16)
-                    );
+                    if (Code.Length == 7)
+                    {
+                        return new Color(
+                            Convert.ToByte(Code.Substring(1, 2), 16),
+                            Convert.ToByte(Code.Substring(3, 2), 16),
+                            Convert.ToByte(Code.Substring(5, 2), 16)
+                        );
+                    }
+                    else
+                    {
+                        return new Color(
+                            Convert.ToByte(Code.Substring(1, 2), 16),
+                            Convert.ToByte(Code.Substring(3, 2), 16),
+                            Convert.ToByte(Code.Substring(5, 2), 16),
+                            Convert.ToByte(Code.Substring(7, 2), 16)
+                        );
+                    }
                 }
                 else
                 {
@@ -169,6 +155,7 @@ namespace Cardamom.Interface
                 }
                 catch
                 {
+                    Console.WriteLine("ERROR READING COLOR: {0}", Code);
                     return NullColor;
                 }
             }

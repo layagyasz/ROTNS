@@ -1,5 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+﻿<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
@@ -59,11 +58,10 @@
     <Compile Include="Service.cs" />
     <Compile Include="Tangible.cs" />
     <Compile Include="Trade.cs" />
-    <Compile Include="Weapon.cs" />
     <Compile Include="Zone.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Cardamom\Cardamom\Cardamom.csproj">
+    <ProjectReference Include="..\Cardamom\Cardamom.csproj">
       <Project>{A416D343-545A-40B0-9AE3-A5AAA9D47E79}</Project>
       <Name>Cardamom</Name>
     </ProjectReference>

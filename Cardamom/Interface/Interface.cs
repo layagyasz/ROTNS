@@ -23,6 +23,8 @@ namespace Cardamom.Interface
 
         public Window Window { get { return _Window; } }
         public Screen Screen { get { return _Screen; } set { _Screen = value; } }
+        public MouseController MouseController { get { return _MouseController; } }
+        public KeyController KeyController { get { return _KeyController; } }
 
         double _UPS;
         double _FPS;
@@ -89,7 +91,7 @@ namespace Cardamom.Interface
             _KeyController.Update(DeltaT);
             _MouseController.Update(_Window);
 
-            _Screen.Update(_MouseController, _KeyController, DeltaT, new PlanarTransformMatrix());
+            _Screen.Update(_MouseController, _KeyController, DeltaT, Transform.Identity);
         }
 
         public void Start(bool MultiThread = true, bool ClearScreen = true)
@@ -111,7 +113,7 @@ namespace Cardamom.Interface
             w.Start();
             while (Running)
             {
-                while (w.ElapsedMilliseconds - time < 10) ;
+				while (w.ElapsedMilliseconds - time < 10) { }
                 long t = w.ElapsedMilliseconds;
                 if (t <= time) t = time + 1;
                 DeltaT = (int)(t - time);
@@ -121,7 +123,7 @@ namespace Cardamom.Interface
                 _Window.DispatchEvents();
                 if(ClearScreen) _Window.Clear();
                 if (!MultiThread) UpdateCall(DeltaT);
-                _Screen.Draw(_Window, new PlanarTransformMatrix());
+                _Screen.Draw(_Window, Transform.Identity);
                 _Window.Display();
             }
         }

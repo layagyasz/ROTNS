@@ -9,6 +9,16 @@ namespace Cardamom.Utilities
 {
     public class ColorMath
     {
+
+        public static Color Multiply(Color c1, Color c2)
+        {
+            float R = ((float)c1.R / 255) * ((float)c2.R / 255);
+            float G = ((float)c1.G / 255) * ((float)c2.G / 255);
+            float B = ((float)c1.B / 255) * ((float)c2.B / 255);
+            float A = ((float)c1.A / 255) * ((float)c2.A / 255);
+            return new Color((byte)(R * 255), (byte)(G * 255), (byte)(B * 255), (byte)(A * 255));
+        }
+
         private static double HueToRGB(double P, double Q, double T)
         {
             if (T < 0) T += 1;
@@ -45,8 +55,9 @@ namespace Cardamom.Utilities
             byte r = (byte)(Color1.R * (1 - a) + Color2.R * a);
             byte g = (byte)(Color1.G * (1 - a) + Color2.G * a);
             byte b = (byte)(Color1.B * (1 - a) + Color2.B * a);
+            byte A = (byte)(Color1.A * (1 - a) + Color2.A * a);
 
-            return new Color(r, g, b);
+            return new Color(r, g, b, A);
         }
 
         public static Color MakeColor(float R, float G, float B, float A = 1f)

@@ -5,10 +5,11 @@ using System.Text;
 
 namespace Cardamom.Graphing
 {
-    public interface Pathable
+    public interface Pathable<T>
     {
         bool Passable { get; }
-        double DistanceTo(Pathable Node);
-        IEnumerator<Pathable> Neighbors();
+        double DistanceTo(T Node);
+        double HeuristicDistanceTo(T Node);
+        IEnumerable<T> Neighbors();
     }
 }

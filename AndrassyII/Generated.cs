@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
+using Cardamom.Utilities;
+
 namespace AndrassyII
 {
     public class Generated<T> : IEnumerable<T>
@@ -49,6 +51,13 @@ namespace AndrassyII
             {
                 if (_Sounds[i].Equals(_Sounds[i + 1])) _Sounds.RemoveAt(i);
             }
+        }
+
+        public override string ToString()
+        {
+            string R = "";
+            foreach (T S in _Sounds) R += S.ToString();
+            return R;
         }
     }
 }

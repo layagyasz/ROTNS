@@ -4,14 +4,20 @@ using System.Linq;
 using System.Text;
 
 using SFML.Window;
+using SFML.Graphics;
 
 using Cardamom.Utilities;
-using Cardamom.Planar;
 
 namespace Cardamom.Interface
 {
     public abstract class Interactive : GuiItem
     {
+        public EventHandler<MouseEventArgs> OnClick;
+        public EventHandler<MouseEventArgs> OnRightClick;
+        public EventHandler<MouseEventArgs> OnMouseOver;
+        public EventHandler<MouseEventArgs> OnMouseOut;
+        public EventHandler<MouseEventArgs> OnLeave;
+
         Interactive _Parent;
         List<Interactive> _Links;
 
@@ -20,12 +26,6 @@ namespace Cardamom.Interface
         private bool _Hover;
 
         private bool _HoverAck;
-
-        public EventHandler<MouseEventArgs> Clicked;
-        public EventHandler<MouseEventArgs> RightClicked;
-        public EventHandler<MouseEventArgs> MouseOver;
-        public EventHandler<MouseEventArgs> MouseOut;
-        public EventHandler<MouseEventArgs> Leave;
 
         public Interactive Parent { get { return _Parent; } set { _Parent = value; } }
         public bool Hover { get { return _Hover; } }
@@ -52,25 +52,22 @@ namespace Cardamom.Interface
                     case MouseController.RequestType.Focus:
                         if (!_Right)
                         {
-                            if (Clicked != null) Clicked(this, new MouseEventArgs(Position));
+                            if (OnClick != null) OnClick(this, new MouseEventArgs(Position));
                         }
                         else
                         {
-                            if (RightClicked != null) RightClicked(this, new MouseEventArgs(Position));
+                            if (OnRightClick != null) OnRightClick(this, new MouseEventArgs(Position));
                         }
                         break;
                     case MouseController.RequestType.Leave:
-                        if (Primary && Leave != null) Leave(this, new MouseEventArgs(Position));
+                        if (Primary && OnLeave != null) OnLeave(this, new MouseEventArgs(Position));
                         break;
                     case MouseController.RequestType.MouseOut:
-                        if (Primary && MouseOut != null)
-                        {
-                            MouseOut(this, new MouseEventArgs(Position));
-                            _HoverAck = false;
-                        }
+                        if (Primary && OnMouseOut != null) OnMouseOut(this, new MouseEventArgs(Position));
+                        if (Primary) _HoverAck = false;
                         break;
                     case MouseController.RequestType.MouseOver:
-                        if ((Primary || !_HoverAck) && MouseOver != null) MouseOver(this, new MouseEventArgs(Position));
+                        if ((Primary || !_HoverAck) && OnMouseOver != null) OnMouseOver(this, new MouseEventArgs(Position));
                         _HoverAck = true;
                         break;
                 }
@@ -88,25 +85,26 @@ namespace Cardamom.Interface
             EventHandler<MouseEventArgs> E = new EventHandler<MouseEventArgs>(delegate(object s, MouseEventArgs e) { Event.Call(this, e); });
             switch (EventType.ToLower())
             {
-                case "click": Clicked += E; break;
-                case "right-click": RightClicked += E; break;
-                case "mouse-over": MouseOver += E; break;
-                case "mouse-out": MouseOut += E; break;
-                case "leave": Leave += E; break;
+                case "click": OnClick += E; break;
+                case "right-click": OnRightClick += E; break;
+                case "mouse-over": OnMouseOver += E; break;
+                case "mouse-out": OnMouseOut += E; break;
+                case "leave": OnLeave += E; break;
                 case "update": base.AddEventScript("update", Event); break;
             }
         }
 
         public abstract bool IsCollision(Vector2f Point);
 
-        public override void Update(MouseController MouseController, KeyController KeyController, int DeltaT, PlanarTransformMatrix Transform)
+        public override void Update(MouseController MouseController, KeyController KeyController, int DeltaT, Transform Transform)
         {
             base.Update(MouseController, KeyController, DeltaT, Transform);
             bool m = false;
 
             if (Visible && _Enabled)
             {
-                m = IsCollision(MouseController.Position);
+                m = IsCollision(Transform.GetInverse() * MouseController.Position);
+                if (m) MouseController.Put(this);
 
                 if ((!_Hover && m) || (_Hover && !_HoverAck)) MouseController.Queue(this, MouseController.RequestType.MouseOver);
                 else if (_Hover && m) MouseController.Queue(this, MouseController.RequestType.Block);

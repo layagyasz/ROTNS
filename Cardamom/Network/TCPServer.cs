@@ -18,18 +18,18 @@ namespace Cardamom.Network
 
         Socket _Socket;
         Thread _ServerThread;
-        MessageFactory _Factory;
+		RPCAdapter _Adapter;
         ushort _Port;
         IPAddress _Address;
 
         public ushort Port { get { return _Port; } }
         public IPAddress Address { get { return _Address; } }
 
-        public TCPServer(ushort Port, MessageFactory Factory)
+		public TCPServer(ushort Port, RPCAdapter Adapter)
         {
             _Socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
             _Port = Port;
-            _Factory = Factory;
+			_Adapter = Adapter;
 
             IPHostEntry Host = Dns.Resolve(Dns.GetHostName());
             _Address = Host.AddressList[0];
@@ -70,7 +70,7 @@ namespace Cardamom.Network
                 try
                 {
                     Socket Incoming = _Socket.Accept();
-                    TCPConnection Connection = new TCPConnection(Incoming, _Factory);
+					TCPConnection Connection = new TCPConnection(Incoming, _Adapter);
                     Connection.OnMessageReceived += new TCPConnection.MessageReceivedEventHandler(Received);
                     Connection.Start();
                     Connection.OnConnectionLost += new EventHandler(HandleDrop);

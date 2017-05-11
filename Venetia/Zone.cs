@@ -23,16 +23,30 @@ namespace Venetia
 
         public EconomicAttributes this[Tangible Tangible] { get { return _Market[Tangible]; } }
         public Economy Economy { get { return _Economy; } }
-        public List<Zone> NeighborZones { get { return _NeighborZones; } set { _NeighborZones = value; } }
         public double Area { get { return _Area; } set { _Area = value; _Market[_Economy.Property].Supply = value; } }
         public double Population { get { return _Population; } set { _Population = value; _Market[_Economy.Labor].Supply = value; } }
-        public IEnumerator<Pair<Tangible, EconomicAttributes>> Market { get { foreach (KeyValuePair<Tangible, EconomicAttributes> P in _Market) yield return new Pair<Tangible, EconomicAttributes>(P.Key, P.Value); } }
+        public IEnumerable<Pair<Tangible, EconomicAttributes>> Market { get { foreach (KeyValuePair<Tangible, EconomicAttributes> P in _Market) yield return new Pair<Tangible, EconomicAttributes>(P.Key, P.Value); } }
 
         public Zone(Service Labor, Resource Property, Economy Economy)
         {
             _Market.Add(Economy.Labor, new EconomicAttributes(Labor, _LivingStandard));
             _Market.Add(Economy.Property, new DepositAttributes(Property, _LivingStandard));
             _Economy = Economy;
+        }
+
+        public double Price(string Tangible)
+        {
+            return Price(_Economy[Tangible]);
+        }
+
+		public double Price(Tangible Tangible)
+		{
+			return this[Tangible].Price(_Population);
+		}
+
+        public double FlowFrom(string Tangible)
+        {
+            return this[_Economy[Tangible]].Price(_Population) * this[_Economy[Tangible]].Supply;
         }
 
         public double SupplyPrice(Tangible Tangible, double Amount)
@@ -60,25 +74,38 @@ namespace Venetia
             return f;
         }
 
-        protected void AddSupply(Tangible Tangible, double Amount)
+        private void AddTangibleIfNotExists(Tangible Tangible)
         {
-            if(_Market.ContainsKey(Tangible)) _Market[Tangible].Supply += Amount;
-            else if (Tangible is Resource) _Market.Add(Tangible, new DepositAttributes(Tangible.Coefficient, Tangible.Exponent, Tangible.Decay, Amount, 0, _LivingStandard));
-            else _Market.Add(Tangible, new EconomicAttributes(Tangible.Coefficient, Tangible.Exponent, Tangible.Decay, Amount, 0, _LivingStandard));
+            if (!_Market.ContainsKey(Tangible))
+            {
+                if (Tangible is Resource) _Market.Add(Tangible, new DepositAttributes(Tangible.Coefficient, Tangible.Exponent, Tangible.Decay, 0, 0, _LivingStandard));
+                else _Market.Add(Tangible, new EconomicAttributes(Tangible.Coefficient, Tangible.Exponent, Tangible.Decay, 0, 0, _LivingStandard));
+            }
         }
 
-        protected void AddDemand(Tangible Tangible, double Amount)
+        public void ChangeSupply(Tangible Tangible, double Delta)
         {
-            if (_Market.ContainsKey(Tangible)) _Market[Tangible].Demand += Amount;
-            else if (Tangible is Resource) _Market.Add(Tangible, new DepositAttributes(Tangible.Coefficient, Tangible.Exponent, Tangible.Decay, 0, Amount, _LivingStandard));
-            else _Market.Add(Tangible, new EconomicAttributes(Tangible.Coefficient, Tangible.Exponent, Tangible.Decay, 0, Amount, _LivingStandard));
+            AddTangibleIfNotExists(Tangible);
+            _Market[Tangible].Supply += Delta;
+        }
+
+        public void ChangeDemand(Tangible Tangible, double Delta)
+        {
+            AddTangibleIfNotExists(Tangible);
+            _Market[Tangible].Demand += Delta;
+        }
+
+        public void ChangeIncomeReduction(Tangible Tangible, double Delta)
+        {
+            AddTangibleIfNotExists(Tangible);
+            _Market[Tangible].IncomeReduction += Delta;
         }
 
         public void AddProducer(Producer Producer)
         {
             if(!_Producers.Contains(Producer)) _Producers.Add(Producer);
-            foreach (Pair<Tangible, double> I in Producer.Process.Input) AddDemand(I.First, I.Second * Producer.Scale);
-            foreach (Pair<Tangible, double> O in Producer.Process.Output) AddSupply(O.First, O.Second * Producer.Scale);
+            foreach (Pair<Tangible, double> I in Producer.Process.Input) ChangeDemand(I.First, I.Second * Producer.Scale);
+            foreach (Pair<Tangible, double> O in Producer.Process.Output) ChangeSupply(O.First, O.Second * Producer.Scale);
         }
 
         public void AddTrade(Trade Trade)
@@ -86,13 +113,13 @@ namespace Venetia
             _Trades.Add(Trade);
             if (this == Trade.Zone1)
             {
-                AddDemand(Trade.Good1, Trade.Amount1);
-                AddSupply(Trade.Good2, Trade.Amount2);
+                ChangeDemand(Trade.Good1, Trade.Amount1);
+                ChangeSupply(Trade.Good2, Trade.Amount2);
             }
             else
             {
-                AddSupply(Trade.Good1, Trade.Amount1);
-                AddDemand(Trade.Good2, Trade.Amount2);
+                ChangeSupply(Trade.Good1, Trade.Amount1);
+                ChangeDemand(Trade.Good2, Trade.Amount2);
             }
         }
 
@@ -104,52 +131,50 @@ namespace Venetia
 
         private void RemoveProducerEffect(Producer Producer)
         {
-            foreach (Pair<Tangible, double> I in Producer.Process.Input) AddDemand(I.First, -I.Second * Producer.Scale);
-            foreach (Pair<Tangible, double> O in Producer.Process.Output) AddSupply(O.First, -O.Second * Producer.Scale);
+            foreach (Pair<Tangible, double> I in Producer.Process.Input) ChangeDemand(I.First, -I.Second * Producer.Scale);
+            foreach (Pair<Tangible, double> O in Producer.Process.Output) ChangeSupply(O.First, -O.Second * Producer.Scale);
         }
 
         public Triplet<Process, double, double> BestAddition()
         {
             Triplet<Process, double, double> R = new Triplet<Process,double,double>(null, 0,0);
-            IEnumerator<Process> Processes = _Economy.Processes;
-            while(Processes.MoveNext())
+			foreach (Process Process in _Economy.Processes)
             {
-                Pair<double, double> D = Processes.Current.OptimumSupply(this);
-                if ((R.First == null || Double.IsNaN(R.Second) || D.Second > R.Third)) R = new Triplet<Process, double, double>(Processes.Current, D.First, D.Second);
+                Pair<double, double> D = Process.OptimumSupply(this);
+                if ((R.First == null || Double.IsNaN(R.Second) || D.Second > R.Third)) R = new Triplet<Process, double, double>(Process, D.First, D.Second);
             }
             return R;
         }
 
-        public Trade BestTrade()
-        {
-            Triplet<double, double, double> O = new Triplet<double, double, double>(0, 0, 0);
-            Good Good1 = null;
-            Good Good2 = null;
-            Zone N = null;
+		public Trade BestTrade(Zone Neighbor)
+		{
+			Triplet<double, double, double> O = new Triplet<double, double, double>(0, 0, 0);
+			Good Good1 = null;
+			Good Good2 = null;
 
-            foreach (Zone Z in _NeighborZones)
-            {
-                IEnumerator<Good> G = _Economy.Goods;
-                while (G.MoveNext())
-                {
-                    IEnumerator<Good> G2 = _Economy.Goods;
-                    while (G2.MoveNext())
-                    {
-                        Triplet<double, double, double> T = Calculator.OptimumTrade(this[G.Current], Z[G.Current], this[G2.Current], Z[G2.Current], this[Economy.Labor], _Population, Z.Population);
-                        if (Good1 == null || T.Third > O.Third && T.First > 0 && T.Second > 0)
-                        {
-                            O = T;
-                            Good1 = G.Current;
-                            Good2 = G2.Current;
-                            N = Z;
-                            //Console.WriteLine("{0} -> {1} : {2} {3} {4}", G.Current.Name, G2.Current.Name, T.First, T.Second, T.Third);
-                        }
-                    }
-                }
-            }
+			foreach (Good G1 in _Economy.Goods)
+			{
+				foreach (Good G2 in _Economy.Goods)
+				{
+					Triplet<double, double, double> T = Calculator.OptimumTrade(
+						this[G1],
+						Neighbor[G1],
+						this[G2],
+						Neighbor[G2],
+						this[Economy.Labor],
+						_Population,
+						Neighbor.Population);
+					if (Good1 == null || T.Third > O.Third && T.First > 0 && T.Second > 0)
+					{
+						O = T;
+						Good1 = G1;
+						Good2 = G2;
+					}
+				}
+			}
 
-            return new Trade(Good1, Good2, O.First, O.Second, this, N);
-        }
+			return new Trade(Good1, Good2, O.First, O.Second, this, Neighbor);
+		}
 
         public Producer RescaleProducer(Producer Producer, double Scale)
         {
@@ -197,8 +222,7 @@ namespace Venetia
                 }
             }
             _Market = NewMarket;
-            IEnumerator<Tangible> I = _Economy.All;
-            while (I.MoveNext()) AddDemand(I.Current, I.Current.Minimum * _Population);
+			foreach(Tangible Tangible in _Economy.All) ChangeDemand(Tangible, Tangible.Minimum * _Population);
             foreach (Producer P in _Producers) AddProducer(P);
             List<Trade> Trades = _Trades;
             _Trades = new List<Trade>();

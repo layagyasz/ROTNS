@@ -31,12 +31,12 @@ namespace AndrassyII
                 }
             }
 
-            _Value = Sets[Source.Trim()];
+            _Value = Sets[Source.ToLower().Trim()];
         }
 
         private ParseNode(string Source, Dictionary<string, Generator<T>> Sets)
         {
-            _Value = Sets[Source.Trim()];
+            _Value = Sets[Source.ToLower().Trim()];
         }
 
         public Generator<T> Traverse()
@@ -60,8 +60,12 @@ namespace AndrassyII
         {
             if (_Right != null)
             {
-                if (_Right._Operator != null && _Right._Operator.Priority < _Operator.Priority) RebalanceLeft();
-                _Right.Rebalance();
+                if (_Right._Operator != null && _Right._Operator.Priority <= _Operator.Priority)
+                {
+                    RebalanceLeft();
+                    _Parent.Rebalance();
+                }
+                else if(_Right._Operator != null) _Right.Rebalance();
             }
         }
 
@@ -69,9 +73,37 @@ namespace AndrassyII
         {
             ParseNode<T> OldRight = _Right;
             _Right = OldRight._Left;
-            _Parent.ReplaceChild(this, _Right);
+            if(_Parent != null) _Parent.ReplaceChild(this, _Right);
             _Parent = OldRight;
             _Parent._Left = this;
+        }
+
+        private string ToStringAux(int Depth)
+        {
+            if (_Operator != null)
+            {
+                string R = "" + _Operator.Symbol;
+                string Left = _Left.ToStringAux(Depth + 1);
+                string Right = _Right.ToStringAux(Depth + 1);
+                return R.PadLeft(R.Length + Depth, '\t') + Depth + "\n" + Left + "\n" + Right;
+            }
+            else
+            {
+                string R = _Value.ToString();
+                return R.PadLeft(R.Length + Depth, '\t');
+            }
+        }
+
+        public ParseNode<T> GetRoot()
+        {
+            ParseNode<T> Current = this;
+            while (Current._Parent != null) Current = Current._Parent;
+            return Current;
+        }
+
+        public override string ToString()
+        {
+            return ToStringAux(0);
         }
     }
 }

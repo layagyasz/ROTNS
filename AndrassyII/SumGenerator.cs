@@ -25,7 +25,7 @@ namespace AndrassyII
                     if (g[i].Contains(O.Symbol)) { c = true; break; }
                 }
                 if (c) _Generators[i] = Set<T>.ParseSet(g[i], Operators, Generators);
-                else _Generators[i] = Generators[g[i].Trim()];
+                else _Generators[i] = Generators[g[i].ToLower().Trim()];
             }
         }
 
@@ -38,6 +38,13 @@ namespace AndrassyII
                 if(w != null) Word.Combine(w);
             }
             return Word;
+        }
+
+        public override string ToString()
+        {
+            string R = "[SumGenerator]";
+            foreach (Generator<T> G in _Generators) R += "\n" + G.ToString();
+            return R;
         }
     }
 }

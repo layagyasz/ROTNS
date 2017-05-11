@@ -18,6 +18,7 @@ namespace AndrassyII
         public Operator(char Operator, int Priority, Func<Generator<T>, Generator<T>, Generator<T>> Function)
         {
             _Operator = Operator;
+            _Priority = Priority;
             _Function = Function;
         }
     }

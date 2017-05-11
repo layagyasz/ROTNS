@@ -35,7 +35,7 @@ namespace Cardamom.Planar
             InitVectors(Cardamom.Interface.ClassLibrary.Instance.ParseVector2fs(Block.String));
         }
 
-        private void InitVectors(Vector2f[] Vertices)
+        protected void InitVectors(Vector2f[] Vertices)
         {
             _Segments = new Segment[Vertices.Length];
 

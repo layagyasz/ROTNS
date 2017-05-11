@@ -5,6 +5,8 @@ using System.Text;
 using System.Net;
 using System.Net.Sockets;
 
+using Cardamom.Serialization;
+
 namespace Cardamom.Network
 {
     public class TCPClient
@@ -15,12 +17,12 @@ namespace Cardamom.Network
 
         TCPConnection _Connection;
 
-        public TCPClient(string IP, ushort Port, MessageFactory Factory)
+        public TCPClient(string IP, ushort Port, RPCAdapter Adapter)
         {
             Socket Socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
             Socket.Connect(IPAddress.Parse(IP), Port);
 
-            _Connection = new TCPConnection(Socket, Factory);
+            _Connection = new TCPConnection(Socket, Adapter);
             _Connection.OnMessageReceived += new TCPConnection.MessageReceivedEventHandler(Received);
             _Connection.OnConnectionLost += new EventHandler(HandleDrop);
         }
@@ -40,7 +42,7 @@ namespace Cardamom.Network
             _Connection.Close();
         }
 
-        public void Send(Message Message) { _Connection.Send(Message); }
+        public void Send(SerializationOutputStream Message) { _Connection.Send(Message); }
 
         private void Received(object Sender, MessageReceivedEventArgs E)
         {

@@ -2,7 +2,7 @@ sounds
 {
 	p { Consonant : Plosive : Unvoiced : Bilabial }
 	b { Consonant : Plosive : Voiced : Bilabial }
-	.4 * f { Consonant : Fricative : Unvoiced : Labiodental }
+	.2 * f { Consonant : Fricative : Unvoiced : Labiodental }
 	.4 * v { Consonant : Fricative : Voiced : Labiodental }
 	s { Consonant : Fricative : Unvoiced : Alveolar }
 	.4 * z { Consonant : Fricative : Voiced : Alveolar }
@@ -14,6 +14,11 @@ sounds
 	n { Consonant : Voiced : Nasal : Alveolar }
 	l { Consonant }
 	r { Consonant }
+	j { Consonant : Palatal : Approximant }
+	.4 * th { Consonant : Unvoiced : Dental : Fricative }
+	.2 * sh { Consonant : Unvoiced : Postalveolar : Fricative }
+	.2 * ch { Consonant : Unvoiced : Postalveolar : Affricative }
+
 	1.5 * a { Vowel : Front : Open : Unrounded }
 	3 * e { Vowel : Front  : MidOpen : Unrounded }
 	i { Vowel : Front : Closed : Unrounded }
@@ -22,15 +27,39 @@ sounds
 }
 generators
 {
-	lead { 8 @ Consonant | Fricative - Voiced + Plosive : l + r | s : Nasal | 4 @ None}
-	tail { 2 @ s : Unvoiced * Plosive | 4 @ Consonant | m : p | 2 @ n : Alveolar  - n }
+	lead { 16 @ Consonant | 1.5 @ Fricative - Voiced + Plosive - th - sh - Plosive * Alveolar: l | 1.5 @ Fricative - Voiced + Plosive - s : r | s : Nasal | 8 @ None}
+	tail { 10 @ Consonant - j | 2 @ s : Unvoiced * Plosive | 2 @ Consonant - j | m : p | 2 @ n : Alveolar  - n + Velar + Dental | 2 @ r + l : Consonant - j - r - l }
 	syll { 6 @ lead : Vowel  | lead : Vowel : tail }
 	main { syll : syll | syll | syll : syll : syll }
 }
 replacers
 {
 	{ $ : Vowel : $ => syll : syll }
-	{ s : r => Consonant }
-	{ Vowel : Vowel => Vowel : Consonant : Vowel }
-	{ s : b => s : Unvoiced }
+	{ $ : Vowel : Vowel : $ => Vowel : Consonant : Vowel }
+	{ Vowel : Vowel => Vowel : Consonant : Vowel | Vowel }
+	{ Vowel : $ => Vowel : tail }
+}
+orthography
+{
+	{ f => ph }
+	{ $ : i => i }
+	{ i : j => i }
+	{ j : i => i }
+	{ i => i : y }
+	{ Vowel : (k) : $ => c : .5 * ch }
+	{ Vowel : (k) => ck : .2 * c : .5 * ch }
+	{ k => k : c : ch }
+	{ Vowel : (ch) => .5 * ch : tch }
+	{ j => y }
+	{ Vowel : (l) : Vowel => l : ll }
+	{ Vowel : (r) : Vowel => r : rr }
+	{ Vowel : (l) : $ => l : ll }
+	{ Vowel : (r) : $ => r : rr }
+	{ Vowel : (p) : Vowel => p : pp }
+	{ Vowel : (n) : Vowel => n : nn }
+	{ Vowel : (m) : Vowel => m : mm }
+	{ Vowel : (n) : $ => n : nn }
+	{ Vowel : (m) : $ => m : mm }
+	{ Vowel : (s) : Vowel => s : ss }
+	{ Vowel : (s) : $ => s : ss }
 }

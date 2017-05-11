@@ -13,29 +13,41 @@ namespace Cardamom.Interface
     {
         internal enum RequestType { MouseOver, MouseOut, Focus, Leave, Block }
 
+        public EventHandler<MouseEventArgs> OnLeftClick;
+        public EventHandler<MouseEventArgs> OnLeftDown;
+        public EventHandler<MouseEventArgs> OnLeftUp;
+
         Pair<Interactive, RequestType> _Changes;
 
         private Vector2f _DragStart;
         private Vector2f _DragDelta;
 
-        private bool _LeftPressed;
         private bool _LeftDrag;
         private bool _LeftClick;
         private bool _LeftDown;
-        private bool _LeftUp;
+        private bool _LeftUp = true;
 
         private bool _RightClick;
         private bool _RightDown;
-        private bool _RightUp;
+        private bool _RightUp = true;
 
         private int _WheelDelta;
+        private bool _WheelMoved;
 
         private Vector2f _Position;
 
+        private Interactive _Top;
+        private Interactive _LastTop;
+
         public Vector2f Position { get { return _Position; } }
+        public Interactive Top { get { return _LastTop; } }
         public int WheelDelta { get { return _WheelDelta; } }
+        public bool LeftDown { get { return _LeftDown; } }
+        public bool RightDown { get { return _RightDown; } }
         public bool LeftClick { get { return _LeftClick; } }
         public bool RightClick { get { return _RightClick; } }
+        public Vector2f DragDelta { get { return _DragDelta; } }
+        public bool LeftDrag { get { return _LeftDrag; } }
 
         public MouseController(RenderWindow Window)
         {
@@ -46,11 +58,13 @@ namespace Cardamom.Interface
         private void Scroll(object sender, EventArgs e)
         {
             _WheelDelta = ((MouseWheelEventArgs)e).Delta;
+            _WheelMoved = true;
         }
 
         public void Update(RenderWindow Window)
         {
-            _WheelDelta = 0;
+            if(!_WheelMoved) _WheelDelta = 0;
+            _WheelMoved = false;
 
             if (_Changes.First != null)
             {
@@ -69,8 +83,8 @@ namespace Cardamom.Interface
             }
             else if (on)
             {
-                _DragDelta = Position - _DragStart;
-                if (_LeftDown && Math.Abs(_DragDelta.X) + Math.Abs(_DragDelta.Y) >= 5 && on)
+                _DragDelta = _Position - _DragStart;
+                if (_LeftDown && Math.Abs(_DragDelta.X) + Math.Abs(_DragDelta.Y) >= 1)
                 {
                     _LeftDrag = true;
                     _DragStart = Position;
@@ -78,19 +92,29 @@ namespace Cardamom.Interface
             }
             else { _DragDelta = new Vector2f(0, 0); }
 
+            if (!_LeftUp && !Mouse.IsButtonPressed(Mouse.Button.Left)
+                && OnLeftUp != null) OnLeftUp(this, new MouseEventArgs(_Position));
+            else if (!_LeftDown && Mouse.IsButtonPressed(Mouse.Button.Left)
+                && OnLeftDown != null) OnLeftDown(this, new MouseEventArgs(_Position));
+
             _LeftUp = !Mouse.IsButtonPressed(Mouse.Button.Left);
             _LeftClick = _LeftUp && _LeftDown && !_LeftDrag;
-            _LeftPressed = !_LeftDown && !_LeftUp;
-            if (_LeftPressed)
-            {
-                _DragStart = Position;
-            }
+
+            if (_LeftClick && OnLeftClick != null) OnLeftClick(this, new MouseEventArgs(_Position));
+
+            _DragStart = _Position;
             _LeftDown = !_LeftUp;
-            if (_LeftUp) _LeftDrag = false;
+            if (_LeftUp)
+            {
+                _LeftDrag = false;
+                _DragDelta = new Vector2f(0, 0);
+            }
 
             _RightUp = !Mouse.IsButtonPressed(Mouse.Button.Right);
             _RightClick = _RightUp && _RightDown;
             _RightDown = !_RightUp;
+
+            _LastTop = _Top;
         }
 
         internal void Queue(Interactive Mouseable, RequestType Type)
@@ -116,5 +140,7 @@ namespace Cardamom.Interface
                     break;
             }
         }
+
+        internal void Put(Interactive Mouseable) { _Top = Mouseable; }
     }
 }

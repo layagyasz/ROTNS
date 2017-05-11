@@ -20,13 +20,13 @@ namespace Cardamom.Network
         Socket _Socket;
         NetworkStream _Stream;
         Thread _ReceiverThread;
-        MessageFactory _Factory;
+		RPCAdapter _Adapter;
 
-        public TCPReceiver(Socket Socket, MessageFactory Factory, TCPConnection Connection)
+        public TCPReceiver(Socket Socket, RPCAdapter Adapter, TCPConnection Connection)
         {
             _Socket = Socket;
             _Stream = new NetworkStream(_Socket);
-            _Factory = Factory;
+			_Adapter = Adapter;
         }
 
         public void Start()
@@ -73,8 +73,7 @@ namespace Cardamom.Network
                 if (data != null)
                 {
                     SerializationInputStream S = new SerializationInputStream(new MemoryStream(data));
-                    Message m = _Factory.Deserialize(S);
-                    if (OnMessageReceived != null) OnMessageReceived(this, new MessageReceivedEventArgs(m));
+                    if (OnMessageReceived != null) OnMessageReceived(this, new MessageReceivedEventArgs(S));
                 }
                 else
                 {

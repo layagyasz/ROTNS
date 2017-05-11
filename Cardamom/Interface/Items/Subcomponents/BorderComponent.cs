@@ -6,8 +6,6 @@ using System.Text;
 using SFML.Window;
 using SFML.Graphics;
 
-using Cardamom.Planar;
-
 namespace Cardamom.Interface.Items.Subcomponents
 {
     public class BorderComponent : Component
@@ -24,15 +22,15 @@ namespace Cardamom.Interface.Items.Subcomponents
             }
         }
 
-        public void Update(MouseController MouseController, KeyController KeyController, int DeltaT, PlanarTransformMatrix Transform)
+        public void Update(MouseController MouseController, KeyController KeyController, int DeltaT, Transform Transform)
         {
         }
 
-        public void Draw(RenderTarget Target, PlanarTransformMatrix Transform)
+        public void Draw(RenderTarget Target, Transform Transform)
         {
         }
 
-        public void PerformTransitions(Dictionary<string, float> Transitions, Class From, Class To)
+        public void PerformTransitions(Dictionary<string, float> Transitions, SubClass From, SubClass To)
         {
         }
     }

@@ -20,7 +20,6 @@ namespace Venetia
         {
             foreach (ParseBlock B in Block.Break())
             {
-                Console.WriteLine(B.Name.ToLower());
                 switch (B.Name.ToLower())
                 {
                     case "in": _Input = ReadTangibleSet(B, Tangibles).ToArray(); break;

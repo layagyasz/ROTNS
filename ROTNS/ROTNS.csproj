@@ -1,5 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+﻿<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
@@ -36,19 +35,19 @@
   <ItemGroup>
     <Reference Include="KopiLua, Version=1.3.5449.31779, Culture=neutral, PublicKeyToken=e25f4af1e4f7b31c, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\PostDiesPeriapt\PostDiesPeriapt\bin\Debug\KopiLua.dll</HintPath>
+      <HintPath>..\..\Visual Studio 2010\Projects\PostDiesPeriapt\PostDiesPeriapt\bin\Debug\KopiLua.dll</HintPath>
     </Reference>
     <Reference Include="NLua, Version=1.3.2.0, Culture=neutral, PublicKeyToken=8df2ab518030ea95, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\PostDiesPeriapt\PostDiesPeriapt\bin\Debug\NLua.dll</HintPath>
+      <HintPath>..\..\Visual Studio 2010\Projects\PostDiesPeriapt\PostDiesPeriapt\bin\Debug\NLua.dll</HintPath>
     </Reference>
     <Reference Include="sfmlnet-graphics-2, Version=0.0.0.0, Culture=neutral, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\SFML.Net-master\SFML.Net-2.0\lib\x86\sfmlnet-graphics-2.dll</HintPath>
+      <HintPath>..\..\SFML.Net-master\SFML.Net-2.0\lib\x86\sfmlnet-graphics-2.dll</HintPath>
     </Reference>
     <Reference Include="sfmlnet-window-2, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\SFML.Net-master\SFML.Net-2.0\lib\x86\sfmlnet-window-2.dll</HintPath>
+      <HintPath>..\..\SFML.Net-master\SFML.Net-2.0\lib\x86\sfmlnet-window-2.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -59,39 +58,60 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Core\Biome.cs" />
-    <Compile Include="Core\BiomeMap.cs" />
-    <Compile Include="Core\MicroRegion.cs" />
-    <Compile Include="Core\MapGeneratorSettings.cs" />
-    <Compile Include="OverMapping\InteractionController.cs" />
-    <Compile Include="OverMapping\Nation.cs" />
-    <Compile Include="Core\NoiseSettings.cs" />
-    <Compile Include="OverMapping\OverMap.cs" />
-    <Compile Include="OverMapping\MapRegion.cs" />
-    <Compile Include="Core\NaturalResource.cs" />
-    <Compile Include="Core\Administration.cs" />
-    <Compile Include="Core\Agent.cs" />
-    <Compile Include="Core\ClusterAdministration.cs" />
-    <Compile Include="Core\ComputerPlayer.cs" />
-    <Compile Include="Core\Culture.cs" />
-    <Compile Include="Core\HumanPlayer.cs" />
-    <Compile Include="Core\Law.cs" />
-    <Compile Include="Core\LawSet.cs" />
-    <Compile Include="Core\LevyLaw.cs" />
-    <Compile Include="Core\Region.cs" />
-    <Compile Include="Core\RegionAdministration.cs" />
-    <Compile Include="Core\World.cs" />
+    <Compile Include="Model\Biome.cs" />
+    <Compile Include="Model\BiomeMap.cs" />
+    <Compile Include="Model\Budgetable.cs" />
+    <Compile Include="Model\Flags\FlagColor.cs" />
+    <Compile Include="Model\Flags\FlagColorMap.cs" />
+    <Compile Include="Model\Flags\Flag.cs" />
+    <Compile Include="Model\Flags\FlagData.cs" />
+    <Compile Include="Model\Flags\FlagTemplate.cs" />
+    <Compile Include="Model\Flags\FlagTemplateZone.cs" />
+    <Compile Include="Model\Governing\ClusterAdministration.cs" />
+    <Compile Include="Model\Governing\OrganizationClass.cs" />
+    <Compile Include="Model\Governing\OrganizationHierarchy.cs" />
+    <Compile Include="Model\MicroRegion.cs" />
+    <Compile Include="Model\MapGeneratorSettings.cs" />
+    <Compile Include="Model\Summarizing\Section.cs" />
+    <Compile Include="Model\Summarizing\Summarizable.cs" />
+    <Compile Include="Model\Summarizing\Summary.cs" />
+    <Compile Include="Model\Technology\Technology.cs" />
+    <Compile Include="Model\Technology\TechnologyManager.cs" />
+    <Compile Include="Model\Technology\TechnologyTree.cs" />
+    <Compile Include="Model\Technology\TechnologyUnlockedEventArgs.cs" />
+    <Compile Include="Model\TextureSheet.cs" />
+    <Compile Include="View\InteractionController.cs" />
+    <Compile Include="Model\Nation.cs" />
+    <Compile Include="Model\NoiseSettings.cs" />
+    <Compile Include="View\WorldView.cs" />
+    <Compile Include="View\RegionView.cs" />
+    <Compile Include="Model\NaturalResource.cs" />
+    <Compile Include="Model\Governing\Administration.cs" />
+    <Compile Include="Model\Agent.cs" />
+    <Compile Include="Model\ComputerPlayer.cs" />
+    <Compile Include="Model\Culture.cs" />
+    <Compile Include="Model\HumanPlayer.cs" />
+    <Compile Include="Model\Region.cs" />
+    <Compile Include="Model\Governing\RegionAdministration.cs" />
+    <Compile Include="Model\World.cs" />
+    <Compile Include="View\RegionViewWindow.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Core\TaxLaw.cs" />
-    <Compile Include="Core\Training.cs" />
+    <Compile Include="Model\Training.cs" />
+    <Compile Include="Model\Governing\TaxLaw.cs" />
+    <Compile Include="Model\Governing\LegalCode.cs" />
+    <Compile Include="Model\Governing\Law.cs" />
+    <Compile Include="Model\Governing\GovernmentForm.cs" />
+    <Compile Include="Model\Ticked.cs" />
+    <Compile Include="Model\TickManager.cs" />
+    <Compile Include="GameRunner.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Cardamom\Cardamom\Cardamom.csproj">
+    <ProjectReference Include="..\Cardamom\Cardamom.csproj">
       <Project>{A416D343-545A-40B0-9AE3-A5AAA9D47E79}</Project>
       <Name>Cardamom</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Venetia\Venetia\Venetia.csproj">
+    <ProjectReference Include="..\Venetia\Venetia.csproj">
       <Project>{55A2A930-C2DF-4238-9DEA-E4B7E3E94BF5}</Project>
       <Name>Venetia</Name>
     </ProjectReference>
@@ -110,25 +130,55 @@
     <Content Include="csfml-window-2.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <None Include="Flags.blk">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <Content Include="Graphics\Basic.bmp">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Graphics\Grainy.bmp">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Graphics\Grassy.bmp">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Graphics\Mountain.bmp">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Graphics\SmallButtons.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Graphics\Trees.bmp">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="LangGen.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Language.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Graphics\Window.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Core\WorldGen\" />
+    <Folder Include="Model\WorldGen\" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Economy\Goods.blk">
+    <None Include="CALIBRI.TTF">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Economy\Goods.blk">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Economy\Processes.blk">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Economy\Services.blk">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Theme.blk">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

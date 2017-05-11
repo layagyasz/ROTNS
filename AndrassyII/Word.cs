@@ -7,16 +7,13 @@ namespace AndrassyII
 {
     public class Word : Generated<Sound>
     {
-        public Word(Generated<Sound> Generated)
+        string _Orthography;
+
+        public string Orthography { get { return _Orthography; } internal set { _Orthography = value; } }
+
+        internal Word(Generated<Sound> Generated, Random Random, List<PrintRule<Sound>> PrintRules)
         {
             foreach (Sound S in Generated) _Sounds.Add(S);
-        }
-
-        public override string ToString()
-        {
-            string R = "";
-            foreach (Sound S in _Sounds) R += S.ToString();
-            return R;
         }
     }
 }

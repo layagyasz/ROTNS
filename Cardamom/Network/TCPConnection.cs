@@ -6,6 +6,7 @@ using System.Net;
 using System.Net.Sockets;
 using System.Threading;
 
+using Cardamom.Serialization;
 using Cardamom.Utilities;
 
 namespace Cardamom.Network
@@ -20,17 +21,14 @@ namespace Cardamom.Network
         TCPReceiver _Receiver;
         TCPSender _Sender;
 
-        List<Pair<Query, Action<Response>>> _Queries = new List<Pair<Query, Action<Response>>>();
-        Response _Response;
-
         bool _Connected;
         public bool Connected { get { return _Connected; } }
 
-        public TCPConnection(Socket Socket, MessageFactory Factory)
+		public TCPConnection(Socket Socket, RPCAdapter Adapter)
         {
             _Socket = Socket;
-            _Receiver = new TCPReceiver(_Socket, Factory, this);
-            _Sender = new TCPSender(_Socket, Factory);
+            _Receiver = new TCPReceiver(_Socket, Adapter, this);
+            _Sender = new TCPSender(_Socket, Adapter);
         }
 
         public void Start()
@@ -52,14 +50,7 @@ namespace Cardamom.Network
 
         private void Received(object Sender, MessageReceivedEventArgs E)
 		{
-            if (E.Message is Response)
-            {
-                Pair<Query, Action<Response>> Q = _Queries[0];
-                _Response = (Response)E.Message;
-                if (Q.Second == null) Monitor.Pulse(Q.First);
-                else Q.Second.Invoke(_Response);
-            }
-            else if (OnMessageReceived != null) OnMessageReceived(this, E);
+            if (OnMessageReceived != null) OnMessageReceived(this, E);
         }
 
         private void HandleDrop(object Sender, EventArgs E)
@@ -68,21 +59,9 @@ namespace Cardamom.Network
             if (OnConnectionLost != null) OnConnectionLost(this, E);
         }
 
-        public void Send(Message Message)
+		public void Send(SerializationOutputStream Message)
         {
             _Sender.Send(Message);
-        }
-
-        public Response Query(Query Query)
-        {
-            _Queries.Add(new Pair<Query, Action<Response>>(Query, null));
-            Monitor.Wait(Query);
-            return _Response;
-        }
-
-        public void AsynchronousQuery(Query Query, Action<Response> Action)
-        {
-            _Queries.Add(new Pair<Query, Action<Response>>(Query, Action));
         }
 
         public override string ToString()

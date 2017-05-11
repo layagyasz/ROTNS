@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Cardamom.Graphing
 {
-    class ANode<T> : Node<T> where T : Pathable
+    class ANode<T> : Node<T>
     {
         double _Distance;
         object _Parent;

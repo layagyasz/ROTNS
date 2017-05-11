@@ -7,7 +7,7 @@ using Cardamom.Utilities;
 
 namespace Cardamom.Graphing
 {
-    public class DijkstraPool<T> : Graph<T> where T : Pathable
+    public class DijkstraPool<T> : Graph<T> where T : Pathable<T>
     {
         List<DijkstraRegion<T>> _Starts = new List<DijkstraRegion<T>>();
 
@@ -42,17 +42,17 @@ namespace Cardamom.Graphing
                 DNode<T> Current = open.Pop();
                 if (Closed.Contains(Current) && open.Count > 0) Current = open.Pop();
                 if (open.Count == 0) break;
-
-                IEnumerator<Pathable> Neighbors = Current.Value.Neighbors();
-                while (Neighbors.MoveNext())
+                
+                IEnumerable<T> Neighbors = Current.Value.Neighbors();
+                foreach (T Neighbor in Current.Value.Neighbors())
                 {
-                    if (Neighbors.Current != null && Neighbors.Current.Passable)
+                    if (Neighbor != null && Neighbor.Passable)
                     {
-                        double d = Current.Distance + Current.Value.DistanceTo(Neighbors.Current);
-                        bool h = HasNode((T)Neighbors.Current);
+                        double d = Current.Distance + Current.Value.DistanceTo(Neighbor);
+                        bool h = HasNode((T)Neighbor);
                         DNode<T> N = null;
-                        if (h) N = (DNode<T>)GetNode((T)Neighbors.Current);
-                        else { AddNode(new DNode<T>((T)Neighbors.Current)); N = (DNode<T>)GetNode((T)Neighbors.Current); N.Update(Double.MaxValue, Current.Parent); }
+                        if (h) N = (DNode<T>)GetNode((T)Neighbor);
+                        else { AddNode(new DNode<T>((T)Neighbor)); N = (DNode<T>)GetNode((T)Neighbor); N.Update(Double.MaxValue, Current.Parent); }
                         if (N.Distance > d)
                         {
                             N.Update(d, Current.Parent);

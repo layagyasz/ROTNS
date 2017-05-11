@@ -14,49 +14,69 @@ namespace Cardamom.Interface.Items.Subcomponents
     {
         Vertex[] _Vertices;
         Vector2f _Position;
+        Texture _Texture;
 
         public Vector2f Position { get { return _Position; } set { _Position = value; } }
+        public Vector2f Size { get { return new Vector2f(_Vertices[2].Position.X, _Vertices[2].Position.Y); } }
 
         public RectComponent(Class Class)
         {
             int Height = (int)Class.GetAttributeWithDefault("height", (int)0);
             int Width = (int)Class.GetAttributeWithDefault("width", (int)0);
             Color[] _Colors = (Color[])Class.GetAttributeWithDefault("background-color", ClassLibrary.NullColors);
-            _Vertices = new Vertex[]
+            _Texture = (Texture)Class.GetAttributeWithDefault("background-image", null);
+            if (_Texture == null)
             {
-                new Vertex(new Vector2f(0,0), _Colors[0]),
-                new Vertex(new Vector2f(Width, 0), _Colors[1]),
-                new Vertex(new Vector2f(Width, Height), _Colors[2]),
-                new Vertex(new Vector2f(0, Height), _Colors[3])
-            };
-        }
-
-        public Polygon GetBoundingBox()
-        {
-            return new Polygon(new Vector2f[]
+                _Vertices = new Vertex[]
+                {
+                    new Vertex(new Vector2f(0,0), _Colors[0]),
+                    new Vertex(new Vector2f(Width, 0), _Colors[1]),
+                    new Vertex(new Vector2f(Width, Height), _Colors[2]),
+                    new Vertex(new Vector2f(0, Height), _Colors[3])
+                };
+            }
+            else
             {
-                _Vertices[0].Position,
-                _Vertices[1].Position,
-                _Vertices[2].Position,
-                _Vertices[3].Position
-            });
+                Vector2f[] TexCoords = (Vector2f[])Class.GetAttributeWithDefault("background-image-coords", ClassLibrary.NullArray);
+                _Vertices = new Vertex[]
+                {
+                    new Vertex(new Vector2f(0,0), _Colors[0], TexCoords[0]),
+                    new Vertex(new Vector2f(Width, 0), _Colors[1], TexCoords[1]),
+                    new Vertex(new Vector2f(Width, Height), _Colors[2], TexCoords[2]),
+                    new Vertex(new Vector2f(0, Height), _Colors[3], TexCoords[3])
+                };
+            }
         }
 
-        public void Update(MouseController MouseController, KeyController KeyController, int DeltaT, PlanarTransformMatrix Transform)
+        public Rectangle GetBoundingBox()
+        {
+            return new Rectangle(_Vertices[0].Position, _Vertices[2].Position - _Vertices[0].Position);
+        }
+
+        public void Update(MouseController MouseController, KeyController KeyController, int DeltaT, Transform Transform)
         {
         }
 
-        public void Draw(RenderTarget Target, PlanarTransformMatrix Transform)
+        public void Draw(RenderTarget Target, Transform Transform)
         {
-            Transform T = new PlanarTransformMatrix(Transform).Translate(_Position).ToTransform();
-            Target.Draw(_Vertices, PrimitiveType.Quads, new RenderStates(T));
+            Transform.Translate(_Position);
+            RenderStates R = (_Texture == null) ? new RenderStates() : new RenderStates(_Texture);
+            R.Transform = Transform;
+            Target.Draw(_Vertices, PrimitiveType.Quads, R);
         }
 
-        public void PerformTransitions(Dictionary<string, float> Transitions, Class From, Class To)
+        public void PerformTransitions(Dictionary<string, float> Transitions, SubClass From, SubClass To)
         {
             Color[] FromC = (Color[])From.GetAttributeWithDefault("background-color", ClassLibrary.NullColors);
             Color[] ToC = (Color[])To.GetAttributeWithDefault("background-color", ClassLibrary.NullColors);
-            float T = (float)To.GetAttributeWithDefault(Transitions, "transition-background-color", "transition", 1);
+
+            float T = To.GetAttributeWithDefault(Transitions, "transition-background-color", "transition", 1);
+            _Texture = (Texture)To.GetAttributeWithDefault("background-image", null);
+            if (_Texture != null)
+            {
+                Vector2f[] TexCoords = (Vector2f[])To.GetAttributeWithDefault("background-image-coords", ClassLibrary.NullArray);
+                for (int i = 0; i < 4; ++i) _Vertices[i].TexCoords = TexCoords[i];
+            }
 
             for (int i = 0; i < 4; ++i) _Vertices[i].Color = Cardamom.Utilities.ColorMath.BlendColors(FromC[i], ToC[i], T);
         }

@@ -8,9 +8,9 @@ using Cardamom.Utilities;
 
 namespace Cardamom.Graphing
 {
-    public class Path<T> : Graph<T> where T : Pathable
+    public class Path<T> : Graph<T>
     {
-        List<T> _Path;
+        List<T> _Path = new List<T>();
 
         double _Distance;
         bool _Complete;
@@ -27,21 +27,33 @@ namespace Cardamom.Graphing
             set { _Path[i] = value; }
         }
 
-
-        public Path(T Start, T Destination)
+        public Path(T Start, T Destination,
+            Func<T, bool> PassableFunction,
+            Func<T, T, double> DistanceFunction,
+            Func<T, T, double> HeuristicFunction,
+            Func<T, IEnumerable<T>> NeighborFunction,
+            Func<T, T, bool> FinishState)
             : base()
         {
-            _Path = new List<T>();
-
-            Calculate(Start, Destination, DefaultFinishState);
+            Calculate(Start, Destination,
+                    PassableFunction,
+                    DistanceFunction,
+                    HeuristicFunction,
+                    NeighborFunction,
+                    FinishState);
         }
-        public Path(T Start, T Destination, Func<T, T, bool> FinishState)
-            : base()
-        {
-            _Path = new List<T>();
 
-            Calculate(Start, Destination, FinishState);
-        }
+        public Path(Pathable<T> Start, Pathable<T> Destination, Func<T, T, bool> FinishState)
+            : this((T)Start, (T)Destination,
+                    P => ((Pathable<T>)P).Passable,
+                    (P1, P2) => ((Pathable<T>)P1).DistanceTo(P2),
+                    (P1, P2) => ((Pathable<T>)P1).HeuristicDistanceTo(P2),
+                    P => ((Pathable<T>)P).Neighbors(),
+                    FinishState) { }
+
+
+        public Path(Pathable<T> Start, Pathable<T> Destination)
+            : this(Start, Destination, DefaultFinishState) { }
 
         public T Pop()
         {
@@ -61,7 +73,12 @@ namespace Cardamom.Graphing
             return Current.Equals(Destination);
         }
 
-        private void Calculate(T Start, T Destination, Func<T, T, bool> FinishState)
+        private void Calculate(T Start, T Destination,
+            Func<T, bool> PassableFunction,
+            Func<T, T, double> DistanceFunction,
+            Func<T, T, double> HeuristicFunction,
+            Func<T, IEnumerable<T>> NeighborFunction,
+            Func<T, T, bool> FinishState)
         {
             AddNode(new ANode<T>(Start));
             PriorityQueue<ANode<T>, double> Open = new PriorityQueue<ANode<T>, double>();
@@ -75,15 +92,14 @@ namespace Cardamom.Graphing
                 Current = Open.Pop();
                 OpenCheck.Remove(Current);
                 Closed.Add(Current);
-                IEnumerator<Pathable> it = Current.Value.Neighbors();
-                while (it.MoveNext())
+                foreach (T C in NeighborFunction(Current.Value))
                 {
-                    if (it.Current != null)
+                    if (C != null)
                     {
-                        double d = it.Current.DistanceTo(Current.Value) + Current.Distance;
-                        bool h = HasNode((T)it.Current);
+                        double d = DistanceFunction(C, Current.Value) + Current.Distance + HeuristicFunction(C, Destination);
+                        bool h = HasNode((T)C);
                         ANode<T> N = null;
-                        if (h) N = (ANode<T>)GetNode((T)it.Current);
+                        if (h) N = (ANode<T>)GetNode((T)C);
                         bool inOpen = h && OpenCheck.Contains(N);
                         bool inClosed = h && Closed.Contains(N);
                         if (inOpen && N.Distance > d)
@@ -99,10 +115,10 @@ namespace Cardamom.Graphing
                         }
                         if (N == null)
                         {
-                            AddNode(new ANode<T>((T)it.Current));
-                            N = (ANode<T>)GetNode((T)it.Current);
+                            AddNode(new ANode<T>((T)C));
+                            N = (ANode<T>)GetNode((T)C);
                         }
-                        if (!inOpen && !inClosed && N.Value.Passable)
+                        if (!inOpen && !inClosed && PassableFunction(N.Value))
                         {
                             Open.Push(N, d);
                             OpenCheck.Add(N);
@@ -115,16 +131,16 @@ namespace Cardamom.Graphing
             if (!FinishState(Current.Value, Destination)) _Complete = false;
             else _Complete = true;
             _Destination = Current.Value;
-            FindPath(Start, Current.Value);
+            FindPath(Start, Current.Value, DistanceFunction);
             Clear();
         }
 
-        void FindPath(T Start, T Destination)
+        void FindPath(T Start, T Destination, Func<T, T, double> DistanceFunction)
         {
             T C = Destination;
             while (!C.Equals(Start))
             {
-                _Distance += C.DistanceTo((T)((ANode<T>)_Nodes[C]).Parent);
+                _Distance += DistanceFunction(C, (T)((ANode<T>)_Nodes[C]).Parent);
                 _Path.Add(C);
                 C = (T)((ANode<T>)_Nodes[C]).Parent;
             }

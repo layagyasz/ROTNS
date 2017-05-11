@@ -9,11 +9,10 @@ using SFML.Graphics;
 using SFML.Window;
 
 using Cardamom.Serialization;
-using Cardamom.Planar;
 
 namespace Cardamom.Interface
 {
-    public class Screen : Container
+    public class Screen : Container<Pod>
     {
         protected LoadingScreen _Loader;
 
@@ -45,7 +44,7 @@ namespace Cardamom.Interface
         }
 
 
-        public override void Update(MouseController MouseController, KeyController KeyController, int DeltaT, PlanarTransformMatrix Transform)
+        public override void Update(MouseController MouseController, KeyController KeyController, int DeltaT, Transform Transform)
         {
             if (_Loader != null && !_Loader.Started) _Loader.Start();
 
@@ -56,7 +55,7 @@ namespace Cardamom.Interface
             else _Loader.Update(MouseController, KeyController, DeltaT, Transform);
         }
 
-        public override void Draw(RenderTarget Target, PlanarTransformMatrix Transform)
+        public override void Draw(RenderTarget Target, Transform Transform)
         {
             if (_Loader != null && !_Loader.Started) _Loader.Start();
 

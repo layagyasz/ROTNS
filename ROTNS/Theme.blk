@@ -1,15 +1,286 @@
-classes
+texture<>:textures
 {
-	test
+	texture:ButtonSheet { Graphics/SmallButtons.png }
+}
+class<>:classes
+{
+	class:window
 	{
-		int:height { 100 }
-		int:width { 500 }
-		color[]:background-color { #FF00FF, #00FF00, #00FF00, #FF00FF }
-		+int:transition-background-color { 750 }
-		hover:class
+		mode:default
 		{
-			color[]:background-color { #00FF00, #FF00FF, #FF00FF, #00FF00 }
-			+int:transition-background-color { 250 }
+			int:height { 400 }
+			int:width { 800 }
+			color[]:background-color { #FFFFFF #FFFFFF #FFFFFF #FFFFFF }
+			texture:background-image { Graphics/window.png }
+			vector2f[]:background-image-coords { 0,0 800,0 800,400 0,400 }
+			int[]:padding { 10 12 10 12 }
 		}
+	}
+	class:table
+	{
+		mode:default
+		{
+			int:height { 210 }
+			int:width { 776 }
+			color[]:background-color { #FFFFFF #FFFFFF #FFFFFF #FFFFFF }
+			texture:background-image { Graphics/window.png }
+			vector2f[]:background-image-coords { 0,0 800,0 800,400 0,400 }
+			int[]:padding { 1 1 1 1 }
+		}
+	}
+	class:table-row
+	{
+		mode:default
+		{
+			int:height { 24 }
+			int:width { 773 }
+			color[]:background-color { #00000088 #00000088 #00000088 #00000088 }
+			int[]:margin { 0 3 0 3 }
+		}
+		mode:hover
+		{
+			color[]:background-color {  #88880088 #88880088 #88880088 #88880088 }
+		}
+	}
+	class:table-cell
+	{
+		mode:default
+		{
+			font:font-face { CALIBRI.TTF }
+			color:font-color { #FFFFFF }
+			int:font-size { 16 }
+			int:height { 24 }
+			int:width { 155 }
+			int[]:padding { 2 0 0 0 }
+		}
+	}
+	class:text-box
+	{
+		mode:default
+		{
+			int:height { 180 }
+			int:width { 240 }
+			color[]:background-color { #00000088 #00000088 #00000088 #00000088 }
+			font:font-face { CALIBRI.TTF }
+			color:font-color { #FFFFFF }
+			int:font-size { 16 }
+			int[]:padding { 10 10 10 10 }
+		}
+	}
+	class:slider-bar
+	{
+		!class:parent { text-box }
+		mode:default
+		{
+			int:height { 24 }
+			int:width { 120 }
+			color[]:background-color { #FFFFFF #FFFFFF #FFFFFF #FFFFFF }
+			int[]:padding { 2 2 2 2 }
+			!texture:background-image { textures.ButtonSheet }
+			vector2f[]:background-image-coords { 0,48 120,48 120,72 0,72 }
+		}
+		mode:hover
+		{
+			vector2f[]:background-image-coords {  0,72 120,72 120,96 0,96 }
+		}
+		mode:focus
+		{
+			vector2f[]:background-image-coords {  0,72 120,72 120,96 0,96 }
+		}
+		mode:selected
+		{
+			vector2f[]:background-image-coords {  0,72 120,72 120,96 0,96 }
+			color:font-color { #FFFF00 }
+		}
+		mode:selected-hover
+		{
+			vector2f[]:background-image-coords {  0,72 120,72 120,96 0,96 }
+			color:font-color { #FFFF00 }
+		}
+	}
+	class:slider-knob
+	{
+		mode:default
+		{
+			int:height { 20 }
+			int:width { 12 }
+			color[]:background-color { #FFFFFF #FFFFFF #FFFFFF #FFFFFF }
+			!texture:background-image { textures.ButtonSheet }
+			vector2f[]:background-image-coords { 0,96 12,96 12,116 0,116 }
+		}
+		mode:hover
+		{
+			vector2f[]:background-image-coords {  12,96 24,96 24,116 12,116 }
+		}
+		mode:focus
+		{
+			vector2f[]:background-image-coords {  12,96 24,96 24,116 12,116 }
+		}
+	}
+	class:button
+	{
+		mode:default
+		{
+			int:height { 24 }
+			int:width { 24 }
+			!texture:background-image { textures.ButtonSheet }
+			color[]:background-color { #FFFFFF #FFFFFF #FFFFFF #FFFFFF }
+		}
+	}
+	class:button-biome
+	{
+		!class:parent { button }
+		mode:default
+		{
+			vector2f[]:background-image-coords { 144,48 168,48 168,72 144,72 }
+		}
+		mode:hover
+		{
+			vector2f[]:background-image-coords { 144,72 168,72 168,96 144,96 }
+		}
+	}
+	class:button-temperature
+	{
+		!class:parent { button }
+		mode:default
+		{
+			vector2f[]:background-image-coords { 120,48 144,48 144,72 120,72 }
+		}
+		mode:hover
+		{
+			vector2f[]:background-image-coords { 120,72 144,72 144,96 120,96 }
+		}
+	}
+	class:button-moisture
+	{
+		!class:parent { button }
+		mode:default
+		{
+			vector2f[]:background-image-coords { 144,0 168,0 168,24 144,24 }
+		}
+		mode:hover
+		{
+			vector2f[]:background-image-coords { 144,24 168,24 168,48 144,48 }
+		}
+	}
+	class:button-elevation
+	{
+		!class:parent { button }
+		mode:default
+		{
+			vector2f[]:background-image-coords { 120,0 144,0 144,24 120,24 }
+		}
+		mode:hover
+		{
+			vector2f[]:background-image-coords { 120,24 144,24 144,48 120,48 }
+		}
+	}
+	class:button-population
+	{
+		!class:parent { button }
+		mode:default
+		{
+			vector2f[]:background-image-coords { 0,0 24,0 24,24 0,24}
+		}
+		mode:hover
+		{
+			vector2f[]:background-image-coords { 0,24 24,24 24,48 0,48 }
+		}
+	}
+	class:button-wealth
+	{
+		!class:parent { button }
+		mode:default
+		{
+			vector2f[]:background-image-coords { 24,0 48,0 48,24 24,24}
+		}
+		mode:hover
+		{
+			vector2f[]:background-image-coords { 24,24 48,24 48,48 24,48 }
+		}
+	}
+	class:button-culture
+	{
+		!class:parent { button }
+		mode:default
+		{
+			vector2f[]:background-image-coords { 72,0 96,0 96,24 72,24}
+		}
+		mode:hover
+		{
+			vector2f[]:background-image-coords { 72,24 96,24 96,48 72,48 }
+		}
+	}
+	class:button-nation
+	{
+		!class:parent { button }
+		mode:default
+		{
+			vector2f[]:background-image-coords { 48,0 72,0 72,24 48,24}
+		}
+		mode:hover
+		{
+			vector2f[]:background-image-coords { 48,24 72,24 72,48 48,48 }
+		}
+	}
+	class:button-good
+	{
+		!class:parent { button }
+		mode:default
+		{
+			vector2f[]:background-image-coords { 96,0 120,0 120,24 96,24}
+		}
+		mode:hover
+		{
+			vector2f[]:background-image-coords { 96,24 120,24 120,48 96,48 }
+		}
+	}
+	class:button-summary
+	{
+		!class:parent { button }
+		mode:default
+		{
+			vector2f[]:background-image-coords { 168,0 192,0 192,24 168,24 }
+		}
+		mode:hover
+		{
+			vector2f[]:background-image-coords { 168,24 192,24 192,48 168,48 }
+		}
+	}
+	class:button-trade
+	{
+		!class:parent { button }
+		mode:default
+		{
+			vector2f[]:background-image-coords { 192,0 216,0 216,24 192,24 }
+		}
+		mode:hover
+		{
+			vector2f[]:background-image-coords { 192,24 216,24 216,48 192,48 }
+		}	
+	}
+	class:button-diplomacy
+	{
+		!class:parent { button }
+		mode:default
+		{
+			vector2f[]:background-image-coords { 216,0 240,0 240,24 216,24 }
+		}
+		mode:hover
+		{
+			vector2f[]:background-image-coords { 216,24 240,24 240,48 216,48 }
+		}	
+	}
+	class:button-exit
+	{
+		!class:parent { button }
+		mode:default
+		{
+			vector2f[]:background-image-coords { 240,0 264,0 264,24 240,24 }
+		}
+		mode:hover
+		{
+			vector2f[]:background-image-coords { 240,24 264,24 264,48 240,48 }
+		}	
 	}
 }
