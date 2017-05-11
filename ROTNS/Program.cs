@@ -1,15 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.IO;
 
 using Cardamom.Interface;
 using Cardamom.Serialization;
 using SFML.Window;
 using SFML.Graphics;
 
-using ROTNS.View;
 using ROTNS.Model;
 using ROTNS.Model.Flags;
 
@@ -26,7 +21,7 @@ namespace ROTNS
         static void Main(string[] args)
         {
             Random Random = new Random();
-            Cardamom.Interface.ClassLibrary.Instance.ReadFile("Theme.blk");
+            ClassLibrary.Instance.ReadFile("Theme.blk");
 
             MapGeneratorSettings Settings = new MapGeneratorSettings();
             Settings.Height = 700;
@@ -57,7 +52,7 @@ namespace ROTNS
             Image Grassy = new Image("Graphics/Grassy.bmp");
             Image Mountains = new Image("Graphics/Mountain.bmp");
             Image Trees = new Image("Graphics/Trees.bmp");
-            Biome[] Biomes = new Biome[]
+            Biome[] Biomes =
             {
                 new Biome(0, .5f, 1, .5f, new Color(102, 51, 0), Trees), //Bog
                 new Biome(0, .8f, 1, .5f, new Color(0, 102, 0), Trees), //Mangrove
@@ -72,14 +67,14 @@ namespace ROTNS
                 new Biome(.7f, .3f, .6f, 3f, new Color(0, 50, 0), Trees), //Coniferous Forest
                 new Biome(1f, .5f, .5f, 1f, new Color(100, 100, 100), Mountains) //Rocky
             };
-            Biome[] WaterBiomes = new Biome[]
+            Biome[] WaterBiomes =
             {
                 new Biome(-.1f, .5f, 1, 20f, new Color(0,150,150), Basic), //Coast
                 new Biome(-.15f, .5f, 1, 20f, new Color(0, 70, 70), Basic), //Sea
                 new Biome(-.65f, .5f, 1, 20f, new Color(0,0,50), Basic) //Ocean
             };
             Settings.BiomeMap = new BiomeMap(Biomes, WaterBiomes);
-            FlagColor[] FlagColors = new FlagColor[]
+            FlagColor[] FlagColors =
             {
                 new FlagColor("Red", new Culture(.65f, .5f, .25f, .5f, 1f, .25f), new Color(255,0,0), 1.25f),
                 new FlagColor("Orange", new Culture(.5f, .5f, .75f, .5f, .75f, .65f), new Color(255, 102, 0), .75f),
@@ -95,7 +90,7 @@ namespace ROTNS
                 new FlagColor("Pink", new Culture(.25f, 1f, .4f, .75f, 0, .75f), new Color(255,127,127), .75f)
             };
             Settings.FlagColorMap = new FlagColorMap(FlagColors);
-            NaturalResource[] Resources = new NaturalResource[]
+            NaturalResource[] Resources =
             {
                 new NaturalResource("res_iron", 1, .4, true, delegate(float Noise, MicroRegion Region) { if(Region.Oceanic) return 0; else return 1000 * (3 * Noise * Region.Height + Noise) / 4;}),
                 new NaturalResource("res_gold", 1, .7, true, delegate(float Noise, MicroRegion Region) { if(Region.Oceanic) return 0; else return 100 * (3 * Noise * Region.Height + Noise) / 4;}),
@@ -229,7 +224,7 @@ namespace ROTNS
             foreach (Resource R in Settings.Resources) Settings.Economy.AddResource(R.Name, R);
             Settings.Economy.LoadProcesses(ParseBlock.FromFile("Economy/Processes.blk"), (ParseBlock B, EconomySet<Tangible> T) => new Process(B, T));
             Settings.Language = new Language("Language.txt");
-            Settings.FlagData = new Model.Flags.FlagData("Flags.blk");
+            Settings.FlagData = new FlagData("Flags.blk");
 
 			RUNNER.SetWorld(new World(Random, Settings));
 			RUNNER.Start();

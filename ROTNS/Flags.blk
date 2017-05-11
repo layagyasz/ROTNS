@@ -1,0 +1,421 @@
+﻿1 * tricolor
+{
+	parts { tricolor_0 tricolor_1 tricolor_2 }
+	tricolor_0
+	{
+		edge { tricolor_1 1 }
+		vertices { 0,0 1,0 1,.33 0,.33 }
+	}
+	tricolor_1
+	{
+		edge { tricolor_0 .05 }
+		edge { tricolor_2 .05 }
+		vertices { 0,.33 1,.33 1,.67 0,.67 }
+	}
+	tricolor_2
+	{
+		edge { tricolor_1 1 }
+		edge { tricolor_0 .25 }
+		vertices { 0,.67 1,.67 1,1 0,1 }
+	}
+}
+.25 * bicolor
+{
+	parts { bicolor_0 bicolor_1 }
+	bicolor_0
+	{
+		edge { bicolor_1 1 }
+		vertices { 0,0 1,0 1,.5 0,.5 }
+	}
+	bicolor_1
+	{
+		edge { bicolor_0 1 }
+		vertices { 0,.5 1,.5 1,1 0,1 }
+	}
+}
+1 * tricolor_vert
+{
+	parts { tricolor_vert_0 tricolor_vert_1 tricolor_vert_2 }
+	tricolor_vert_0
+	{
+		edge { tricolor_vert_1 1 }
+		vertices { 0,0 .33,0 .33,1 0,1 }
+	}
+	tricolor_vert_1
+	{
+		edge { tricolor_vert_0 .05 }
+		edge { tricolor_vert_2 .05 }
+		vertices { .33,0 .67,0 .67,1 .33,1 }
+	}
+	tricolor_vert_2
+	{
+		edge { tricolor_vert_1 1 }
+		edge { tricolor_vert_0 .25 }
+		vertices { .67,0 1,0 1,1 .67,1 }
+	}
+}
+.5 * bicolor_vert
+{
+	parts { bicolor_vert_0 bicolor_vert_1 }
+	bicolor_vert_0
+	{
+		edge { bicolor_vert_1 1 }
+		vertices { 0,0 .5,0 .5,1 0,1 }
+	}
+	bicolor_vert_1
+	{
+		edge { bicolor_vert_0 1 }
+		vertices { .5,0 1,0 1,1 .5,1 }
+	}
+}
+.1 * chevron_monocolor
+{
+	parts { monocolor chevron }
+	monocolor
+	{
+		edge { chevron 1 }
+		vertices { 0,0 1,0 1,1 0,1 }
+	}
+	chevron
+	{
+		edge { monocolor 1 }
+		vertices { 0,0 .5,.5 0,1 0,.5 }
+	}
+}
+.25 * chevron_bicolor
+{
+	parts { bicolor_0 bicolor_1 chevron }
+	bicolor_0
+	{
+		edge { chevron 1 }
+		edge { bicolor_1 1 }
+		vertices { 0,0 1,0 1,.5 0,.5 }
+	}
+	bicolor_1
+	{
+		edge { chevron 1 }
+		edge { bicolor_0 1 }
+		vertices { 0,.5 1,.5 1,1 0,1 }
+	}
+	chevron
+	{
+		edge { bicolor_0 1 }
+		edge { bicolor_1 1 }
+		vertices { 0,0 .5,.5 0,1 0,.5 }
+	}
+}
+.15 * chevron_tricolor
+{
+	parts { tricolor_0 tricolor_1 tricolor_2 chevron }
+	tricolor_0
+	{
+		edge { tricolor_1 1 }
+		edge { chevron 1 }
+		vertices { 0,0 1,0 1,.33 0,.33 }
+	}
+	tricolor_1
+	{
+		edge { tricolor_0 .05 }
+		edge { tricolor_2 .05 }
+		edge { chevron 1 }
+		vertices { 0,.33 1,.33 1,.67 0,.67 }
+	}
+	tricolor_2
+	{
+		edge { tricolor_1 1 }
+		edge { tricolor_0 .25 }
+		edge { chevron 1 }
+		vertices { 0,.67 1,.67 1,1 0,1 }
+	}
+	chevron
+	{
+		edge { tricolor_0 1 }
+		edge { tricolor_1 1 }
+		edge { tricolor_2 1 }
+		vertices { 0,0 .5,.5 0,1 0,.5 }
+	}
+}
+
+.1 * per_bend
+{
+	parts { bend_0 bend_1 }
+	bend_0
+	{
+		edge { bend_1 1 }
+		vertices { 0,0 1,0 .5,.5 0,1 }
+	}
+	bend_1
+	{
+		edge { bend_0 1 }
+		vertices { 1,0 1,1 0,1 .5,.5 }
+	}
+}
+
+.2 * quaterly
+{
+	parts { quarter_0 quarter_1 quarter_2 quarter_3 }
+	quarter_0
+	{
+		edge { quarter_1 1 }
+		edge { quarter_2 1 }
+		edge { quarter_3 .25 }
+		vertices { 0,0 .5,0 .5,.5 0,.5 }
+	}
+	quarter_1
+	{
+		edge { quarter_0 1 }
+		edge { quarter_2 -1 }
+		edge { quarter_3 1 }
+		vertices { .5,0 1,0 1,1 .5,.5 }
+	}
+	quarter_2
+	{
+		edge { quarter_0 1 }
+		edge { quarter_1 -1 }
+		edge { quarter_3 1 }
+		vertices { 0,.5 .5,.5 .5,1 0,1 }
+	}
+	quarter_3
+	{
+		edge { quarter_1 1 }
+		edge { quarter_2 1 }
+		vertices { .5,.5 1,.5 1,1 .5,1 }
+	}
+}
+.1 * pall
+{
+	parts { back bicolor_0 bicolor_1 chevron }
+	back
+	{
+		edge { bicolor_0 1 }
+		edge { bicolor_1 1 }
+		edge { chevron 1 }
+		vertices { 0,0 1,0 1,1 0,1 }
+	}
+	bicolor_0
+	{
+		edge { back 1 }
+		edge { bicolor_1 .05 }
+		edge { chevron 1 }
+		vertices { .083,0 1,0 1,.417 .5,.417 }
+	}
+	bicolor_1
+	{
+		edge { back 1 }
+		edge { bicolor_0 .5 }
+		edge { chevron 1 }
+		vertices { .083,1 .5,.583 1,.583 1,1 }
+	}
+	chevron
+	{
+		edge { back 1 }
+		edge { bicolor_0 1 }
+		edge { bicolor_1 1 }
+		vertices { 0,.083 .417,.5 0,.917 0,.5 }
+	}
+}
+.2 * saltire
+{
+	parts { back quarter_0 quarter_1 quarter_2 quarter_3 }
+	back
+	{
+		edge { quarter_0 1 }
+		edge { quarter_1 1 }
+		edge { quarter_2 1 }
+		edge { quarter_3 1 }
+		vertices { 0,0 1,0 1,1 0,1 }
+	}
+	quarter_0
+	{
+		edge { back 1 }
+		edge { quarter_1 .025 }
+		edge { quarter_2 -1 }
+		edge { quarter_3 .025 }
+		vertices { 0,.083 .417,.5 0,.917 0,.5 }
+	}
+	quarter_1
+	{
+		edge { back 1 }
+		edge { quarter_0 .025 }
+		edge { quarter_2 .025 }
+		edge { quarter_3 -1 }
+		vertices { .083,0 .5,0 .917,0 .5,.417 }
+	}
+	quarter_2
+	{
+		edge { back 1 }
+		edge { quarter_0 -1 }
+		edge { quarter_1 .025 }
+		edge { quarter_3 .025 }
+		vertices { 1,.083 1,.5 1,.917 .583,.5 }
+	}
+	quarter_3
+	{
+		edge { back 1 }
+		edge { quarter_0 .025 }
+		edge { quarter_1 -1 }
+		edge { quarter_2 .025 }
+		vertices { .083,1 .5,.583 .917,1 .5,1 }
+	}
+}
+.4 * canton_monocolor
+{
+	parts { monocolor canton }
+	monocolor
+	{
+		edge { canton 1 }
+		vertices { 0,0 1,0 1,1 0,1 }
+	}
+	canton
+	{
+		edge { monocolor 1 }
+		vertices { 0,0 .5,0 .5,.5 0,.5 }
+	}
+}
+.05 * gyronny
+{
+	parts { gyronny_0 gyronny_1 gyronny_2 gyronny_3 gyronny_4 gyronny_5 gyronny_6 gyronny_7 }
+	gyronny_0
+	{
+		edge { gyronny_2 -1 }
+		edge { gyronny_4 -1 }
+		edge { gyronny_6 -1 }
+		edge { gyronny_1 1 }
+		edge { gyronny_3 1 }
+		edge { gyronny_5 1 }
+		edge { gyronny_7 1 }
+		vertices
+		{
+			0,0 .25,0 .5,0 .5,.5 
+		}
+	}
+	gyronny_1
+	{
+		edge { gyronny_0 1 }
+		edge { gyronny_2 1 }
+		edge { gyronny_4 1 }
+		edge { gyronny_6 1 }
+		edge { gyronny_3 -1 }
+		edge { gyronny_5 -1 }
+		edge { gyronny_7 -1 }
+		vertices
+		{
+			0,0 .5,.5 .25,.5 0,.5 
+		}
+	}
+	gyronny_2
+	{
+		edge { gyronny_0 -1 }
+		edge { gyronny_4 -1 }
+		edge { gyronny_6 -1 }
+		edge { gyronny_1 1 }
+		edge { gyronny_3 1 }
+		edge { gyronny_5 1 }
+		edge { gyronny_7 1 }
+		vertices
+		{
+			.5,.5 1,0 1,.25 1,.5 
+		}
+	}
+	gyronny_3
+	{
+		edge { gyronny_0 1 }
+		edge { gyronny_2 1 }
+		edge { gyronny_4 1 }
+		edge { gyronny_6 1 }
+		edge { gyronny_1 -1 }
+		edge { gyronny_5 -1 }
+		edge { gyronny_7 -1 }
+		vertices
+		{
+			.5,0 .75,0 1,0 .5,.5 
+		}
+	}
+	gyronny_4
+	{
+		edge { gyronny_0 -1 }
+		edge { gyronny_2 -1 }
+		edge { gyronny_6 -1 }
+		edge { gyronny_1 1 }
+		edge { gyronny_3 1 }
+		edge { gyronny_5 1 }
+		edge { gyronny_7 1 }
+		vertices
+		{
+			.5,.5 1,1 .75,1 .5,1
+		}
+	}
+	gyronny_5
+	{
+		edge { gyronny_0 1 }
+		edge { gyronny_2 1 }
+		edge { gyronny_4 1 }
+		edge { gyronny_6 1 }
+		edge { gyronny_1 -1 }
+		edge { gyronny_3 -1 }
+		edge { gyronny_7 -1 }
+		vertices
+		{
+			.5,.5 .75,.5 1,.5 1,1
+		}
+	}
+	gyronny_6
+	{
+		edge { gyronny_0 -1 }
+		edge { gyronny_2 -1 }
+		edge { gyronny_4 -1 }
+		edge { gyronny_1 1 }
+		edge { gyronny_3 1 }
+		edge { gyronny_5 1 }
+		edge { gyronny_7 1 }
+		vertices
+		{
+			0,.5 .25,.5 .5,.5 0,1
+		}
+	}
+	gyronny_7
+	{
+		edge { gyronny_0 1 }
+		edge { gyronny_2 1 }
+		edge { gyronny_4 1 }
+		edge { gyronny_6 1 }
+		edge { gyronny_1 -1 }
+		edge { gyronny_3 -1 }
+		edge { gyronny_5 -1 }
+		vertices
+		{
+			.5,.5 .5,1 .25,1 0,1
+		}
+	}
+}
+.15 * bend
+{
+	parts { bend_0 bend_1 back_0 back_1 }
+	bend_0
+	{
+		edge { bend_1 .25 }
+		edge { back_0 1 }
+		edge { back_1 1 }
+		vertices { 0,0 1,0 0,1 0,.5 }
+	}
+	bend_1
+	{
+		edge { back_0 1 }
+		edge { back_1 1 }
+		vertices { 0,1 1,0 1,.5 1,1 }
+	}
+	back_0
+	{
+		edge { bend_0 1 }
+		edge { bend_1 1 }
+		edge { back_1 -1 }
+		vertices { 0,0 .875,0 0,.875 0,.5 }
+	}
+	back_1
+	{
+		edge { bend_0 1 }
+		edge { bend_1 1 }
+		edge { back_0 -1 }
+		vertices { 1,.125 1,1 .5,1 .125,1 }
+	}
+}
