@@ -138,10 +138,6 @@
     <Compile Include="Utilities\KDT\IMultiDimensionalComparable.cs" />
     <Compile Include="Utilities\KDT\KDTree.cs" />
     <Compile Include="Utilities\KDT\KV.cs" />
-    <Compile Include="Utilities\Noise\ElasticNoiseMap.cs" />
-    <Compile Include="Utilities\Noise\NoiseMap.cs" />
-    <Compile Include="Utilities\Noise\PerlinNoiseGenerator.cs" />
-    <Compile Include="Utilities\Noise\SmoothNoiseMap.cs" />
     <Compile Include="Utilities\Pair.cs" />
     <Compile Include="Serialization\ParseBlock.cs" />
     <Compile Include="Utilities\Heap.cs" />

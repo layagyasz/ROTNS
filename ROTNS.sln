@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Venetia", "Venetia\Venetia.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ROTNS", "ROTNS\ROTNS.csproj", "{3B03A34E-835C-42DB-8DA1-D19415B09981}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cence", "Cence\Cence\Cence.csproj", "{18A58E4F-942D-4D1A-BCFC-6D0E64473555}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x86 = Debug|x86
@@ -31,6 +33,10 @@ Global
 		{3B03A34E-835C-42DB-8DA1-D19415B09981}.Debug|x86.Build.0 = Debug|x86
 		{3B03A34E-835C-42DB-8DA1-D19415B09981}.Release|x86.ActiveCfg = Release|x86
 		{3B03A34E-835C-42DB-8DA1-D19415B09981}.Release|x86.Build.0 = Release|x86
+		{18A58E4F-942D-4D1A-BCFC-6D0E64473555}.Debug|x86.ActiveCfg = Debug|x86
+		{18A58E4F-942D-4D1A-BCFC-6D0E64473555}.Debug|x86.Build.0 = Debug|x86
+		{18A58E4F-942D-4D1A-BCFC-6D0E64473555}.Release|x86.ActiveCfg = Release|x86
+		{18A58E4F-942D-4D1A-BCFC-6D0E64473555}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

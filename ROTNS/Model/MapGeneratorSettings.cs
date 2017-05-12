@@ -8,6 +8,7 @@ using SFML.Graphics;
 
 using AndrassyII;
 using Cardamom.Serialization;
+using Cence;
 using Venetia;
 using ROTNS.Model.Flags;
 
@@ -25,11 +26,11 @@ namespace ROTNS.Model
         Economy _Economy;
         FlagData _FlagData;
 
-        NoiseSettings _Terrain = new NoiseSettings();
-        NoiseSettings _Moisture = new NoiseSettings();
-        NoiseSettings _Population = new NoiseSettings();
-        NoiseSettings _Resource = new NoiseSettings();
-        NoiseSettings _Culture = new NoiseSettings();
+        LatticeNoiseSettings _Terrain = new LatticeNoiseSettings();
+        LatticeNoiseSettings _Moisture = new LatticeNoiseSettings();
+        LatticeNoiseSettings _Population = new LatticeNoiseSettings();
+        LatticeNoiseSettings _Resource = new LatticeNoiseSettings();
+        LatticeNoiseSettings _Culture = new LatticeNoiseSettings();
 
         float _MaxLatitude;
         float _MinLatitude;
@@ -47,11 +48,11 @@ namespace ROTNS.Model
         public Economy Economy { get { return _Economy; } set { _Economy = value; } }
         public FlagData FlagData { get { return _FlagData; } set { _FlagData = value; } }
 
-        public NoiseSettings Terrain { get { return _Terrain; } }
-        public NoiseSettings Moisture { get { return _Moisture; } }
-        public NoiseSettings Population { get { return _Population; } }
-        public NoiseSettings Resource { get { return _Resource; } }
-        public NoiseSettings Culture { get { return _Culture; } }
+        public LatticeNoiseSettings Terrain { get { return _Terrain; } }
+        public LatticeNoiseSettings Moisture { get { return _Moisture; } }
+        public LatticeNoiseSettings Population { get { return _Population; } }
+        public LatticeNoiseSettings Resource { get { return _Resource; } }
+        public LatticeNoiseSettings Culture { get { return _Culture; } }
 
         public float MaxLatitude { get { return _MaxLatitude; } set { _MaxLatitude = value; } }
         public float MinLatitude { get { return _MinLatitude; } set { _MinLatitude = value; } }

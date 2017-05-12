@@ -81,7 +81,6 @@
     <Compile Include="Model\TextureSheet.cs" />
     <Compile Include="View\InteractionController.cs" />
     <Compile Include="Model\Nation.cs" />
-    <Compile Include="Model\NoiseSettings.cs" />
     <Compile Include="View\WorldView.cs" />
     <Compile Include="View\RegionView.cs" />
     <Compile Include="Model\NaturalResource.cs" />
@@ -117,6 +116,10 @@
     <ProjectReference Include="..\AndrassyII\AndrassyII.csproj">
       <Project>{DF27BB73-F4C8-40FB-B776-270E894F1456}</Project>
       <Name>AndrassyII</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Cence\Cence\Cence.csproj">
+      <Project>{18A58E4F-942D-4D1A-BCFC-6D0E64473555}</Project>
+      <Name>Cence</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

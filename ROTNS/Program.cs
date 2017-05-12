@@ -9,6 +9,7 @@ using ROTNS.Model;
 using ROTNS.Model.Flags;
 
 using AndrassyII;
+using Cence;
 using Venetia;
 
 namespace ROTNS
@@ -31,21 +32,21 @@ namespace ROTNS
             Settings.MinLatitude = (float)Math.PI / 8;
             //Settings.MaxLatitude = (float)Math.PI;
             //Settings.MinLatitude = 0;
-            Settings.Terrain.Grain = 200;
+			Settings.Terrain.Frequency = Constant.Create(1d / 200);
             Settings.Terrain.Octaves = 8;
-            Settings.Terrain.Persistence = .6f;
-            Settings.Moisture.Grain = 600;
+            Settings.Terrain.Persistence = Constant.Create(.6);
+			Settings.Moisture.Frequency = Constant.Create(1d / 600);
             Settings.Moisture.Octaves = 6;
-            Settings.Moisture.Persistence = .8f;
+            Settings.Moisture.Persistence = Constant.Create(.8);
             Settings.Population.Octaves = 6;
-            Settings.Population.Grain = 40;
-            Settings.Population.Persistence = .8f;
+            Settings.Population.Frequency = Constant.Create(1d / 40);
+            Settings.Population.Persistence = Constant.Create(.8);
             Settings.Resource.Octaves = 8;
-            Settings.Resource.Grain = 400;
-            Settings.Resource.Persistence = .7f;
+			Settings.Resource.Frequency = Constant.Create(1d / 400);
+            Settings.Resource.Persistence = Constant.Create(.7);
             Settings.Culture.Octaves = 6;
-            Settings.Culture.Persistence = .8f;
-            Settings.Culture.Grain = 200;
+            Settings.Culture.Persistence = Constant.Create(.8);
+            Settings.Culture.Frequency = Constant.Create(1d / 200);
             Settings.WaterLevel = .3f;
             Image Basic = new Image("Graphics/Basic.bmp");
             Image Grainy = new Image("Graphics/Grainy.bmp");

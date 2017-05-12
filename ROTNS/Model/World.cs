@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 
-using Cardamom.Utilities.Noise;
 using Cardamom.Graphing;
 using Cardamom.Utilities;
+
+using Cence;
 
 using AndrassyII;
 
@@ -12,8 +13,8 @@ namespace ROTNS.Model
     public class World
     {
         MapGeneratorSettings _Settings;
-        PerlinNoiseGenerator _Noise;
-        PerlinNoiseGenerator _MoistureNoise;
+        LatticeNoiseGenerator _Noise;
+        LatticeNoiseGenerator _MoistureNoise;
         MicroRegion[,] _MicroRegions;
         Region[] _Regions;
         Nation[] _Nations;
@@ -33,8 +34,8 @@ namespace ROTNS.Model
         public World(Random Random, MapGeneratorSettings Settings)
         {
             _Settings = Settings;
-            _Noise = new PerlinNoiseGenerator(Random, Settings.Terrain.Grain);
-            _MoistureNoise = new PerlinNoiseGenerator(Random, Settings.Moisture.Grain);
+            _Noise = new LatticeNoiseGenerator(Random, Settings.Terrain);
+            _MoistureNoise = new LatticeNoiseGenerator(Random, Settings.Moisture);
             _WaterLevel = Settings.WaterLevel;
 
             _MicroRegions = new MicroRegion[Settings.Width, Settings.Height];
@@ -44,17 +45,17 @@ namespace ROTNS.Model
             {
                 for (int j = 0; j < Settings.Height; ++j)
                 {
-                    float n = (float)Denormalize(_Noise.Generate(i, j, _Settings.Terrain.Octaves, _Settings.Terrain.Persistence));
+                    float n = (float)Denormalize(_Noise.Generate(i, j));
                     float h = n > _WaterLevel ? (n - _WaterLevel) / (1 - _WaterLevel) : n / _WaterLevel - 1;
-                    float m = (float)Denormalize(_MoistureNoise.Generate(i, j, Settings.Moisture.Octaves, Settings.Moisture.Persistence));
+                    float m = (float)Denormalize(_MoistureNoise.Generate(i, j));
                     _HeightMap[i, j] = h;
                     _MoistureMap[i, j] = m;
                     Biome B = Settings.BiomeMap.Closest(HeightAt(i, j), TemperatureAt(i,j), Moisture(i, j));
                     _MicroRegions[i, j] = new MicroRegion(i, j, B,this, h <= 0);
                 }
             }
-            Filter F = new Filter(new double[,] { { -1, -1, 0 }, { -1, 0, 1 }, { 0, 1, 1 } }, 1, .7);
-            _Shade = F.Apply(_HeightMap);
+			_Shade = new FloatingImage(_HeightMap, Channel.RED)
+				.Filter(new Cence.Filters.Emboss()).GetChannel(Channel.RED);
 
             CreateRegions(Random, Settings.Regions, Settings.Language);
             CreateResources(Random, Settings.Population, Settings.Resource, Settings.Resources);
@@ -112,12 +113,12 @@ namespace ROTNS.Model
             }
 
             DijkstraPool<MicroRegion> Pool = new DijkstraPool<MicroRegion>();
-            PerlinNoiseGenerator Individualism = new PerlinNoiseGenerator(Random, _Settings.Culture.Grain);
-            PerlinNoiseGenerator Indulgence = new PerlinNoiseGenerator(Random, _Settings.Culture.Grain);
-            PerlinNoiseGenerator LongTermOrientation = new PerlinNoiseGenerator(Random, _Settings.Culture.Grain);
-            PerlinNoiseGenerator PowerDistance = new PerlinNoiseGenerator(Random, _Settings.Culture.Grain);
-            PerlinNoiseGenerator Toughness = new PerlinNoiseGenerator(Random, _Settings.Culture.Grain);
-            PerlinNoiseGenerator UncertaintyAvoidance = new PerlinNoiseGenerator(Random, _Settings.Culture.Grain);
+            LatticeNoiseGenerator Individualism = new LatticeNoiseGenerator(Random, _Settings.Culture);
+            LatticeNoiseGenerator Indulgence = new LatticeNoiseGenerator(Random, _Settings.Culture);
+            LatticeNoiseGenerator LongTermOrientation = new LatticeNoiseGenerator(Random, _Settings.Culture);
+            LatticeNoiseGenerator PowerDistance = new LatticeNoiseGenerator(Random, _Settings.Culture);
+            LatticeNoiseGenerator Toughness = new LatticeNoiseGenerator(Random, _Settings.Culture);
+            LatticeNoiseGenerator UncertaintyAvoidance = new LatticeNoiseGenerator(Random, _Settings.Culture);
 
             _Regions = new Region[Number];
             int c = 0;
@@ -126,12 +127,12 @@ namespace ROTNS.Model
                 if (!Arr[i].Oceanic && Random.NextDouble() < Math.Sqrt(Arr[i].Biome.RegionSlow))
                 {
                     Culture C = new Culture();
-                    C.Individualism = (float)Denormalize(Individualism.Generate(Arr[i].X, Arr[i].Y, _Settings.Culture.Octaves, _Settings.Culture.Persistence));
-                    C.Indulgence = (float)Denormalize(Indulgence.Generate(Arr[i].X, Arr[i].Y, _Settings.Culture.Octaves, _Settings.Culture.Persistence));
-                    C.LongTermOrientation = (float)Denormalize(LongTermOrientation.Generate(Arr[i].X, Arr[i].Y, _Settings.Culture.Octaves, _Settings.Culture.Persistence));
-                    C.PowerDistance = (float)Denormalize(PowerDistance.Generate(Arr[i].X, Arr[i].Y, _Settings.Culture.Octaves, _Settings.Culture.Persistence));
-                    C.Toughness = (float)Denormalize(Toughness.Generate(Arr[i].X, Arr[i].Y, _Settings.Culture.Octaves, _Settings.Culture.Persistence));
-                    C.UncertaintyAvoidance = (float)Denormalize(UncertaintyAvoidance.Generate(Arr[i].X, Arr[i].Y, _Settings.Culture.Octaves, _Settings.Culture.Persistence));
+                    C.Individualism = (float)Denormalize(Individualism.Generate(Arr[i].X, Arr[i].Y));
+                    C.Indulgence = (float)Denormalize(Indulgence.Generate(Arr[i].X, Arr[i].Y));
+                    C.LongTermOrientation = (float)Denormalize(LongTermOrientation.Generate(Arr[i].X, Arr[i].Y));
+                    C.PowerDistance = (float)Denormalize(PowerDistance.Generate(Arr[i].X, Arr[i].Y));
+                    C.Toughness = (float)Denormalize(Toughness.Generate(Arr[i].X, Arr[i].Y));
+                    C.UncertaintyAvoidance = (float)Denormalize(UncertaintyAvoidance.Generate(Arr[i].X, Arr[i].Y));
                     string Name = Language.Generate(Random).Orthography;
                     Region R = new Region(Char.ToUpper(Name[0]) + Name.Substring(1), Arr[i], C, _Settings.Economy);
                     Pool.Drop(R);
@@ -152,23 +153,23 @@ namespace ROTNS.Model
             foreach (Region R in _Regions) R.InitializeEconomy();
         }
 
-        void CreateResources(Random Random, NoiseSettings Population, NoiseSettings Resource, NaturalResource[] Resources)
+        void CreateResources(Random Random, LatticeNoiseSettings Population, LatticeNoiseSettings Resource, NaturalResource[] Resources)
         {
             Console.WriteLine("POPULATING");
-            PerlinNoiseGenerator PopulationNoise = new PerlinNoiseGenerator(Random, Population.Grain);
+            LatticeNoiseGenerator PopulationNoise = new LatticeNoiseGenerator(Random, Population);
             for (int i = 0; i < _Regions.Length; ++i)
             {
                     float f = _Regions[i].Center.Biome.RegionSlow;
-                    _Regions[i].AddPopulation(this,(float)((Denormalize(PopulationNoise.Generate(_Regions[i].Center.X,_Regions[i].Center.Y, _Settings.Population.Octaves, _Settings.Population.Persistence))) * Math.Sqrt(f)) + .5f);
+                    _Regions[i].AddPopulation(this,(float)((Denormalize(PopulationNoise.Generate(_Regions[i].Center.X,_Regions[i].Center.Y))) * Math.Sqrt(f)) + .5f);
             }
 
             foreach (NaturalResource R in Resources)
             {
                 Console.WriteLine("{0} {1}", R.Name, R.Noisy);
-                PerlinNoiseGenerator Noise = R.Noisy ? new PerlinNoiseGenerator(Random, Resource.Grain) : null;
+                LatticeNoiseGenerator Noise = R.Noisy ? new LatticeNoiseGenerator(Random, Resource) : null;
                 foreach (Region Region in _Regions)
                 {
-                        float amount = (float)R.Distribute(R.Noisy ? (float)Denormalize(Noise.Generate(Region.Center.X, Region.Center.Y, _Settings.Resource.Octaves, _Settings.Resource.Persistence)) : 0, Region.Center);
+                        float amount = (float)R.Distribute(R.Noisy ? (float)Denormalize(Noise.Generate(Region.Center.X, Region.Center.Y)) : 0, Region.Center);
                         Region.AddResource(R, amount);
                 }
             }
