@@ -1,17 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 using Cardamom.Utilities.Noise;
 using Cardamom.Graphing;
 using Cardamom.Utilities;
 
-using SFML.Graphics;
-
 using AndrassyII;
-
-using ROTNS.View;
 
 namespace ROTNS.Model
 {

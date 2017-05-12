@@ -33,22 +33,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="KopiLua, Version=1.3.5449.31779, Culture=neutral, PublicKeyToken=e25f4af1e4f7b31c, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Visual Studio 2010\Projects\PostDiesPeriapt\PostDiesPeriapt\bin\Debug\KopiLua.dll</HintPath>
-    </Reference>
-    <Reference Include="NLua, Version=1.3.2.0, Culture=neutral, PublicKeyToken=8df2ab518030ea95, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Visual Studio 2010\Projects\PostDiesPeriapt\PostDiesPeriapt\bin\Debug\NLua.dll</HintPath>
-    </Reference>
-    <Reference Include="sfmlnet-graphics-2, Version=0.0.0.0, Culture=neutral, processorArchitecture=x86">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\SFML.Net-master\SFML.Net-2.0\lib\x86\sfmlnet-graphics-2.dll</HintPath>
-    </Reference>
-    <Reference Include="sfmlnet-window-2, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\SFML.Net-master\SFML.Net-2.0\lib\x86\sfmlnet-window-2.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -56,6 +40,21 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
+    <Reference Include="KopiLua">
+      <HintPath>KopiLua.dll</HintPath>
+    </Reference>
+    <Reference Include="NLua">
+      <HintPath>NLua.dll</HintPath>
+    </Reference>
+    <Reference Include="sfmlnet-audio-2">
+      <HintPath>sfmlnet-audio-2.dll</HintPath>
+    </Reference>
+    <Reference Include="sfmlnet-graphics-2">
+      <HintPath>sfmlnet-graphics-2.dll</HintPath>
+    </Reference>
+    <Reference Include="sfmlnet-window-2">
+      <HintPath>sfmlnet-window-2.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Model\Biome.cs" />
