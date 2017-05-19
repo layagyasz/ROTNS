@@ -8,6 +8,8 @@ using Cence;
 
 using AndrassyII;
 
+using ROTNS.Model.WorldGeneration;
+
 namespace ROTNS.Model
 {
     public class World
@@ -17,7 +19,6 @@ namespace ROTNS.Model
         LatticeNoiseGenerator _MoistureNoise;
         MicroRegion[,] _MicroRegions;
         Region[] _Regions;
-        Nation[] _Nations;
         float _WaterLevel;
 
         float[,] _HeightMap;
@@ -45,9 +46,9 @@ namespace ROTNS.Model
             {
                 for (int j = 0; j < Settings.Height; ++j)
                 {
-                    float n = (float)Denormalize(_Noise.Generate(i, j));
+                    float n = (float)_Noise.Generate(i, j);
                     float h = n > _WaterLevel ? (n - _WaterLevel) / (1 - _WaterLevel) : n / _WaterLevel - 1;
-                    float m = (float)Denormalize(_MoistureNoise.Generate(i, j));
+                    float m = (float)_MoistureNoise.Generate(i, j);
                     _HeightMap[i, j] = h;
                     _MoistureMap[i, j] = m;
                     Biome B = Settings.BiomeMap.Closest(HeightAt(i, j), TemperatureAt(i,j), Moisture(i, j));
@@ -112,13 +113,8 @@ namespace ROTNS.Model
                 Arr[index] = T;
             }
 
-            DijkstraPool<MicroRegion> Pool = new DijkstraPool<MicroRegion>();
-            LatticeNoiseGenerator Individualism = new LatticeNoiseGenerator(Random, _Settings.Culture);
-            LatticeNoiseGenerator Indulgence = new LatticeNoiseGenerator(Random, _Settings.Culture);
-            LatticeNoiseGenerator LongTermOrientation = new LatticeNoiseGenerator(Random, _Settings.Culture);
-            LatticeNoiseGenerator PowerDistance = new LatticeNoiseGenerator(Random, _Settings.Culture);
-            LatticeNoiseGenerator Toughness = new LatticeNoiseGenerator(Random, _Settings.Culture);
-            LatticeNoiseGenerator UncertaintyAvoidance = new LatticeNoiseGenerator(Random, _Settings.Culture);
+            DijkstraPool<MicroRegion> pool = new DijkstraPool<MicroRegion>();
+			CultureMap cultureMap = new CultureMap(Random, _Settings.Culture);
 
             _Regions = new Region[Number];
             int c = 0;
@@ -126,25 +122,22 @@ namespace ROTNS.Model
             {
                 if (!Arr[i].Oceanic && Random.NextDouble() < Math.Sqrt(Arr[i].Biome.RegionSlow))
                 {
-                    Culture C = new Culture();
-                    C.Individualism = (float)Denormalize(Individualism.Generate(Arr[i].X, Arr[i].Y));
-                    C.Indulgence = (float)Denormalize(Indulgence.Generate(Arr[i].X, Arr[i].Y));
-                    C.LongTermOrientation = (float)Denormalize(LongTermOrientation.Generate(Arr[i].X, Arr[i].Y));
-                    C.PowerDistance = (float)Denormalize(PowerDistance.Generate(Arr[i].X, Arr[i].Y));
-                    C.Toughness = (float)Denormalize(Toughness.Generate(Arr[i].X, Arr[i].Y));
-                    C.UncertaintyAvoidance = (float)Denormalize(UncertaintyAvoidance.Generate(Arr[i].X, Arr[i].Y));
                     string Name = Language.Generate(Random).Orthography;
-                    Region R = new Region(Char.ToUpper(Name[0]) + Name.Substring(1), Arr[i], C, _Settings.Economy);
-                    Pool.Drop(R);
+					Region R = new Region(
+						char.ToUpper(Name[0]) + Name.Substring(1),
+						Arr[i],
+						cultureMap.Generate(Arr[i].X, Arr[i].Y),
+						_Settings.Economy);
+                    pool.Drop(R);
                     _Regions[c] = R;
                     ++c;
-                    C.Colors = _Settings.FlagColorMap.Closest(C, 3);
-                    R.Administration.Flag = Settings.FlagData.CreateFlag(C, Settings.FlagColorMap, Random);
+					R.Culture.Colors = _Settings.FlagColorMap.Closest(R.Culture, 3);
+					R.Administration.Flag = Settings.FlagData.CreateFlag(R.Culture, Settings.FlagColorMap, Random);
 					R.Administration.GovernmentForm = GovernmentForm.AllValidGovernmentForms(
-						g => !g.Integrated && g.Devolved && g.Tributary).ArgMax(C.Favorability);
+						g => !g.Integrated && g.Devolved && g.Tributary).ArgMax(R.Culture.Favorability);
                 }
             }
-            Pool.Resolve();
+            pool.Resolve();
             foreach (Region R in _Regions) R.DiscoverBorder();
         }
 
@@ -160,7 +153,7 @@ namespace ROTNS.Model
             for (int i = 0; i < _Regions.Length; ++i)
             {
                     float f = _Regions[i].Center.Biome.RegionSlow;
-                    _Regions[i].AddPopulation(this,(float)((Denormalize(PopulationNoise.Generate(_Regions[i].Center.X,_Regions[i].Center.Y))) * Math.Sqrt(f)) + .5f);
+                    _Regions[i].AddPopulation(this,(float)((PopulationNoise.Generate(_Regions[i].Center.X,_Regions[i].Center.Y)) * Math.Sqrt(f)) + .5f);
             }
 
             foreach (NaturalResource R in Resources)
@@ -169,7 +162,7 @@ namespace ROTNS.Model
                 LatticeNoiseGenerator Noise = R.Noisy ? new LatticeNoiseGenerator(Random, Resource) : null;
                 foreach (Region Region in _Regions)
                 {
-                        float amount = (float)R.Distribute(R.Noisy ? (float)Denormalize(Noise.Generate(Region.Center.X, Region.Center.Y)) : 0, Region.Center);
+                        float amount = (float)R.Distribute(R.Noisy ? (float)Noise.Generate(Region.Center.X, Region.Center.Y) : 0, Region.Center);
                         Region.AddResource(R, amount);
                 }
             }
@@ -191,20 +184,6 @@ namespace ROTNS.Model
             }
             if (Y > 0) yield return _MicroRegions[X, Y - 1];
             if (Y < _Settings.Height - 1) yield return _MicroRegions[X, Y + 1];
-        }
-
-        private double Denormalize(double X)
-        {
-            double x = 3.53553 - 7.07107 * X;
-            double p = .3275911;
-            double t = 1 / (1 + p * x);
-            double a1 = .254829592;
-            double a2 = -.284496736;
-            double a3 = 1.421413741;
-            double a4 = -1.453152027;
-            double a5 = 1.061405429;
-            double r = t * (a1 + t * (a2 + t * (a3 + t * (a4 + t * a5)))) * Math.Exp(-x * x) / 2;
-            return r > 1 ? 1 : r;
         }
 
         public float WealthPercentile(Region Region)

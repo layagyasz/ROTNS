@@ -21,12 +21,17 @@ namespace ROTNS
 
 		public double Collect(Region Region)
 		{
-			return Region.Market.Where(i => i.First == _Tangible).Sum(i => Region.Price(i.First) * _Amount);
+			return Region.Market.Where(i => i.Key == _Tangible).Sum(i => Region.Price(i.Key) * _Amount);
 		}
 
 		public override void Apply(Region Region)
 		{
 			Region.ChangeIncomeReduction(_Tangible, _Amount);
+		}
+
+		public override void Remove(Region Region)
+		{
+			Region.ChangeIncomeReduction(_Tangible, -_Amount);
 		}
 
 		public override void Update(Region Region)

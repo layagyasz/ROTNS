@@ -17,7 +17,7 @@ namespace ROTNS
 		World _World;
 		WorldView _WorldView;
 
-		TickManager _TickManager = new TickManager();
+		TickManager _TickManager = new TickManager(new Random());
 		Dictionary<Ticked, GuiItem> _MapItems = new Dictionary<Ticked, GuiItem>();
 
 		public GameRunner(Interface Interface)
@@ -32,6 +32,7 @@ namespace ROTNS
 			_World = World;
 			_WorldView = new WorldView(
 				World, new Vector2f(_Interface.Window.Size.X, _Interface.Window.Size.Y - 24));
+			_WorldView.Position = new Vector2f(0, 24);
 			_Interface.Screen.Add(_WorldView);
 			InteractionController I = new InteractionController(_WorldView, World.Settings.Economy, _Interface.Screen);
 		}

@@ -10,7 +10,6 @@ namespace Venetia
     public class Zone
     {
         Dictionary<Tangible, EconomicAttributes> _Market = new Dictionary<Tangible, EconomicAttributes>();
-        List<Zone> _NeighborZones = new List<Zone>();
         Economy _Economy;
 
         HashSet<Producer> _Producers = new HashSet<Producer>();
@@ -21,11 +20,11 @@ namespace Venetia
         double _Area;
         double _LivingStandard = 1;
 
-        public EconomicAttributes this[Tangible Tangible] { get { return _Market[Tangible]; } }
+		public EconomicAttributes this[Tangible Tangible] { get { AddTangibleIfNotExists(Tangible); return _Market[Tangible]; } }
         public Economy Economy { get { return _Economy; } }
         public double Area { get { return _Area; } set { _Area = value; _Market[_Economy.Property].Supply = value; } }
         public double Population { get { return _Population; } set { _Population = value; _Market[_Economy.Labor].Supply = value; } }
-        public IEnumerable<Pair<Tangible, EconomicAttributes>> Market { get { foreach (KeyValuePair<Tangible, EconomicAttributes> P in _Market) yield return new Pair<Tangible, EconomicAttributes>(P.Key, P.Value); } }
+		public IEnumerable<KeyValuePair<Tangible, EconomicAttributes>> Market { get { return _Market.AsEnumerable(); } }
 
         public Zone(Service Labor, Resource Property, Economy Economy)
         {
@@ -146,15 +145,15 @@ namespace Venetia
             return R;
         }
 
-		public Trade BestTrade(Zone Neighbor)
+		public Trade BestTrade(Zone Neighbor, IEnumerable<Good> PermittedGoods)
 		{
 			Triplet<double, double, double> O = new Triplet<double, double, double>(0, 0, 0);
 			Good Good1 = null;
 			Good Good2 = null;
 
-			foreach (Good G1 in _Economy.Goods)
+			foreach (Good G1 in PermittedGoods)
 			{
-				foreach (Good G2 in _Economy.Goods)
+				foreach (Good G2 in PermittedGoods)
 				{
 					Triplet<double, double, double> T = Calculator.OptimumTrade(
 						this[G1],
@@ -206,34 +205,6 @@ namespace Venetia
 
         public void Update()
         {
-            EconomicAttributes Labor = _Market[_Economy.Labor];
-            Labor.Demand = 0;
-            EconomicAttributes Property = _Market[_Economy.Property];
-            Property.Demand = 0;
-            Dictionary<Tangible, EconomicAttributes> NewMarket = new Dictionary<Tangible, EconomicAttributes>();
-            NewMarket.Add(_Economy.Labor, Labor);
-            NewMarket.Add(_Economy.Property, Property);
-            foreach (KeyValuePair<Tangible, EconomicAttributes> P in _Market)
-            {
-                if (P.Key is Resource && P.Key != _Economy.Property)
-                {
-                    P.Value.Demand = 0;
-                    NewMarket.Add(P.Key, P.Value);
-                }
-            }
-            _Market = NewMarket;
-			foreach(Tangible Tangible in _Economy.All) ChangeDemand(Tangible, Tangible.Minimum * _Population);
-            foreach (Producer P in _Producers) AddProducer(P);
-            List<Trade> Trades = _Trades;
-            _Trades = new List<Trade>();
-            foreach (Trade T in Trades) AddTrade(T);
-        }
-
-        private void PrintProducer(Producer Producer)
-        {
-            Console.WriteLine(Producer.Process);
-            foreach (Pair<Tangible, double> I in Producer.Process.Input) Console.WriteLine(_Market[I.First]);
-            foreach (Pair<Tangible, double> O in Producer.Process.Output) Console.WriteLine(_Market[O.First]);
         }
     }
 }

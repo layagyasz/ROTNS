@@ -34,6 +34,6 @@ namespace ROTNS.Model
             return Convert.ToBoolean(Console.ReadLine());
         }
 
-        public override void Tick() { }
+        public override void Tick(Random Random) { }
     }
 }

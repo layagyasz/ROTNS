@@ -14,6 +14,7 @@ namespace ROTNS
 		}
 
 		public abstract void Apply(Region Region);
+		public abstract void Remove(Region Region);
 		public abstract void Update(Region Region);
 	}
 }

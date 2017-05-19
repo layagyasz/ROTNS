@@ -37,7 +37,7 @@ namespace ROTNS.Model
             return true;
         }
 
-        public override void Tick()
+        public override void Tick(Random Random)
         {
         }
     }

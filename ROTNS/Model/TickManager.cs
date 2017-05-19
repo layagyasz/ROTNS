@@ -10,9 +10,11 @@ namespace ROTNS.Model
 		public EventHandler<EventArgs> OnRemove;
 
 		List<Ticked> _Items = new List<Ticked>();
+		Random _Random;
 
-		public TickManager()
+		public TickManager(Random Random)
 		{
+			_Random = Random;
 		}
 
 		public void Add(Ticked Item) { _Items.Add(Item); }
@@ -22,7 +24,7 @@ namespace ROTNS.Model
 		{
 			lock(_Items)
 			{
-				_Items.ForEach(i => i.Tick());
+				_Items.ForEach(i => i.Tick(_Random));
 				_Items = _Items.Where(
 					i => {
 						if (i.Remove && OnRemove != null) OnRemove(i, EventArgs.Empty); return !i.Remove;

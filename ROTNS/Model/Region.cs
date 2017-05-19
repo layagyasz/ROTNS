@@ -5,6 +5,7 @@ using System.Text;
 
 using Venetia;
 using Cardamom.Utilities;
+using ROTNS.Model.GameEvents;
 using ROTNS.Model.Governing;
 using ROTNS.View;
 using Cardamom.Graphing;
@@ -13,8 +14,9 @@ namespace ROTNS.Model
 {
     public class Region : Zone, Pathable<Region>, DijkstraRegion<MicroRegion>, Ticked
     {
+		public EventHandler<GameEvent> OnEvent;
+
         string _Name;
-        Nation _Nation;
         Culture _Culture;
         MicroRegion _Center;
 
@@ -30,7 +32,6 @@ namespace ROTNS.Model
         public List<MicroRegion> Regions { get { return _Regions; } }
         public RegionAdministration Administration { get { return _Administration; } }
         public Culture Culture { get { return _Culture; } }
-        public Nation Nation { get { return _Nation; } set { _Nation = value; } }
         public float PopulationDensity { get { return (float)(Population / Area); } }
         public bool Coastal { get { return _Coast > 0; } }
         public int Coast { get { return _Coast; } }
@@ -137,7 +138,7 @@ namespace ROTNS.Model
             else Console.ForegroundColor = ConsoleColor.Red;
 			foreach (var Item in Market)
             {
-                double P = Item.Second.Price(Population);
+                double P = Item.Value.Price(Population);
                 // if (!Double.IsNaN(P) && !Double.IsInfinity(P))
                 // {
 				// 	Console.WriteLine("{0} = {1} : {2} / {3}", Item.First.Name, String.Format("{0:N2}", P), Item.Second.Supply, Item.Second.Demand);
@@ -176,8 +177,15 @@ namespace ROTNS.Model
             return (Economic + Territorial + Cultural) * Math.Sqrt(_ShortestEdge / DistanceTo(Region));
         }
 
-        public void Tick()
+        public void Tick(Random Random)
         {
+			double expeditionChance = _Culture.Explorativity() / (1 - _Culture.Explorativity());
         }
+
+		public void TriggerEvent(GameEvent Event)
+		{
+			Event.Apply(this);
+			if (OnEvent != null) OnEvent(this, Event);
+		}
     }
 }

@@ -25,5 +25,10 @@ namespace Venetia
             foreach (Pair<Tangible, double> T in _Process.Output) Revenue += Zone[T.First].Price(Zone.Population) * _Scale * T.Second;
             return new Pair<double, double>(Revenue, Cost);
         }
+
+		public override string ToString()
+		{
+			return string.Format("[Producer: Scale={0}, Process={1}]", Scale, Process);
+		}
     }
 }

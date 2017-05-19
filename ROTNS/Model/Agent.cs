@@ -19,6 +19,6 @@ namespace ROTNS.Model
         public Administration Administration { get { return _Administration; } set { _Administration = value; } }
 
         public abstract bool ProposeTrade(Agent Agent, Trade Trade);
-        public abstract void Tick();
+        public abstract void Tick(Random Random);
     }
 }

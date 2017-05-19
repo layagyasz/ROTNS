@@ -56,13 +56,9 @@ namespace Venetia
             foreach (Pair<Tangible, double> T in _Output) Console.WriteLine("{0} {1} {2}", T.First.Name, Zone[T.First], T.Second);
         }
 
-        public override string ToString()
-        {
-            string S = "";
-            foreach (Pair<Tangible, double> T in _Input) S += T.First.Name + ", ";
-            S += " => ";
-            foreach (Pair<Tangible, double> T in _Output) S += T.First.Name + ", ";
-            return S;
-        }
+		public override string ToString()
+		{
+			return string.Format("[Process: Input={0}, Output={1}]", Input, Output);
+		}
     }
 }

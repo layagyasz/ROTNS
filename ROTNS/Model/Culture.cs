@@ -122,6 +122,11 @@ namespace ROTNS.Model
 			return Math.Pow(_Individualism * (1 - _UncertaintyAvoidance) * _Toughness, .33);
 		}
 
+		public double TradeChoiceWeight()
+		{
+			return Math.Pow(_Indulgence * (1 - _LongTermOrientation) * (1 - _Toughness), .33);
+		}
+
 		public Culture GenerateIndividual(Random Random)
 		{
 			return new Culture(

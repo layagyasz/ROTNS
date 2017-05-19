@@ -80,7 +80,6 @@
     <Compile Include="Model\Technology\TechnologyUnlockedEventArgs.cs" />
     <Compile Include="Model\TextureSheet.cs" />
     <Compile Include="View\InteractionController.cs" />
-    <Compile Include="Model\Nation.cs" />
     <Compile Include="View\WorldView.cs" />
     <Compile Include="View\RegionView.cs" />
     <Compile Include="Model\NaturalResource.cs" />
@@ -95,7 +94,6 @@
     <Compile Include="View\RegionViewWindow.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Model\Training.cs" />
     <Compile Include="Model\Governing\TaxLaw.cs" />
     <Compile Include="Model\Governing\LegalCode.cs" />
     <Compile Include="Model\Governing\Law.cs" />
@@ -103,6 +101,8 @@
     <Compile Include="Model\Ticked.cs" />
     <Compile Include="Model\TickManager.cs" />
     <Compile Include="GameRunner.cs" />
+    <Compile Include="Model\GameEvents\GameEvent.cs" />
+    <Compile Include="Model\WorldGeneration\CultureMap.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Cardamom\Cardamom.csproj">
@@ -164,7 +164,8 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Model\WorldGen\" />
+    <Folder Include="Model\WorldGeneration\" />
+    <Folder Include="Model\GameEvents\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="CALIBRI.TTF">
