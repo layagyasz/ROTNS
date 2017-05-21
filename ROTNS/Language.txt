@@ -1,65 +1,65 @@
-sounds
+sound[]:sounds
 {
-	p { Consonant : Plosive : Unvoiced : Bilabial }
-	b { Consonant : Plosive : Voiced : Bilabial }
-	.2 * f { Consonant : Fricative : Unvoiced : Labiodental }
-	.4 * v { Consonant : Fricative : Voiced : Labiodental }
-	s { Consonant : Fricative : Unvoiced : Alveolar }
-	.4 * z { Consonant : Fricative : Voiced : Alveolar }
-	t { Consonant : Plosive : Unvoiced : Alveolar }
-	d { Consonant : Plosive : Voiced : Alveolar }
-	k { Consonant : Plosive : Unvoiced : Velar }
-	g { Consonant : Plosive : Voiced : Velar }
-	m { Consonant : Voiced : Nasal : Bilabial }
-	n { Consonant : Voiced : Nasal : Alveolar }
-	l { Consonant }
-	r { Consonant }
-	j { Consonant : Palatal : Approximant }
-	.4 * th { Consonant : Unvoiced : Dental : Fricative }
-	.2 * sh { Consonant : Unvoiced : Postalveolar : Fricative }
-	.2 * ch { Consonant : Unvoiced : Postalveolar : Affricative }
+	sound:p { Consonant : Plosive : Unvoiced : Bilabial }
+	sound:b { Consonant : Plosive : Voiced : Bilabial }
+	sound:.2 * f { Consonant : Fricative : Unvoiced : Labiodental }
+	sound:.4 * v { Consonant : Fricative : Voiced : Labiodental }
+	sound:s { Consonant : Fricative : Unvoiced : Alveolar }
+	sound:.4 * z { Consonant : Fricative : Voiced : Alveolar }
+	sound:t { Consonant : Plosive : Unvoiced : Alveolar }
+	sound:d { Consonant : Plosive : Voiced : Alveolar }
+	sound:k { Consonant : Plosive : Unvoiced : Velar }
+	sound:g { Consonant : Plosive : Voiced : Velar }
+	sound:m { Consonant : Voiced : Nasal : Bilabial }
+	sound:n { Consonant : Voiced : Nasal : Alveolar }
+	sound:l { Consonant }
+	sound:r { Consonant }
+	sound:j { Consonant : Palatal : Approximant }
+	sound:.4 * th { Consonant : Unvoiced : Dental : Fricative }
+	sound:.2 * sh { Consonant : Unvoiced : Postalveolar : Fricative }
+	sound:.2 * ch { Consonant : Unvoiced : Postalveolar : Affricative }
 
-	1.5 * a { Vowel : Front : Open : Unrounded }
-	3 * e { Vowel : Front  : MidOpen : Unrounded }
-	i { Vowel : Front : Closed : Unrounded }
-	o { Vowel : Open : Back : Rounded }
-	.4 * u { Vowel : Closed : Back : Rounded }
+	sound:1.5 * a { Vowel : Front : Open : Unrounded }
+	sound:3 * e { Vowel : Front  : MidOpen : Unrounded }
+	sound:i { Vowel : Front : Closed : Unrounded }
+	sound:o { Vowel : Open : Back : Rounded }
+	sound:.4 * u { Vowel : Closed : Back : Rounded }
 }
-generators
+generator[]:generators
 {
-	lead { 16 @ Consonant | 1.5 @ Fricative - Voiced + Plosive - th - sh - Plosive * Alveolar: l | 1.5 @ Fricative - Voiced + Plosive - s : r | s : Nasal | 8 @ None}
-	tail { 10 @ Consonant - j | 2 @ s : Unvoiced * Plosive | 2 @ Consonant - j | m : p | 2 @ n : Alveolar  - n + Velar + Dental | 2 @ r + l : Consonant - j - r - l }
-	syll { 6 @ lead : Vowel  | lead : Vowel : tail }
-	main { syll : syll | syll | syll : syll : syll }
+	generator:lead { 16 @ Consonant | 1.5 @ Fricative - Voiced + Plosive - th - sh - Plosive * Alveolar: l | 1.5 @ Fricative - Voiced + Plosive - s : r | s : Nasal | 8 @ None}
+	generator:tail { 10 @ Consonant - j | 2 @ s : Unvoiced * Plosive | 2 @ Consonant - j | m : p | 2 @ n : Alveolar  - n + Velar + Dental | 2 @ r + l : Consonant - j - r - l }
+	generator:syll { 6 @ lead : Vowel  | lead : Vowel : tail }
+	generator:main { syll : syll | syll | syll : syll : syll }
 }
-replacers
+replacer[]:replacers
 {
-	{ $ : Vowel : $ => syll : syll }
-	{ $ : Vowel : Vowel : $ => Vowel : Consonant : Vowel }
-	{ Vowel : Vowel => Vowel : Consonant : Vowel | Vowel }
-	{ Vowel : $ => Vowel : tail }
+	replacer:_ { $ : Vowel : $ => syll : syll }
+	replacer:_ { $ : Vowel : Vowel : $ => Vowel : Consonant : Vowel }
+	replacer:_ { Vowel : Vowel => Vowel : Consonant : Vowel | Vowel }
+	replacer:_ { Vowel : $ => Vowel : tail }
 }
-orthography
+orthography[]:orthography
 {
-	{ f => ph }
-	{ $ : i => i }
-	{ i : j => i }
-	{ j : i => i }
-	{ i => i : y }
-	{ Vowel : (k) : $ => c : .5 * ch }
-	{ Vowel : (k) => ck : .2 * c : .5 * ch }
-	{ k => k : c : ch }
-	{ Vowel : (ch) => .5 * ch : tch }
-	{ j => y }
-	{ Vowel : (l) : Vowel => l : ll }
-	{ Vowel : (r) : Vowel => r : rr }
-	{ Vowel : (l) : $ => l : ll }
-	{ Vowel : (r) : $ => r : rr }
-	{ Vowel : (p) : Vowel => p : pp }
-	{ Vowel : (n) : Vowel => n : nn }
-	{ Vowel : (m) : Vowel => m : mm }
-	{ Vowel : (n) : $ => n : nn }
-	{ Vowel : (m) : $ => m : mm }
-	{ Vowel : (s) : Vowel => s : ss }
-	{ Vowel : (s) : $ => s : ss }
+	orthography:_ { f => ph }
+	orthography:_ { $ : i => i }
+	orthography:_ { i : j => i }
+	orthography:_ { j : i => i }
+	orthography:_ { i => i : y }
+	orthography:_ { Vowel : (k) : $ => c : .5 * ch }
+	orthography:_ { Vowel : (k) => ck : .2 * c : .5 * ch }
+	orthography:_ { k => k : c : ch }
+	orthography:_ { Vowel : (ch) => .5 * ch : tch }
+	orthography:_ { j => y }
+	orthography:_ { Vowel : (l) : Vowel => l : ll }
+	orthography:_ { Vowel : (r) : Vowel => r : rr }
+	orthography:_ { Vowel : (l) : $ => l : ll }
+	orthography:_ { Vowel : (r) : $ => r : rr }
+	orthography:_ { Vowel : (p) : Vowel => p : pp }
+	orthography:_ { Vowel : (n) : Vowel => n : nn }
+	orthography:_ { Vowel : (m) : Vowel => m : mm }
+	orthography:_ { Vowel : (n) : $ => n : nn }
+	orthography:_ { Vowel : (m) : $ => m : mm }
+	orthography:_ { Vowel : (s) : Vowel => s : ss }
+	orthography:_ { Vowel : (s) : $ => s : ss }
 }

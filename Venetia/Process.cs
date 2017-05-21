@@ -8,57 +8,41 @@ using Cardamom.Serialization;
 
 namespace Venetia
 {
-    public class Process
-    {
-        Pair<Tangible, double>[] _Input;
-        Pair<Tangible, double>[] _Output;
+	public class Process
+	{
+		private enum Attribute { INPUT, OUTPUT };
 
-        public Pair<Tangible, double>[] Input { get { return _Input; } }
-        public Pair<Tangible, double>[] Output { get { return _Output; } }
+		Tuple<Tangible, double>[] _Input;
+		Tuple<Tangible, double>[] _Output;
 
-        public Process(ParseBlock Block, EconomySet<Tangible> Tangibles)
-        {
-            foreach (ParseBlock B in Block.Break())
-            {
-                switch (B.Name.ToLower())
-                {
-                    case "in": _Input = ReadTangibleSet(B, Tangibles).ToArray(); break;
-                    case "out": _Output = ReadTangibleSet(B, Tangibles).ToArray(); break;
-                }
-            }
-        }
+		public Tuple<Tangible, double>[] Input { get { return _Input; } }
+		public Tuple<Tangible, double>[] Output { get { return _Output; } }
 
-        private List<Pair<Tangible, double>> ReadTangibleSet(ParseBlock Block, EconomySet<Tangible> Tangibles)
-        {
-            List<Pair<Tangible, double>> R = new List<Pair<Tangible, double>>();
-            foreach (ParseBlock B in Block.Break())
-            {
-                Tangible T = Tangibles[B.Name];
-                double Q = Convert.ToDouble(B.String, System.Globalization.CultureInfo.InvariantCulture);
-                R.Add(new Pair<Tangible, double>(T, Q));
-            }
-            return R;
-        }
+		public Process(ParseBlock Block)
+		{
+			List<Tuple<object, object>>[] attributes =
+				Block.BreakToAttributes<List<Tuple<object, object>>>(typeof(Attribute));
+			_Input = attributes[(int)Attribute.INPUT]
+				.Select(i => new Tuple<Tangible, double>((Tangible)i.Item1, (double)i.Item2))
+				.ToArray();
+			_Output = attributes[(int)Attribute.OUTPUT]
+				.Select(i => new Tuple<Tangible, double>((Tangible)i.Item1, (double)i.Item2))
+				.ToArray();
+		}
 
-        public Pair<double, double> OptimumSupply(Zone Zone)
-        {
-            Pair<EconomicAttributes, double>[] I = new Pair<EconomicAttributes, double>[_Input.Length];
-            Pair<EconomicAttributes, double>[] O = new Pair<EconomicAttributes, double>[_Output.Length];
-            for (int i = 0; i < I.Length; ++i) I[i] = new Pair<EconomicAttributes, double>(Zone[_Input[i].First], _Input[i].Second);
-            for (int i = 0; i < O.Length; ++i) O[i] = new Pair<EconomicAttributes, double>(Zone[_Output[i].First], _Output[i].Second);
-            return Calculator.OptimumSupply(I, O, Zone.Population);
-        }
-
-        public void Debug(Zone Zone)
-        {
-            foreach (Pair<Tangible, double> T in _Input) Console.WriteLine("{0} {1} {2}", T.First.Name, Zone[T.First], T.Second);
-            Console.WriteLine("=>");
-            foreach (Pair<Tangible, double> T in _Output) Console.WriteLine("{0} {1} {2}", T.First.Name, Zone[T.First], T.Second);
-        }
+		public Pair<double, double> OptimumSupply(Zone Zone)
+		{
+			Pair<EconomicAttributes, double>[] I = new Pair<EconomicAttributes, double>[_Input.Length];
+			Pair<EconomicAttributes, double>[] O = new Pair<EconomicAttributes, double>[_Output.Length];
+			for (int i = 0; i < I.Length; ++i) I[i] = new Pair<EconomicAttributes, double>(Zone[_Input[i].Item1], _Input[i].Item2);
+			for (int i = 0; i < O.Length; ++i) O[i] = new Pair<EconomicAttributes, double>(Zone[_Output[i].Item1], _Output[i].Item2);
+			return Calculator.OptimumSupply(I, O, Zone.Population);
+		}
 
 		public override string ToString()
 		{
-			return string.Format("[Process: Input={0}, Output={1}]", Input, Output);
+			return string.Format("[Process: Input={0}, Output={1}]",
+				 string.Join<object>(",", Input), string.Join<object>(",", Output));
 		}
-    }
+	}
 }

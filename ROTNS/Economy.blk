@@ -1,0 +1,628 @@
+﻿resource<>:resources
+{
+	resource:property { property }
+	resource:res_iron { res_iron }
+	resource:res_gold { res_gold }
+	resource:res_silver { res_silver }
+	resource:res_copper { res_copper }
+	resource:res_tin { res_tin }
+	resource:res_zinc { res_zinc }
+	resource:res_arsenic {res_arsenic }
+	resource:res_lime { res_lime }
+	resource:res_clay { res_clay }
+	resource:res_wheat { res_wheat }
+	resource:res_rice { res_rice }
+	resource:res_barley { res_barley }
+	resource:res_corn { res_corn }
+	resource:res_game { res_game }
+	resource:res_cotton { res_cotton }
+	resource:res_fish { res_fish }
+	resource:res_salt { res_salt }
+	resource:res_spice { res_spice }
+	resource:res_silk { res_silk }
+	resource:res_sand { res_sand }
+	resource:res_water { res_water }
+}
+tangible<>:tangibles
+{
+	service:labor
+	{
+		string:name { Labor }
+		double:coefficient { 1 }
+		double:exponent { 1 }
+		double:decay { 1 }
+		double:minimum { 0 }
+	}
+	good:metal_iron
+	{
+		string:name { Iron }
+		double:coefficient { 1.5 }
+		double:exponent { .8 }
+		double:decay { .1 }
+		double:minimum { 0 }
+	}
+	good:metal_gold
+	{
+		string:name { Gold }
+		double:coefficient { 2}
+		double:exponent { .97 }
+		double:decay { .4 }
+		double:minimum { 0 }
+	}
+	good:metal_silver
+	{
+		string:name { Silver }
+		double:coefficient { 2 }
+		double:exponent { .95 }
+		double:decay { .4 }
+		double:minimum { 0 }
+	}
+	good:metal_copper
+	{
+		string:name { Copper }
+		double:coefficient { 1 }
+		double:exponent { .85 }
+		double:decay { .3 }
+		double:minimum { 0 }
+	}
+	good:metal_bronze
+	{
+		string:name { Bronze }
+		double:coefficient { 1 }
+		double:exponent { .9 }
+		double:decay { .2 }
+		double:minimum { 0 }
+	}
+	good:metal_brass
+	{
+		string:name { Brass }
+		double:coefficient { 1 }
+		double:exponent { .9 }
+		double:decay { .2 }
+		double:minimum { 0 }
+	}
+	good:mat_fur
+	{
+		string:name { Furs }
+		double:coefficient { 1 }
+		double:exponent { .9 }
+		double:decay { .5 }
+		double:minimum { 0 }
+	}
+	good:mat_cloth
+	{
+		string:name { Cloth }
+		double:coefficient { 1 }
+		double:exponent { .75 }
+		double:decay { .7 }
+		double:minimum { 0 }
+	}
+	good:mat_linen
+	{
+		string:name { Linen }
+		double:coefficient { 1 }
+		double:exponent { .85 }
+		double:decay { .5 }
+		double:minimum { 0 }
+	}
+	good:mat_silk 
+	{
+		string:name { Silk }
+		double:coefficient { 2 }
+		double:exponent { .9 }
+		double:decay { .4 }
+		double:minimum { 0 }
+	}
+	good:mat_brick
+	{
+		string:name { Brick }
+		double:coefficient { 5 }
+		double:exponent { .6 }
+		double:decay { .1 }
+		double:minimum { 0 }
+	}
+	good:mat_plaster
+	{
+		string:name { Plaster }
+		double:coefficient { 5 }
+		double:exponent { .7 }
+		double:decay { .5 }
+		double:minimum { 0 }
+	}
+	good:lux_ceramics
+	{
+		string:name { Ceramics }
+		double:coefficient { 2 }
+		double:exponent { .8 }
+		double:decay { .6 }
+		double:minimum { 0 }
+	}
+	good:lux_salt
+	{
+		string:name { Salt }
+		double:coefficient { 1 }
+		double:exponent { .8 }
+		double:decay { 1 }
+		double:minimum { 0 }
+	}
+	good:need_clothing
+	{
+		string:name { Clothing }
+		double:coefficient { 4 }
+		double:exponent { .6 }
+		double:decay { .5 }
+		double:minimum { .1 }
+	}
+	good:need_food
+	{
+		string:name { Food }
+		double:coefficient { 4 }
+		double:exponent { .65 }
+		double:decay { .9 }
+		double:minimum { 1 }
+	}
+	good:alcohol_beer
+	{
+		string:name { Beer }
+		double:coefficient { 1 }
+		double:exponent { .75 }
+		double:decay { .9 }
+		double:minimum { 0 }
+	}
+	good:alcohol_sake
+	{
+		string:name { Sake }
+		double:coefficient { 1 }
+		double:exponent { .75 }
+		double:decay { .9 }
+		double:minimum { 0 }
+	}
+	good:alcohol_whiskey
+	{
+		string:name { Whiskey }
+		double:coefficient { 1 }
+		double:exponent { .75 }
+		double:decay { .9 }
+		double:minimum { 0 }
+	}
+	good:lux_jewelry_brass
+	{
+		string:name { Brass Jewelry }
+		double:coefficient { 1 }
+		double:exponent { .92 }
+		double:decay { .4 }
+		double:minimum { 0 }
+	}
+	good:lux_jewelry_silver
+	{
+		string:name { Silver Jewelry }
+		double:coefficient { 1 }
+		double:exponent { .97 }
+		double:decay { .5 }
+		double:minimum { 0 }
+	}
+	good:lux_jewelry_gold
+	{
+		string:name { Gold Jewelry }
+		double:coefficient { 1 }
+		double:exponent { .98 }
+		double:decay { .6 }
+		double:minimum { 0 }
+	}
+	good:lux_spice
+	{
+		string:name { Spices }
+		double:coefficient { 4 }
+		double:exponent { .85 }
+		double:decay { .9 }
+		double:minimum { 0 }
+	}
+}
+process<>:processes
+{
+	process:mine_iron
+	{
+		2-tuple[]:input
+		{
+			2-tuple:_ { !var:_ { tangibles.labor } double:_ { 1 } }
+			2-tuple:_ { !var:_ { resources.property } double:_ { .3 } }
+			2-tuple:_ { !var:_ { resources.res_iron } double:_ { 10 } }
+		}
+		2-tuple[]:output
+		{
+			2-tuple:_ { !var:_ { tangibles.metal_iron } double:_ { 1 } }
+		}
+	}
+	process:mine_gold
+	{
+		2-tuple[]:input
+		{
+			2-tuple:_ { !var:_ { tangibles.labor } double:_ { 1 } }
+			2-tuple:_ { !var:_ { resources.property } double:_ { .3 } }
+			2-tuple:_ { !var:_ { resources.res_gold } double:_ { 10 } }
+		}
+		2-tuple[]:output
+		{
+			2-tuple:_ { !var:_ { tangibles.metal_gold } double:_ { 1 } }
+		}
+	}
+	process:mine_silver
+	{
+		2-tuple[]:input
+		{
+			2-tuple:_ { !var:_ { tangibles.labor } double:_ { 1 } }
+			2-tuple:_ { !var:_ { resources.property } double:_ { .3 } }
+			2-tuple:_ { !var:_ { resources.res_silver } double:_ { 10 } }
+		}
+		2-tuple[]:output
+		{
+			2-tuple:_ { !var:_ { tangibles.metal_silver } double:_ { 1 } }
+		}
+	}
+	process:mine_copper
+	{
+		2-tuple[]:input
+		{
+			2-tuple:_ { !var:_ { tangibles.labor } double:_ { 1 } }
+			2-tuple:_ { !var:_ { resources.property } double:_ { .3 } }
+			2-tuple:_ { !var:_ { resources.res_copper } double:_ { 10 } }
+		}
+		2-tuple[]:output
+		{
+			2-tuple:_ { !var:_ { tangibles.metal_copper } double:_ { 1 } }
+		}
+	}
+	process:forge_bronze
+	{
+		2-tuple[]:input
+		{
+			2-tuple:_ { !var:_ { tangibles.labor } double:_ { 2 } }
+			2-tuple:_ { !var:_ { resources.property } double:_ { .4 } }
+			2-tuple:_ { !var:_ { resources.res_copper } double:_ { 10 } }
+			2-tuple:_ { !var:_ { resources.res_tin } double:_ { 10 } }
+		}
+		2-tuple[]:output
+		{
+			2-tuple:_ { !var:_ { tangibles.metal_bronze } double:_ { 2 } }
+		}
+	}
+	process:forge_brass
+	{
+		2-tuple[]:input
+		{
+			2-tuple:_ { !var:_ { tangibles.labor } double:_ { 2 } }
+			2-tuple:_ { !var:_ { resources.property } double:_ { .4 } }
+			2-tuple:_ { !var:_ { resources.res_copper } double:_ { 10 } }
+			2-tuple:_ { !var:_ { resources.res_zinc } double:_ { 10 } }
+		}
+		2-tuple[]:output
+		{
+			2-tuple:_ { !var:_ { tangibles.metal_brass } double:_ { 2 } }
+		}
+	}
+	process:mine_salt
+	{
+		2-tuple[]:input
+		{
+			2-tuple:_ { !var:_ { tangibles.labor } double:_ { 1 } }
+			2-tuple:_ { !var:_ { resources.property } double:_ { .1 } }
+			2-tuple:_ { !var:_ { resources.res_salt } double:_ { 1 } }
+		}
+		2-tuple[]:output
+		{
+			2-tuple:_ { !var:_ { tangibles.lux_salt } double:_ { 2 } }
+		}
+	}
+	process:gather_game
+	{
+		2-tuple[]:input
+		{
+			2-tuple:_ { !var:_ { tangibles.labor } double:_ { 1 } }
+			2-tuple:_ { !var:_ { resources.res_game } double:_ { 5 } }
+		}
+		2-tuple[]:output
+		{
+			2-tuple:_ { !var:_ { tangibles.need_food } double:_ { 1 } }
+			2-tuple:_ { !var:_ { tangibles.mat_fur } double:_ { 1 } }
+		}
+	}
+	process:gather_fish
+	{
+		2-tuple[]:input
+		{
+			2-tuple:_ { !var:_ { tangibles.labor } double:_ { 1 } }
+			2-tuple:_ { !var:_ { resources.res_fish } double:_ { 20 } }
+		}
+		2-tuple[]:output
+		{
+			2-tuple:_ { !var:_ { tangibles.need_food } double:_ { 1 } }
+		}
+	}
+	process:farm_wheat
+	{
+		2-tuple[]:input
+		{
+			2-tuple:_ { !var:_ { tangibles.labor } double:_ { 1 } }
+			2-tuple:_ { !var:_ { resources.property } double:_ { 1 } }
+			2-tuple:_ { !var:_ { resources.res_wheat } double:_ { 100 } }
+			2-tuple:_ { !var:_ { resources.res_water } double:_ { 10 } }
+		}
+		2-tuple[]:output
+		{
+			2-tuple:_ { !var:_ { tangibles.need_food } double:_ { 100 } }
+		}
+	}
+	process:farm_rice
+	{
+		2-tuple[]:input
+		{
+			2-tuple:_ { !var:_ { tangibles.labor } double:_ { 1 } }
+			2-tuple:_ { !var:_ { resources.property } double:_ { 1 } }
+			2-tuple:_ { !var:_ { resources.res_rice } double:_ { 100 } }
+			2-tuple:_ { !var:_ { resources.res_water } double:_ { 50 } }
+		}
+		2-tuple[]:output
+		{
+			2-tuple:_ { !var:_ { tangibles.need_food } double:_ { 100 } }
+		}
+	}
+	process:farm_barley
+	{
+		2-tuple[]:input
+		{
+			2-tuple:_ { !var:_ { tangibles.labor } double:_ { 1 } }
+			2-tuple:_ { !var:_ { resources.property } double:_ { 1 } }
+			2-tuple:_ { !var:_ { resources.res_barley } double:_ { 100 } }
+			2-tuple:_ { !var:_ { resources.res_water } double:_ { 5 } }
+		}
+		2-tuple[]:output
+		{
+			2-tuple:_ { !var:_ { tangibles.need_food } double:_ { 100 } }
+		}
+	}
+	process:farm_corn
+	{
+		2-tuple[]:input
+		{
+			2-tuple:_ { !var:_ { tangibles.labor } double:_ { 1 } }
+			2-tuple:_ { !var:_ { resources.property } double:_ { 1 } }
+			2-tuple:_ { !var:_ { resources.res_corn } double:_ { 100 } }
+			2-tuple:_ { !var:_ { resources.res_water } double:_ { 5 } }
+		}
+		2-tuple[]:output
+		{
+			2-tuple:_ { !var:_ { tangibles.need_food } double:_ { 100 } }
+		}
+	}
+	process:farm_spice
+	{
+		2-tuple[]:input
+		{
+			2-tuple:_ { !var:_ { tangibles.labor } double:_ { 1 } }
+			2-tuple:_ { !var:_ { resources.property } double:_ { 1 } }
+			2-tuple:_ { !var:_ { resources.res_wheat } double:_ { 20 } }
+			2-tuple:_ { !var:_ { resources.res_water } double:_ { 1 } }
+		}
+		2-tuple[]:output
+		{
+			2-tuple:_ { !var:_ { tangibles.need_food } double:_ { 20 } }
+		}
+	}
+	process:farm_cotton_cloth
+	{
+		2-tuple[]:input
+		{
+			2-tuple:_ { !var:_ { tangibles.labor } double:_ { 10 } }
+			2-tuple:_ { !var:_ { resources.property } double:_ { 2 } }
+			2-tuple:_ { !var:_ { resources.res_cotton } double:_ { 100 } }
+			2-tuple:_ { !var:_ { resources.res_water } double:_ { 50 } }
+		}
+		2-tuple[]:output
+		{
+			2-tuple:_ { !var:_ { tangibles.mat_cloth } double:_ { 100 } }
+		}
+	}
+	process:farm_cotton_linen
+	{
+		2-tuple[]:input
+		{
+			2-tuple:_ { !var:_ { tangibles.labor } double:_ { 15 } }
+			2-tuple:_ { !var:_ { resources.property } double:_ { 2 } }
+			2-tuple:_ { !var:_ { resources.res_cotton } double:_ { 100 } }
+			2-tuple:_ { !var:_ { resources.res_water } double:_ { 50 } }
+		}
+		2-tuple[]:output
+		{
+			2-tuple:_ { !var:_ { tangibles.mat_cloth } double:_ { 40 } }
+		}
+	}
+	process:farm_silk
+	{
+		2-tuple[]:input
+		{
+			2-tuple:_ { !var:_ { tangibles.labor } double:_ { 20 } }
+			2-tuple:_ { !var:_ { resources.property } double:_ { 5 } }
+			2-tuple:_ { !var:_ { resources.res_silk } double:_ { 50 } }
+			2-tuple:_ { !var:_ { resources.res_water } double:_ { 25 } }
+		}
+		2-tuple[]:output
+		{
+			2-tuple:_ { !var:_ { tangibles.mat_silk } double:_ { 50 } }
+		}
+	}
+	process:prod_jewelry_brass
+	{
+		2-tuple[]:input
+		{
+			2-tuple:_ { !var:_ { tangibles.labor } double:_ { 1 } }
+			2-tuple:_ { !var:_ { resources.property } double:_ { .1 } }
+			2-tuple:_ { !var:_ { tangibles.metal_brass } double:_ { 3 } }
+		}
+		2-tuple[]:output
+		{
+			2-tuple:_ { !var:_ { tangibles.lux_jewelry_brass } double:_ { 3 } }
+		}
+	}
+	process:prod_jewelry_silver
+	{
+		2-tuple[]:input
+		{
+			2-tuple:_ { !var:_ { tangibles.labor } double:_ { 1 } }
+			2-tuple:_ { !var:_ { resources.property } double:_ { .1 } }
+			2-tuple:_ { !var:_ { tangibles.metal_silver } double:_ { 3 } }
+		}
+		2-tuple[]:output
+		{
+			2-tuple:_ { !var:_ { tangibles.lux_jewelry_silver } double:_ { 3 } }
+		}
+	}
+	process:prod_jewelry_gold
+	{
+		2-tuple[]:input
+		{
+			2-tuple:_ { !var:_ { tangibles.labor } double:_ { 1 } }
+			2-tuple:_ { !var:_ { resources.property } double:_ { .1 } }
+			2-tuple:_ { !var:_ { tangibles.metal_gold } double:_ { 3 } }
+		}
+		2-tuple[]:output
+		{
+			2-tuple:_ { !var:_ { tangibles.lux_jewelry_gold } double:_ { 3 } }
+		}
+	}
+	process:prod_beer
+	{
+		2-tuple[]:input
+		{
+			2-tuple:_ { !var:_ { tangibles.labor } double:_ { .5 } }
+			2-tuple:_ { !var:_ { resources.property } double:_ { .1 } }
+			2-tuple:_ { !var:_ { resources.res_wheat } double:_ { 10 } }
+			2-tuple:_ { !var:_ { resources.res_barley } double:_ { 1 } }
+			2-tuple:_ { !var:_ { resources.res_water } double:_ { 10 } }
+		}
+		2-tuple[]:output
+		{
+			2-tuple:_ { !var:_ { tangibles.alcohol_beer } double:_ { 21 } }
+		}
+	}
+	process:prod_sake
+	{
+		2-tuple[]:input
+		{
+			2-tuple:_ { !var:_ { tangibles.labor } double:_ { .5 } }
+			2-tuple:_ { !var:_ { resources.property } double:_ { .1 } }
+			2-tuple:_ { !var:_ { resources.res_rice } double:_ { 10 } }
+			2-tuple:_ { !var:_ { resources.res_water } double:_ { 10 } }
+		}
+		2-tuple[]:output
+		{
+			2-tuple:_ { !var:_ { tangibles.alcohol_sake } double:_ { 20 } }
+		}
+	}
+	process:prod_whiskey
+	{
+		2-tuple[]:input
+		{
+			2-tuple:_ { !var:_ { tangibles.labor } double:_ { .5 } }
+			2-tuple:_ { !var:_ { resources.property } double:_ { .1 } }
+			2-tuple:_ { !var:_ { resources.res_corn } double:_ { 10 } }
+			2-tuple:_ { !var:_ { resources.res_water } double:_ { 10 } }
+		}
+		2-tuple[]:output
+		{
+			2-tuple:_ { !var:_ { tangibles.alcohol_whiskey } double:_ { 20 } }
+		}
+	}
+	process:prod_clay_brick
+	{
+		2-tuple[]:input
+		{
+			2-tuple:_ { !var:_ { tangibles.labor } double:_ { 1 } }
+			2-tuple:_ { !var:_ { resources.property } double:_ { 1 } }
+			2-tuple:_ { !var:_ { resources.res_clay } double:_ { 100 } }
+		}
+		2-tuple[]:output
+		{
+			2-tuple:_ { !var:_ { tangibles.mat_brick } double:_ { 100 } }
+		}
+	}
+	process:prod_ceramics
+	{
+		2-tuple[]:input
+		{
+			2-tuple:_ { !var:_ { tangibles.labor } double:_ { 1 } }
+			2-tuple:_ { !var:_ { resources.property } double:_ { 1 } }
+			2-tuple:_ { !var:_ { resources.res_clay } double:_ { 20 } }
+		}
+		2-tuple[]:output
+		{
+			2-tuple:_ { !var:_ { tangibles.lux_ceramics } double:_ { 20 } }
+		}
+	}
+	process:prod_plaster
+	{
+		2-tuple[]:input
+		{
+			2-tuple:_ { !var:_ { tangibles.labor } double:_ { 1 } }
+			2-tuple:_ { !var:_ { resources.property } double:_ { .1 } }
+			2-tuple:_ { !var:_ { resources.res_sand } double:_ { 10 } }
+			2-tuple:_ { !var:_ { resources.res_lime } double:_ { 40 } }
+			2-tuple:_ { !var:_ { resources.res_water } double:_ { 100 } }
+		}
+		2-tuple[]:output
+		{
+			2-tuple:_ { !var:_ { tangibles.mat_plaster } double:_ { 150 } }
+		}
+	}
+	process:clothing_silk
+	{
+		2-tuple[]:input
+		{
+			2-tuple:_ { !var:_ { tangibles.labor } double:_ { 1 } }
+			2-tuple:_ { !var:_ { resources.property } double:_ { .1 } }
+			2-tuple:_ { !var:_ { tangibles.mat_silk } double:_ { 10 } }
+		}
+		2-tuple[]:output
+		{
+			2-tuple:_ { !var:_ { tangibles.need_clothing } double:_ { 10 } }
+		}
+	}
+	process:clothing_fur
+	{
+		2-tuple[]:input
+		{
+			2-tuple:_ { !var:_ { tangibles.labor } double:_ { 1 } }
+			2-tuple:_ { !var:_ { resources.property } double:_ { .1 } }
+			2-tuple:_ { !var:_ { tangibles.mat_fur } double:_ { 20 } }
+		}
+		2-tuple[]:output
+		{
+			2-tuple:_ { !var:_ { tangibles.need_clothing } double:_ { 20 } }
+		}
+	}
+	process:clothing_linen
+	{
+		2-tuple[]:input
+		{
+			2-tuple:_ { !var:_ { tangibles.labor } double:_ { 1 } }
+			2-tuple:_ { !var:_ { resources.property } double:_ { .1 } }
+			2-tuple:_ { !var:_ { tangibles.mat_linen } double:_ { 20 } }
+		}
+		2-tuple[]:output
+		{
+			2-tuple:_ { !var:_ { tangibles.need_clothing } double:_ { 20 } }
+		}
+	}
+	process:clothing_cloth
+	{
+		2-tuple[]:input
+		{
+			2-tuple:_ { !var:_ { tangibles.labor } double:_ { 1 } }
+			2-tuple:_ { !var:_ { resources.property } double:_ { .1 } }
+			2-tuple:_ { !var:_ { tangibles.mat_cloth } double:_ { 10 } }
+		}
+		2-tuple[]:output
+		{
+			2-tuple:_ { !var:_ { tangibles.need_clothing } double:_ { 10 } }
+		}
+	}
+}

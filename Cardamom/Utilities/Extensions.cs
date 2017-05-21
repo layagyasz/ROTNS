@@ -23,5 +23,11 @@ namespace Cardamom.Utilities
 			}
 			return maxValue;
 		}
+
+		public static T GetOrDefault<T, K>(this IDictionary<K, T> Source, K Key, T Default)
+		{
+			if (Source.ContainsKey(Key)) return Source[Key];
+			else return Default;
+		}
 	}
 }

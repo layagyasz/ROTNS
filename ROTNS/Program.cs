@@ -30,7 +30,7 @@ namespace ROTNS
 			double a4 = -1.453152027;
 			double a5 = 1.061405429;
 			double r = t * (a1 + t * (a2 + t * (a3 + t * (a4 + t * a5)))) * Math.Exp(-x * x) / 2;
-			return r > 1 ? 1 : r;
+			return r;
 		}
 
 		static void Main(string[] args)
@@ -76,7 +76,7 @@ namespace ROTNS
 				new Biome(0, .5f, 1, .5f, new Color(102, 51, 0), Trees), //Bog
                 new Biome(0, .8f, 1, .5f, new Color(0, 102, 0), Trees), //Mangrove
                 new Biome(.5f, .2f, .2f, .25f, new Color(220, 220, 220), Grainy), //Tundra
-                new Biome(.5f, .5f, .4f, 5f, new Color(51, 102, 0), Grassy), //Grasslands
+                new Biome(.5f, .5f, .4f, 4f, new Color(51, 102, 0), Grassy), //Grasslands
                 new Biome(.5f, .4f, .7f, 3.5f, new Color(25, 50, 0), Trees), //Forest
                 new Biome(.5f, .8f, .15f, .5f, new Color(255, 255, 153), Grainy), //Desert
                 new Biome(.5f, .8f, .8f, .5f, new Color(51, 51, 0), Trees), //Rainforest
@@ -84,7 +84,7 @@ namespace ROTNS
                 new Biome(.5f, .7f, .25f, 1f, new Color(255, 255, 102), Grassy), //Savanna
                 new Biome(.5f, .8f, .7f, .5f, new Color(102, 102, 0), Trees), //Tropical Forest
                 new Biome(.7f, .3f, .6f, 3f, new Color(0, 50, 0), Trees), //Coniferous Forest
-                new Biome(1f, .5f, .5f, 1f, new Color(100, 100, 100), Mountains) //Rocky
+                new Biome(1f, .5f, .5f, 5f, new Color(100, 100, 100), Mountains) //Rocky
             };
 			Biome[] WaterBiomes =
 			{
@@ -111,16 +111,17 @@ namespace ROTNS
 			Settings.FlagColorMap = new FlagColorMap(FlagColors);
 			NaturalResource[] Resources =
 			{
-				new NaturalResource("res_iron", 1, .4, true, delegate(float Noise, MicroRegion Region) { if(Region.Oceanic) return 0; else return 1000 * (3 * Noise * Region.Height + Noise) / 4;}),
-				new NaturalResource("res_gold", 1, .7, true, delegate(float Noise, MicroRegion Region) { if(Region.Oceanic) return 0; else return 100 * (3 * Noise * Region.Height + Noise) / 4;}),
-				new NaturalResource("res_silver", 1, .6, true, delegate(float Noise, MicroRegion Region) { if(Region.Oceanic) return 0; else return 100 * (3 * Noise * Region.Height + Noise) / 4;}),
-				new NaturalResource("res_copper", 1, .35, true, delegate(float Noise, MicroRegion Region) { if(Region.Oceanic) return 0; else return 400 * (3 * Noise * Region.Height + Noise) / 4;}),
-				new NaturalResource("res_tin", 1, .4, true, delegate(float Noise, MicroRegion Region) { if(Region.Oceanic) return 0; else return 400 * (3 * Noise * Region.Height + Noise) / 4;}),
-				new NaturalResource("res_zinc", 1, .45, true, delegate(float Noise, MicroRegion Region) { if(Region.Oceanic) return 0; else return 300 * (3 * Noise * Region.Height + Noise) / 4;}),
-				new NaturalResource("res_arsenic", 1, .4, true, delegate(float Noise, MicroRegion Region) { if(Region.Oceanic) return 0; else return 200 * (3 * Noise * Region.Height + Noise) / 4;}),
-				new NaturalResource("res_lime", 1, .3, true, delegate(float Noise, MicroRegion Region) { if(Region.Oceanic) return 0; else return 10000 * (3 * Noise * Region.Height + Noise) / 4;}),
-				new NaturalResource("res_clay", 1, .3, true, delegate(float Noise, MicroRegion Region) { if(Region.Oceanic) return 0; else return 10000 * Noise;}),
-				new NaturalResource("res_wheat", 1, .2, false, delegate(float Noise, MicroRegion Region)
+				new NaturalResource("property", 1, .3, false, (Noise, Region) => (float)Region.Region.Area),
+				new NaturalResource("res_iron", 1, .4, true, (Noise, Region) =>  { if(Region.Oceanic) return 0; else return 1000 * (3 * Noise * Region.Height + Noise) / 4;}),
+				new NaturalResource("res_gold", 1, .7, true, (Noise, Region) =>  { if(Region.Oceanic) return 0; else return 100 * (3 * Noise * Region.Height + Noise) / 4;}),
+				new NaturalResource("res_silver", 1, .6, true, (Noise, Region) =>  { if(Region.Oceanic) return 0; else return 100 * (3 * Noise * Region.Height + Noise) / 4;}),
+				new NaturalResource("res_copper", 1, .35, true, (Noise, Region) =>  { if(Region.Oceanic) return 0; else return 400 * (3 * Noise * Region.Height + Noise) / 4;}),
+				new NaturalResource("res_tin", 1, .4, true, (Noise, Region) =>  { if(Region.Oceanic) return 0; else return 400 * (3 * Noise * Region.Height + Noise) / 4;}),
+				new NaturalResource("res_zinc", 1, .45, true, (Noise, Region) =>  { if(Region.Oceanic) return 0; else return 300 * (3 * Noise * Region.Height + Noise) / 4;}),
+				new NaturalResource("res_arsenic", 1, .4, true, (Noise, Region) =>  { if(Region.Oceanic) return 0; else return 200 * (3 * Noise * Region.Height + Noise) / 4;}),
+				new NaturalResource("res_lime", 1, .3, true, (Noise, Region) =>  { if(Region.Oceanic) return 0; else return 10000 * (3 * Noise * Region.Height + Noise) / 4;}),
+				new NaturalResource("res_clay", 1, .3, true, (Noise, Region) =>  { if(Region.Oceanic) return 0; else return 10000 * Noise;}),
+				new NaturalResource("res_wheat", 1, .2, false, (Noise, Region) =>
 				{
 					if(Region.Oceanic) return 0;
 					else
@@ -132,7 +133,7 @@ namespace ROTNS
 						return 10000 * (float)Math.Sqrt(m * t);
 					}
 				}),
-				new NaturalResource("res_rice", 1, .15, false, delegate(float Noise, MicroRegion Region)
+				new NaturalResource("res_rice", 1, .15, false, (Noise, Region) =>
 				{
 					if(Region.Oceanic) return 0;
 					else
@@ -144,7 +145,7 @@ namespace ROTNS
 						return 10000 * (float)Math.Sqrt(m * t);
 					}
 				}),
-				new NaturalResource("res_barley", 1, .2, false, delegate(float Noise, MicroRegion Region)
+				new NaturalResource("res_barley", 1, .2, false, (Noise, Region) =>
 				{
 					if(Region.Oceanic) return 0;
 					else
@@ -156,7 +157,7 @@ namespace ROTNS
 						return 10000 * (float)Math.Sqrt(m * t);
 					}
 				}),
-				new NaturalResource("res_corn", 1, .2, false, delegate(float Noise, MicroRegion Region)
+				new NaturalResource("res_corn", 1, .2, false, (Noise, Region) =>
 				{
 					if(Region.Oceanic) return 0;
 					else
@@ -168,11 +169,11 @@ namespace ROTNS
 						return 10000 * (float)Math.Sqrt(m * t);
 					}
 				}),
-				new NaturalResource("res_game", 1, .3, false, delegate(float Noise, MicroRegion Region)
+				new NaturalResource("res_game", 1, .3, false, (Noise, Region) =>
 				{
 					return 1000 * (float)Math.Sqrt(Region.Moisture);
 				}),
-				new NaturalResource("res_cotton", 1, .25, false, delegate(float Noise, MicroRegion Region)
+				new NaturalResource("res_cotton", 1, .25, false, (Noise, Region) =>
 				{
 					if(Region.Oceanic) return 0;
 					else
@@ -184,16 +185,16 @@ namespace ROTNS
 						return 10000 * (float)Math.Sqrt(m * t);
 					}
 				}),
-				new NaturalResource("res_fish", 1, .2, true, delegate(float Noise, MicroRegion Region)
+				new NaturalResource("res_fish", 1, .2, true, (Noise, Region) =>
 				{
 					return 1000 * Noise * Region.Region.Coast;
 				}),
-				new NaturalResource("res_salt", 1, .35, true, delegate(float Noise, MicroRegion Region)
+				new NaturalResource("res_salt", 1, .35, true, (Noise, Region) =>
 				{
 					if (Region.Oceanic) return 0;
 					else return 750 * (3 * Noise * Region.Height + Noise) / 4 + 500 * Region.Region.Coast;
 				}),
-				new NaturalResource("res_spice", 1, .7, false, delegate(float Noise, MicroRegion Region)
+				new NaturalResource("res_spice", 1, .7, false, (Noise, Region) =>
 				{
 					if(Region.Oceanic) return 0;
 					else
@@ -205,7 +206,7 @@ namespace ROTNS
 						return 1000 * (float)Math.Sqrt(m * t);
 					}
 				}),
-				new NaturalResource("res_silk", 1, .7, false, delegate(float Noise, MicroRegion Region)
+				new NaturalResource("res_silk", 1, .7, false, (Noise, Region) =>
 				{
 					if(Region.Oceanic) return 0;
 					else
@@ -217,7 +218,7 @@ namespace ROTNS
 						return 1000 * (float)Math.Sqrt(m * t);
 					}
 				}),
-				new NaturalResource("res_sand", 1, .7, false, delegate(float Noise, MicroRegion Region)
+				new NaturalResource("res_sand", 1, .7, false, (Noise, Region) =>
 				{
 					if (Region.Oceanic) return 0;
 					else
@@ -229,7 +230,7 @@ namespace ROTNS
 						return 100000 * (float)Math.Sqrt(m * t) + 5000 * Region.Region.Coast;
 					}
 				}),
-				new NaturalResource("res_water", 1, .4, 1, false, delegate(float Noise, MicroRegion Region)
+				new NaturalResource("res_water", 1, .4, 1, false, (Noise, Region) =>
 				{
 					if (Region.Oceanic) return 0;
 					else return (float)(Region.Region.Area * Region.Moisture);
@@ -237,11 +238,13 @@ namespace ROTNS
 			};
 
 			Settings.Resources = Resources;
-			Settings.Economy = new Economy();
-			Settings.Economy.LoadGoods(ParseBlock.FromFile("Economy/Goods.blk"), (ParseBlock B) => new Good(B));
-			Settings.Economy.LoadServices(ParseBlock.FromFile("Economy/Services.blk"), (ParseBlock B) => new Service(B));
-			foreach (Resource R in Settings.Resources) Settings.Economy.AddResource(R.Name, R);
-			Settings.Economy.LoadProcesses(ParseBlock.FromFile("Economy/Processes.blk"), (ParseBlock B, EconomySet<Tangible> T) => new Process(B, T));
+			Settings.Economy = new Economy(
+				"Economy.blk",
+				null /* GoodParser */,
+				null /*ServiceParser */,
+				i => Array.Find(Resources, j => j.Name == i.String),
+				null /* ProcessParser */);
+			foreach (Resource R in Settings.Resources) Settings.Economy.AddTangible(R.Name, R);
 			Settings.Language = new Language("Language.txt");
 			Settings.FlagData = new FlagData("Flags.blk");
 

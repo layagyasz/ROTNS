@@ -65,7 +65,6 @@
     <Compile Include="Model\Flags\Flag.cs" />
     <Compile Include="Model\Flags\FlagData.cs" />
     <Compile Include="Model\Flags\FlagTemplate.cs" />
-    <Compile Include="Model\Flags\FlagTemplateZone.cs" />
     <Compile Include="Model\Governing\ClusterAdministration.cs" />
     <Compile Include="Model\Governing\OrganizationClass.cs" />
     <Compile Include="Model\Governing\OrganizationHierarchy.cs" />
@@ -78,7 +77,6 @@
     <Compile Include="Model\Technology\TechnologyManager.cs" />
     <Compile Include="Model\Technology\TechnologyTree.cs" />
     <Compile Include="Model\Technology\TechnologyUnlockedEventArgs.cs" />
-    <Compile Include="Model\TextureSheet.cs" />
     <Compile Include="View\InteractionController.cs" />
     <Compile Include="View\WorldView.cs" />
     <Compile Include="View\RegionView.cs" />
@@ -162,6 +160,9 @@
     <Content Include="Graphics\Window.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <None Include="Economy.blk">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Model\WorldGeneration\" />
@@ -170,15 +171,6 @@
   <ItemGroup>
     <None Include="CALIBRI.TTF">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Economy\Goods.blk">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Economy\Processes.blk">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Economy\Services.blk">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Theme.blk">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

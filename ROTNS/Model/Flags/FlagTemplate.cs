@@ -8,118 +8,106 @@ using Cardamom.Serialization;
 using Cardamom.Utilities;
 
 using SFML.Graphics;
+using SFML.Window;
 
 namespace ROTNS.Model.Flags
 {
-    public class FlagTemplate : Graph<string>
-    {
-        public FlagTemplate(ParseBlock Block, TextureSheet Textures)
-        {
-            int i = 0;
-            foreach (ParseBlock B in Block.Break())
-            {
-                switch (B.Name.Trim().ToLower())
-                {
-                    case "parts":
-                        string[] Keys = Cardamom.Serialization.Parse.Array<string>(B.String, delegate(string Input) { return Input; });
-                        foreach (string Key in Keys) AddNode(new FlagTemplateZone(Key, i++));
-                        break;
-                    default:
-                        ((FlagTemplateZone)GetNode(B.Name.Trim().ToLower())).Initialize(B, this, Textures);
-                        break;
-                }
-            }
+	public class FlagTemplate
+	{
+		private enum Attribute { FREQUENCY, PARTS, EDGES };
 
-        }
+		double _Frequency;
+		GraphNode<Vector2f[]>[] _Parts;
 
-        private Pair<double,int> ColoringScore(Culture Culture, FlagColor[] Colors)
-        {
-            double Score = 0;
-            double WorstPartScore = double.MaxValue;
-            int WorstPart = -1;
-            foreach (KeyValuePair<string, Node<string>> N in _Nodes)
-            {
-                FlagTemplateZone G = (FlagTemplateZone)N.Value;
-                FlagColor Color = Colors[G.ID];
-                double Distance = 1 - Color.DistanceTo(Culture) / 2.2360679775;
-                Distance *= Distance * Distance;
-                double PartScore = Distance;
-                IEnumerator<Pair<float, GraphNode<string>>> I = G.Neighbors;
-                while (I.MoveNext())
-                {
-                    FlagTemplateZone Z = (FlagTemplateZone)I.Current.Second;
-                    double M = 1- Color.DistanceTo(Colors[Z.ID]) / 1.73205080757;
-                    M = M * M * M * M;
-                    //double M = Color == Colors[Z.ID] ? 1 : 0;
-                    PartScore -= Distance * M * I.Current.First;
-                }
-                Score += PartScore;
-                if (PartScore < WorstPartScore)
-                {
-                    WorstPart = G.ID;
-                    WorstPartScore = PartScore;
-                }
-            }
-            return new Pair<double, int>(Score, WorstPart);
-        }
+		public double Frequency
+		{
+			get
+			{
+				return _Frequency;
+			}
+		}
 
-        public Vertex[] MakeFlag(FlagColor[] Colors)
-        {
-            Vertex[] V = new Vertex[_Nodes.Count * 4];
+		public FlagTemplate(ParseBlock Block)
+		{
+			object[] attributes = Block.BreakToAttributes<object>(typeof(Attribute), true);
+			_Frequency = (double)attributes[(int)Attribute.FREQUENCY];
+			_Parts = ((Dictionary<string, GraphNode<Vector2f[]>>)attributes[(int)Attribute.PARTS])
+				.Select(i => i.Value).ToArray();
+			foreach (var N in (List<Tuple<object, object, object>>)attributes[(int)Attribute.EDGES])
+				((GraphNode<Vector2f[]>)N.Item1).AddNeighbor((GraphNode<Vector2f[]>)N.Item2, (float)N.Item3);
+		}
 
-            foreach (KeyValuePair<string, Node<string>> N in _Nodes)
-            {
-                FlagTemplateZone Z = (FlagTemplateZone)N.Value;
-                for (int i = 0; i < Z.Vertices.Length; ++i)
-                {
-                    V[Z.ID * 4 + i] = new Vertex(Z.Vertices[i], Colors[Z.ID].Color);
-                }
-            }
+		private Pair<double, int> ColoringScore(Culture Culture, FlagColor[] Colors)
+		{
+			double Score = 0;
+			double WorstPartScore = double.MaxValue;
+			int WorstPart = -1;
+			for (int i = 0; i < _Parts.Length; ++i)
+			{
+				GraphNode<Vector2f[]> part = _Parts[i];
+				FlagColor Color = Colors[i];
+				double Distance = 1 - Color.DistanceTo(Culture) / 2.2360679775;
+				Distance *= Distance * Distance;
+				double PartScore = Distance;
+				foreach (var edge in part.Edges)
+				{
+					double M = 1 - Color.DistanceTo(Colors[Array.IndexOf(_Parts, edge.Second)]) / 1.73205080757;
+					M = M * M * M * M;
+					PartScore -= Distance * M * edge.First;
+				}
+				Score += PartScore;
+				if (PartScore < WorstPartScore)
+				{
+					WorstPart = i;
+					WorstPartScore = PartScore;
+				}
+			}
+			return new Pair<double, int>(Score, WorstPart);
+		}
 
-            return V;
-        }
+		public Vertex[] MakeFlag(FlagColor[] Colors)
+		{
+			Vertex[] V = new Vertex[_Parts.Length * 4];
 
-        public FlagColor[] SelectColors(Culture Culture, FlagColorMap Colors, Random Random, int Iterations = 30)
-        {
-            // Initialize to random state
-            FlagColor[] Chosen = Colors.Closest(Culture, _Nodes.Count);
+			for (int i = 0; i < _Parts.Length; ++i)
+			{
+				for (int j = 0; j < 4; ++j)
+				{
+					V[i * 4 + j] = new Vertex(_Parts[i].Value[j], Colors[i].Color);
+				}
+			}
 
-            Pair<double, int> P = ColoringScore(Culture, Chosen);
+			return V;
+		}
 
-            for (int j = 0; j < Iterations; ++j)
-            {
-                // Select random field to change
-                P = ColoringScore(Culture, Chosen);
-                int C = Random.NextDouble() > .5 ? P.Second : Random.Next(0, _Nodes.Count);
-                double Score = P.First;
+		public FlagColor[] SelectColors(Culture Culture, FlagColorMap Colors, Random Random, int Iterations = 30)
+		{
+			FlagColor[] Chosen = Colors.Closest(Culture, _Parts.Length);
 
-                FlagColor Original = Chosen[C];
-                // Find best new assignment
-                FlagColor Best = Chosen[C];
-                for (int i = 0; i < Colors.Colors.Length; ++i)
-                {
-                    Chosen[C] = Colors.Colors[i];
-                    double thisScore = ColoringScore(Culture, Chosen).First;
-                    if (thisScore > Score)
-                    {
-                        Score = thisScore;
-                        Best = Colors.Colors[i];
-                    }
-                }
-                /*
-                // Reinitialize if no change
-                if (Original == Best && Restarts > 0)
-                {
-                    Restarts--;
-                    Iterations = 0;
-                    FlagColor[] c = new FlagColor[_Nodes.Count];
-                    for (int i = 0; i < c.Length; ++i) c[i] = Colors[Random.Next(0, Colors.Length)];
-                }
-                 */
-                Chosen[C] = Best;
-            }
+			Pair<double, int> P = ColoringScore(Culture, Chosen);
 
-            return Chosen;
-        }
-    }
+			for (int j = 0; j < Iterations; ++j)
+			{
+				P = ColoringScore(Culture, Chosen);
+				int C = Random.NextDouble() > .5 ? P.Second : Random.Next(0, _Parts.Length);
+				double Score = P.First;
+
+				FlagColor Original = Chosen[C];
+				// Find best new assignment
+				FlagColor Best = Chosen[C];
+				for (int i = 0; i < Colors.Colors.Length; ++i)
+				{
+					Chosen[C] = Colors.Colors[i];
+					double thisScore = ColoringScore(Culture, Chosen).First;
+					if (thisScore > Score)
+					{
+						Score = thisScore;
+						Best = Colors.Colors[i];
+					}
+				}
+				Chosen[C] = Best;
+			}
+			return Chosen;
+		}
+	}
 }

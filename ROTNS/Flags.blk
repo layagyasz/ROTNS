@@ -1,421 +1,342 @@
-﻿1 * tricolor
+﻿flag-template:tricolor
 {
-	parts { tricolor_0 tricolor_1 tricolor_2 }
-	tricolor_0
+	double:frequency { 1 }
+	node<>:parts
 	{
-		edge { tricolor_1 1 }
-		vertices { 0,0 1,0 1,.33 0,.33 }
+		node:tricolor_0 { 0,0 1,0 1,.33 0,.33 }
+		node:tricolor_1 { 0,.33 1,.33 1,.67 0,.67 }
+		node:tricolor_2 { 0,.67 1,.67 1,1 0,1 }
 	}
-	tricolor_1
+	3-tuple[]:edges
 	{
-		edge { tricolor_0 .05 }
-		edge { tricolor_2 .05 }
-		vertices { 0,.33 1,.33 1,.67 0,.67 }
-	}
-	tricolor_2
-	{
-		edge { tricolor_1 1 }
-		edge { tricolor_0 .25 }
-		vertices { 0,.67 1,.67 1,1 0,1 }
+		3-tuple:_ { !node:_ { parts.tricolor_0 } !node:_ { parts.tricolor_1 } float:_ { 1 } }
+		3-tuple:_ { !node:_ { parts.tricolor_1 } !node:_ { parts.tricolor_0 } float:_ { .05 } }
+		3-tuple:_ { !node:_ { parts.tricolor_1 } !node:_ { parts.tricolor_2 } float:_ { .05 } }
+		3-tuple:_ { !node:_ { parts.tricolor_2 } !node:_ { parts.tricolor_1 } float:_ { 1 } }
+		3-tuple:_ { !node:_ { parts.tricolor_2 } !node:_ { parts.tricolor_0 } float:_ { .25 } }
 	}
 }
-.25 * bicolor
+flag-template:bicolor
 {
-	parts { bicolor_0 bicolor_1 }
-	bicolor_0
+	double:frequency { .25 }
+	node<>:parts
 	{
-		edge { bicolor_1 1 }
-		vertices { 0,0 1,0 1,.5 0,.5 }
+		node:bicolor_0 { 0,0 1,0 1,.5 0,.5 }
+		node:bicolor_1 { 0,.5 1,.5 1,1 0,1 }
 	}
-	bicolor_1
+	3-tuple[]:edges
 	{
-		edge { bicolor_0 1 }
-		vertices { 0,.5 1,.5 1,1 0,1 }
+		3-tuple:_ { !node:_ { parts.bicolor_0 } !node:_ { parts.bicolor_1 } float:_ { 1 } }
+		3-tuple:_ { !node:_ { parts.bicolor_1 } !node:_ { parts.bicolor_0 } float:_ { 1 } }
 	}
 }
-1 * tricolor_vert
+flag-template:tricolor_vert
 {
-	parts { tricolor_vert_0 tricolor_vert_1 tricolor_vert_2 }
-	tricolor_vert_0
+	double:frequency { 1 }
+	node<>:parts
 	{
-		edge { tricolor_vert_1 1 }
-		vertices { 0,0 .33,0 .33,1 0,1 }
+		node:tricolor_vert_0 { 0,0 .33,0 .33,1 0,1 }
+		node:tricolor_vert_1 { .33,0 .67,0 .67,1 .33,1 }
+		node:tricolor_vert_2 { .67,0 1,0 1,1 .67,1 }
 	}
-	tricolor_vert_1
+	3-tuple[]:edges
 	{
-		edge { tricolor_vert_0 .05 }
-		edge { tricolor_vert_2 .05 }
-		vertices { .33,0 .67,0 .67,1 .33,1 }
-	}
-	tricolor_vert_2
-	{
-		edge { tricolor_vert_1 1 }
-		edge { tricolor_vert_0 .25 }
-		vertices { .67,0 1,0 1,1 .67,1 }
+		3-tuple:_ { !node:_ { parts.tricolor_vert_0 } !node:_ { parts.tricolor_vert_1 } float:_ { 1 } }
+		3-tuple:_ { !node:_ { parts.tricolor_vert_1 } !node:_ { parts.tricolor_vert_0 } float:_ { .05 } }
+		3-tuple:_ { !node:_ { parts.tricolor_vert_1 } !node:_ { parts.tricolor_vert_2 } float:_ { .05 } }
+		3-tuple:_ { !node:_ { parts.tricolor_vert_2 } !node:_ { parts.tricolor_vert_1 } float:_ { 1 } }
+		3-tuple:_ { !node:_ { parts.tricolor_vert_2 } !node:_ { parts.tricolor_vert_0 } float:_ { .25 } }
 	}
 }
-.5 * bicolor_vert
+flag-template:bicolor_vert
 {
-	parts { bicolor_vert_0 bicolor_vert_1 }
-	bicolor_vert_0
+	double:frequency { .5 }
+	node<>:parts
 	{
-		edge { bicolor_vert_1 1 }
-		vertices { 0,0 .5,0 .5,1 0,1 }
+		node:bicolor_vert_0 { 0,0 .5,0 .5,1 0,1 }
+		node:bicolor_vert_1 { .5,0 1,0 1,1 .5,1 }
 	}
-	bicolor_vert_1
+	3-tuple[]:edges
 	{
-		edge { bicolor_vert_0 1 }
-		vertices { .5,0 1,0 1,1 .5,1 }
+		3-tuple:_ { !node:_ { parts.bicolor_vert_0 } !node:_ { parts.bicolor_vert_1 } float:_ { 1 } }
+		3-tuple:_ { !node:_ { parts.bicolor_vert_1 } !node:_ { parts.bicolor_vert_0 } float:_ { 1 } }
 	}
 }
-.1 * chevron_monocolor
+flag-template:chevron_monocolor
 {
-	parts { monocolor chevron }
-	monocolor
+	double:frequency { .1 }
+	node<>:parts
 	{
-		edge { chevron 1 }
-		vertices { 0,0 1,0 1,1 0,1 }
+		node:monocolor { 0,0 1,0 1,1 0,1 }
+		node:chevron { 0,0 .5,.5 0,1 0,.5 }
 	}
-	chevron
+	3-tuple[]:edges
 	{
-		edge { monocolor 1 }
-		vertices { 0,0 .5,.5 0,1 0,.5 }
+		3-tuple:_ { !node:_ { parts.monocolor } !node:_ { parts.chevron } float:_ { 1 } }
+		3-tuple:_ { !node:_ { parts.chevron } !node:_ { parts.monocolor } float:_ { 1 } }
 	}
 }
-.25 * chevron_bicolor
+flag-template:chevron_bicolor
 {
-	parts { bicolor_0 bicolor_1 chevron }
-	bicolor_0
+	double:frequency { .25 }
+	node<>:parts
 	{
-		edge { chevron 1 }
-		edge { bicolor_1 1 }
-		vertices { 0,0 1,0 1,.5 0,.5 }
+		node:bicolor_0 { 0,0 1,0 1,.5 0,.5 }
+		node:bicolor_1 { 0,.5 1,.5 1,1 0,1 }
+		node:chevron { 0,0 .5,.5 0,1 0,.5 }
 	}
-	bicolor_1
+	3-tuple[]:edges
 	{
-		edge { chevron 1 }
-		edge { bicolor_0 1 }
-		vertices { 0,.5 1,.5 1,1 0,1 }
-	}
-	chevron
-	{
-		edge { bicolor_0 1 }
-		edge { bicolor_1 1 }
-		vertices { 0,0 .5,.5 0,1 0,.5 }
+		3-tuple:_ { !node:_ { parts.bicolor_0 } !node:_ { parts.chevron } float:_ { 1 } }
+		3-tuple:_ { !node:_ { parts.bicolor_0 } !node:_ { parts.bicolor_1 } float:_ { 1 } }
+		3-tuple:_ { !node:_ { parts.bicolor_1 } !node:_ { parts.chevron } float:_ { 1 } }
+		3-tuple:_ { !node:_ { parts.bicolor_1 } !node:_ { parts.bicolor_0 } float:_ { 1 } }
+		3-tuple:_ { !node:_ { parts.chevron } !node:_ { parts.bicolor_0 } float:_ { 1 } }
+		3-tuple:_ { !node:_ { parts.chevron } !node:_ { parts.bicolor_1 } float:_ { 1 } }
 	}
 }
-.15 * chevron_tricolor
+flag-template:chevron_tricolor
 {
-	parts { tricolor_0 tricolor_1 tricolor_2 chevron }
-	tricolor_0
+	double:frequency { .15 }
+	node<>:parts
 	{
-		edge { tricolor_1 1 }
-		edge { chevron 1 }
-		vertices { 0,0 1,0 1,.33 0,.33 }
+		node:tricolor_0 { 0,0 1,0 1,.33 0,.33 }
+		node:tricolor_1 { 0,.33 1,.33 1,.67 0,.67 }
+		node:tricolor_2 { 0,.67 1,.67 1,1 0,1 }
+		node:chevron { 0,0 .5,.5 0,1 0,.5 }
 	}
-	tricolor_1
+	3-tuple[]:edges
 	{
-		edge { tricolor_0 .05 }
-		edge { tricolor_2 .05 }
-		edge { chevron 1 }
-		vertices { 0,.33 1,.33 1,.67 0,.67 }
-	}
-	tricolor_2
-	{
-		edge { tricolor_1 1 }
-		edge { tricolor_0 .25 }
-		edge { chevron 1 }
-		vertices { 0,.67 1,.67 1,1 0,1 }
-	}
-	chevron
-	{
-		edge { tricolor_0 1 }
-		edge { tricolor_1 1 }
-		edge { tricolor_2 1 }
-		vertices { 0,0 .5,.5 0,1 0,.5 }
+		3-tuple:_ { !node:_ { parts.tricolor_0 } !node:_ { parts.tricolor_1 } float:_ { 1 } }
+		3-tuple:_ { !node:_ { parts.tricolor_1 } !node:_ { parts.tricolor_0 } float:_ { .05 } }
+		3-tuple:_ { !node:_ { parts.tricolor_1 } !node:_ { parts.tricolor_2 } float:_ { .05 } }
+		3-tuple:_ { !node:_ { parts.tricolor_2 } !node:_ { parts.tricolor_1 } float:_ { 1 } }
+		3-tuple:_ { !node:_ { parts.tricolor_2 } !node:_ { parts.tricolor_0 } float:_ { .25 } }
+		3-tuple:_ { !node:_ { parts.chevron } !node:_ { parts.tricolor_0 } float:_ { 1 } }
+		3-tuple:_ { !node:_ { parts.chevron } !node:_ { parts.tricolor_1 } float:_ { 1 } }
+		3-tuple:_ { !node:_ { parts.chevron } !node:_ { parts.tricolor_2 } float:_ { 1 } }
 	}
 }
+flag-template:per_bend
+{
+	double:frequency { .1 }
+	node<>:parts
+	{
+		node:bend_0 { 0,0 1,0 .5,.5 0,1 }
+		node:bend_1 { 1,0 1,1 0,1 .5,.5 }
+	}
+	3-tuple[]:edges
+	{
+		3-tuple:_ { !node:_ { parts.bend_0 } !node:_ { parts.bend_1 } float:_ { 1 } }
+		3-tuple:_ { !node:_ { parts.bend_1 } !node:_ { parts.bend_0 } float:_ { 1 } }
+	}
+}
+flag-template:quarterly
+{
+	double:frequency { .2 }
+	node<>:parts
+	{
+		node:quarter_0 { 0,0 .5,0 .5,.5 0,.5 }
+		node:quarter_1 { .5,0 1,0 1,1 .5,.5 }
+		node:quarter_2 { 0,.5 .5,.5 .5,1 0,1 }
+		node:quarter_3 { .5,.5 1,.5 1,1 .5,1 }
+	}
+	3-tuple[]:edges
+	{
+		3-tuple:_ { !node:_ { parts.quarter_0 } !node:_ { parts.quarter_1 } float:_ { 1 } }
+		3-tuple:_ { !node:_ { parts.quarter_0 } !node:_ { parts.quarter_2 } float:_ { 1 } }
+		3-tuple:_ { !node:_ { parts.quarter_0 } !node:_ { parts.quarter_3 } float:_ { .25 } }
+		3-tuple:_ { !node:_ { parts.quarter_1 } !node:_ { parts.quarter_0 } float:_ { 1 } }
+		3-tuple:_ { !node:_ { parts.quarter_1 } !node:_ { parts.quarter_2 } float:_ { -1 } }
+		3-tuple:_ { !node:_ { parts.quarter_1 } !node:_ { parts.quarter_3 } float:_ { 1 } }
+		3-tuple:_ { !node:_ { parts.quarter_2 } !node:_ { parts.quarter_0 } float:_ { 1 } }
+		3-tuple:_ { !node:_ { parts.quarter_2 } !node:_ { parts.quarter_1 } float:_ { -1 } }
+		3-tuple:_ { !node:_ { parts.quarter_2 } !node:_ { parts.quarter_3 } float:_ { 1 } }
+		3-tuple:_ { !node:_ { parts.quarter_3 } !node:_ { parts.quarter_1 } float:_ { 1 } }
+		3-tuple:_ { !node:_ { parts.quarter_3 } !node:_ { parts.quarter_2 } float:_ { 1 } }
+	}
+}
+flag-template:pall
+{
+	double:frequency { .1 }
+	node<>:parts
+	{
+		node:back { 0,0 1,0 1,1 0,1 }
+		node:bicolor_0 { .083,0 1,0 1,.417 .5,.417 }
+		node:bicolor_1 { .083,1 .5,.583 1,.583 1,1 }
+		node:chevron { 0,.083 .417,.5 0,.917 0,.5 }
+	}
+	3-tuple[]:edges
+	{
+		3-tuple:_ { !node:_ { parts.back } !node:_ { parts.bicolor_0 } float:_ { 1 } }
+		3-tuple:_ { !node:_ { parts.back } !node:_ { parts.bicolor_1 } float:_ { 1 } }
+		3-tuple:_ { !node:_ { parts.back } !node:_ { parts.chevron } float:_ { 1 } }
+		3-tuple:_ { !node:_ { parts.bicolor_0 } !node:_ { parts.back } float:_ { 1 } }
+		3-tuple:_ { !node:_ { parts.bicolor_0 } !node:_ { parts.bicolor_1 } float:_ { .05 } }
+		3-tuple:_ { !node:_ { parts.bicolor_0 } !node:_ { parts.chevron } float:_ { 1 } }
+		3-tuple:_ { !node:_ { parts.bicolor_1 } !node:_ { parts.back } float:_ { 1 } }
+		3-tuple:_ { !node:_ { parts.bicolor_1 } !node:_ { parts.bicolor_0 } float:_ { .05 } }
+		3-tuple:_ { !node:_ { parts.bicolor_1 } !node:_ { parts.chevron } float:_ { 1 } }
+		3-tuple:_ { !node:_ { parts.chevron } !node:_ { parts.bicolor_0 } float:_ { 1 } }
+		3-tuple:_ { !node:_ { parts.chevron } !node:_ { parts.bicolor_1 } float:_ { 1 } }
+		3-tuple:_ { !node:_ { parts.chevron } !node:_ { parts.back } float:_ { 1 } }
+	}
+}
+flag-template:saltire
+{
+	double:frequency { .2 }
+	node<>:parts
+	{
+		node:back { 0,0 1,0 1,1 0,1 }
+		node:quarter_0 { 0,.083 .417,.5 0,.917 0,.5 }
+		node:quarter_1 { .083,0 .5,0 .917,0 .5,.417 }
+		node:quarter_2 { 1,.083 1,.5 1,.917 .583,.5 }
+		node:quarter_3 { .083,1 .5,.583 .917,1 .5,1 }
+	}
+	3-tuple[]:edges
+	{
+		3-tuple:_ { !node:_ { parts.back } !node:_ { parts.quarter_0 } float:_ { 1 } }
+		3-tuple:_ { !node:_ { parts.back } !node:_ { parts.quarter_1 } float:_ { 1 } }
+		3-tuple:_ { !node:_ { parts.back } !node:_ { parts.quarter_2 } float:_ { 1 } }
+		3-tuple:_ { !node:_ { parts.back } !node:_ { parts.quarter_3 } float:_ { 1 } }
+		3-tuple:_ { !node:_ { parts.quarter_0 } !node:_ { parts.back } float:_ { 1 } }
+		3-tuple:_ { !node:_ { parts.quarter_0 } !node:_ { parts.quarter_1 } float:_ { .025 } }
+		3-tuple:_ { !node:_ { parts.quarter_0 } !node:_ { parts.quarter_2 } float:_ { -1 } }
+		3-tuple:_ { !node:_ { parts.quarter_0 } !node:_ { parts.quarter_3 } float:_ { .025 } }
+		3-tuple:_ { !node:_ { parts.quarter_1 } !node:_ { parts.back } float:_ { 1 } }
+		3-tuple:_ { !node:_ { parts.quarter_1 } !node:_ { parts.quarter_0 } float:_ { .025 } }
+		3-tuple:_ { !node:_ { parts.quarter_1 } !node:_ { parts.quarter_2 } float:_ { .025 } }
+		3-tuple:_ { !node:_ { parts.quarter_1 } !node:_ { parts.quarter_3 } float:_ { -1 } }
+		3-tuple:_ { !node:_ { parts.quarter_2 } !node:_ { parts.back } float:_ { 1 } }
+		3-tuple:_ { !node:_ { parts.quarter_2 } !node:_ { parts.quarter_0 } float:_ { -1 } }
+		3-tuple:_ { !node:_ { parts.quarter_2 } !node:_ { parts.quarter_1 } float:_ { .025 } }
+		3-tuple:_ { !node:_ { parts.quarter_2 } !node:_ { parts.quarter_3 } float:_ { .025 } }
+		3-tuple:_ { !node:_ { parts.quarter_3 } !node:_ { parts.back } float:_ { 1 } }
+		3-tuple:_ { !node:_ { parts.quarter_3 } !node:_ { parts.quarter_0 } float:_ { .025 } }
+		3-tuple:_ { !node:_ { parts.quarter_3 } !node:_ { parts.quarter_1 } float:_ { -1 } }
+		3-tuple:_ { !node:_ { parts.quarter_3 } !node:_ { parts.quarter_2 } float:_ { .025 } }
+	}
+}
+flag-template:canton_monocolor
+{
+	double:frequency { .4 }
+	node<>:parts
+	{
+		node:monocolor { 0,0 1,0 1,1 0,1 }
+		node:canton { 0,0 .5,0 .5,.5 0,.5 }
+	}
+	3-tuple[]:edges
+	{
+		3-tuple:_ { !node:_ { parts.monocolor } !node:_ { parts.canton } float:_ { 1 } }
+		3-tuple:_ { !node:_ { parts.canton } !node:_ { parts.monocolor } float:_ { 1 } }
+	}
+}
+flag-template:gyronny
+{
+	double:frequency { .05 }
+	node<>:parts
+	{
+		node:gyronny_0 { 0,0 .25,0 .5,0 .5,.5  }
+		node:gyronny_1 { 0,0 .5,.5 .25,.5 0,.5 }
+		node:gyronny_2 { .5,.5 1,0 1,.25 1,.5  }
+		node:gyronny_3 { .5,0 .75,0 1,0 .5,.5 }
+		node:gyronny_4 { .5,.5 1,1 .75,1 .5,1 }
+		node:gyronny_5 { .5,.5 .75,.5 1,.5 1,1 }
+		node:gyronny_6 { 0,.5 .25,.5 .5,.5 0,1 }
+		node:gyronny_7 { .5,.5 .5,1 .25,1 0,1 }
+	}
+	3-tuple[]:edges
+	{
+		3-tuple:_ { !node:_ { parts.gyronny_0 } !node:_ { parts.gyronny_2 } float:_ { -1 } }
+		3-tuple:_ { !node:_ { parts.gyronny_0 } !node:_ { parts.gyronny_4 } float:_ { -1 } }
+		3-tuple:_ { !node:_ { parts.gyronny_0 } !node:_ { parts.gyronny_6 } float:_ { -1 } }
+		3-tuple:_ { !node:_ { parts.gyronny_0 } !node:_ { parts.gyronny_1 } float:_ { 1 } }
+		3-tuple:_ { !node:_ { parts.gyronny_0 } !node:_ { parts.gyronny_3 } float:_ { 1 } }
+		3-tuple:_ { !node:_ { parts.gyronny_0 } !node:_ { parts.gyronny_5 } float:_ { 1 } }
+		3-tuple:_ { !node:_ { parts.gyronny_0 } !node:_ { parts.gyronny_7 } float:_ { 1 } }
 
-.1 * per_bend
-{
-	parts { bend_0 bend_1 }
-	bend_0
-	{
-		edge { bend_1 1 }
-		vertices { 0,0 1,0 .5,.5 0,1 }
-	}
-	bend_1
-	{
-		edge { bend_0 1 }
-		vertices { 1,0 1,1 0,1 .5,.5 }
-	}
-}
+		3-tuple:_ { !node:_ { parts.gyronny_1 } !node:_ { parts.gyronny_0 } float:_ { 1 } }
+		3-tuple:_ { !node:_ { parts.gyronny_1 } !node:_ { parts.gyronny_2 } float:_ { 1 } }
+		3-tuple:_ { !node:_ { parts.gyronny_1 } !node:_ { parts.gyronny_4 } float:_ { 1 } }
+		3-tuple:_ { !node:_ { parts.gyronny_1 } !node:_ { parts.gyronny_6 } float:_ { 1 } }
+		3-tuple:_ { !node:_ { parts.gyronny_1 } !node:_ { parts.gyronny_3 } float:_ { -1 } }
+		3-tuple:_ { !node:_ { parts.gyronny_1 } !node:_ { parts.gyronny_5 } float:_ { -1 } }
+		3-tuple:_ { !node:_ { parts.gyronny_1 } !node:_ { parts.gyronny_7 } float:_ { -1 } }
 
-.2 * quaterly
-{
-	parts { quarter_0 quarter_1 quarter_2 quarter_3 }
-	quarter_0
-	{
-		edge { quarter_1 1 }
-		edge { quarter_2 1 }
-		edge { quarter_3 .25 }
-		vertices { 0,0 .5,0 .5,.5 0,.5 }
-	}
-	quarter_1
-	{
-		edge { quarter_0 1 }
-		edge { quarter_2 -1 }
-		edge { quarter_3 1 }
-		vertices { .5,0 1,0 1,1 .5,.5 }
-	}
-	quarter_2
-	{
-		edge { quarter_0 1 }
-		edge { quarter_1 -1 }
-		edge { quarter_3 1 }
-		vertices { 0,.5 .5,.5 .5,1 0,1 }
-	}
-	quarter_3
-	{
-		edge { quarter_1 1 }
-		edge { quarter_2 1 }
-		vertices { .5,.5 1,.5 1,1 .5,1 }
-	}
-}
-.1 * pall
-{
-	parts { back bicolor_0 bicolor_1 chevron }
-	back
-	{
-		edge { bicolor_0 1 }
-		edge { bicolor_1 1 }
-		edge { chevron 1 }
-		vertices { 0,0 1,0 1,1 0,1 }
-	}
-	bicolor_0
-	{
-		edge { back 1 }
-		edge { bicolor_1 .05 }
-		edge { chevron 1 }
-		vertices { .083,0 1,0 1,.417 .5,.417 }
-	}
-	bicolor_1
-	{
-		edge { back 1 }
-		edge { bicolor_0 .5 }
-		edge { chevron 1 }
-		vertices { .083,1 .5,.583 1,.583 1,1 }
-	}
-	chevron
-	{
-		edge { back 1 }
-		edge { bicolor_0 1 }
-		edge { bicolor_1 1 }
-		vertices { 0,.083 .417,.5 0,.917 0,.5 }
+		3-tuple:_ { !node:_ { parts.gyronny_2 } !node:_ { parts.gyronny_0 } float:_ { -1 } }
+		3-tuple:_ { !node:_ { parts.gyronny_2 } !node:_ { parts.gyronny_4 } float:_ { -1 } }
+		3-tuple:_ { !node:_ { parts.gyronny_2 } !node:_ { parts.gyronny_6 } float:_ { -1 } }
+		3-tuple:_ { !node:_ { parts.gyronny_2 } !node:_ { parts.gyronny_1 } float:_ { 1 } }
+		3-tuple:_ { !node:_ { parts.gyronny_2 } !node:_ { parts.gyronny_3 } float:_ { 1 } }
+		3-tuple:_ { !node:_ { parts.gyronny_2 } !node:_ { parts.gyronny_5 } float:_ { 1 } }
+		3-tuple:_ { !node:_ { parts.gyronny_2 } !node:_ { parts.gyronny_7 } float:_ { 1 } }
+
+		3-tuple:_ { !node:_ { parts.gyronny_3 } !node:_ { parts.gyronny_0 } float:_ { 1 } }
+		3-tuple:_ { !node:_ { parts.gyronny_3 } !node:_ { parts.gyronny_2 } float:_ { 1 } }
+		3-tuple:_ { !node:_ { parts.gyronny_3 } !node:_ { parts.gyronny_4 } float:_ { 1 } }
+		3-tuple:_ { !node:_ { parts.gyronny_3 } !node:_ { parts.gyronny_6 } float:_ { 1 } }
+		3-tuple:_ { !node:_ { parts.gyronny_3 } !node:_ { parts.gyronny_1 } float:_ { -1 } }
+		3-tuple:_ { !node:_ { parts.gyronny_3 } !node:_ { parts.gyronny_5 } float:_ { -1 } }
+		3-tuple:_ { !node:_ { parts.gyronny_3 } !node:_ { parts.gyronny_7 } float:_ { -1 } }
+
+		3-tuple:_ { !node:_ { parts.gyronny_4 } !node:_ { parts.gyronny_0 } float:_ { -1 } }
+		3-tuple:_ { !node:_ { parts.gyronny_4 } !node:_ { parts.gyronny_2 } float:_ { -1 } }
+		3-tuple:_ { !node:_ { parts.gyronny_4 } !node:_ { parts.gyronny_6 } float:_ { -1 } }
+		3-tuple:_ { !node:_ { parts.gyronny_4 } !node:_ { parts.gyronny_1 } float:_ { 1 } }
+		3-tuple:_ { !node:_ { parts.gyronny_4 } !node:_ { parts.gyronny_3 } float:_ { 1 } }
+		3-tuple:_ { !node:_ { parts.gyronny_4 } !node:_ { parts.gyronny_5 } float:_ { 1 } }
+		3-tuple:_ { !node:_ { parts.gyronny_4 } !node:_ { parts.gyronny_7 } float:_ { 1 } }
+
+		3-tuple:_ { !node:_ { parts.gyronny_5 } !node:_ { parts.gyronny_0 } float:_ { 1 } }
+		3-tuple:_ { !node:_ { parts.gyronny_5 } !node:_ { parts.gyronny_2 } float:_ { 1 } }
+		3-tuple:_ { !node:_ { parts.gyronny_5 } !node:_ { parts.gyronny_4 } float:_ { 1 } }
+		3-tuple:_ { !node:_ { parts.gyronny_5 } !node:_ { parts.gyronny_6 } float:_ { 1 } }
+		3-tuple:_ { !node:_ { parts.gyronny_5 } !node:_ { parts.gyronny_1 } float:_ { -1 } }
+		3-tuple:_ { !node:_ { parts.gyronny_5 } !node:_ { parts.gyronny_3 } float:_ { -1 } }
+		3-tuple:_ { !node:_ { parts.gyronny_5 } !node:_ { parts.gyronny_7 } float:_ { -1 } }
+
+		3-tuple:_ { !node:_ { parts.gyronny_6 } !node:_ { parts.gyronny_0 } float:_ { -1 } }
+		3-tuple:_ { !node:_ { parts.gyronny_6 } !node:_ { parts.gyronny_2 } float:_ { -1 } }
+		3-tuple:_ { !node:_ { parts.gyronny_6 } !node:_ { parts.gyronny_4 } float:_ { -1 } }
+		3-tuple:_ { !node:_ { parts.gyronny_6 } !node:_ { parts.gyronny_1 } float:_ { 1 } }
+		3-tuple:_ { !node:_ { parts.gyronny_6 } !node:_ { parts.gyronny_3 } float:_ { 1 } }
+		3-tuple:_ { !node:_ { parts.gyronny_6 } !node:_ { parts.gyronny_5 } float:_ { 1 } }
+		3-tuple:_ { !node:_ { parts.gyronny_6 } !node:_ { parts.gyronny_7 } float:_ { 1 } }
+
+		3-tuple:_ { !node:_ { parts.gyronny_7 } !node:_ { parts.gyronny_0 } float:_ { 1 } }
+		3-tuple:_ { !node:_ { parts.gyronny_7 } !node:_ { parts.gyronny_2 } float:_ { 1 } }
+		3-tuple:_ { !node:_ { parts.gyronny_7 } !node:_ { parts.gyronny_4 } float:_ { 1 } }
+		3-tuple:_ { !node:_ { parts.gyronny_7 } !node:_ { parts.gyronny_6 } float:_ { 1 } }
+		3-tuple:_ { !node:_ { parts.gyronny_7 } !node:_ { parts.gyronny_1 } float:_ { -1 } }
+		3-tuple:_ { !node:_ { parts.gyronny_7 } !node:_ { parts.gyronny_3 } float:_ { -1 } }
+		3-tuple:_ { !node:_ { parts.gyronny_7 } !node:_ { parts.gyronny_5 } float:_ { -1 } }
 	}
 }
-.2 * saltire
+flag-template:bend
 {
-	parts { back quarter_0 quarter_1 quarter_2 quarter_3 }
-	back
+	double:frequency { .15 }
+	node<>:parts
 	{
-		edge { quarter_0 1 }
-		edge { quarter_1 1 }
-		edge { quarter_2 1 }
-		edge { quarter_3 1 }
-		vertices { 0,0 1,0 1,1 0,1 }
+		node:bend_0 { 0,0 1,0 0,1 0,.5 }
+		node:bend_1 { 0,1 1,0 1,.5 1,1 }
+		node:back_0 { 0,0 .875,0 0,.875 0,.5 }
+		node:back_1 { 1,.125 1,1 .5,1 .125,1 }
 	}
-	quarter_0
+	3-tuple[]:edges
 	{
-		edge { back 1 }
-		edge { quarter_1 .025 }
-		edge { quarter_2 -1 }
-		edge { quarter_3 .025 }
-		vertices { 0,.083 .417,.5 0,.917 0,.5 }
-	}
-	quarter_1
-	{
-		edge { back 1 }
-		edge { quarter_0 .025 }
-		edge { quarter_2 .025 }
-		edge { quarter_3 -1 }
-		vertices { .083,0 .5,0 .917,0 .5,.417 }
-	}
-	quarter_2
-	{
-		edge { back 1 }
-		edge { quarter_0 -1 }
-		edge { quarter_1 .025 }
-		edge { quarter_3 .025 }
-		vertices { 1,.083 1,.5 1,.917 .583,.5 }
-	}
-	quarter_3
-	{
-		edge { back 1 }
-		edge { quarter_0 .025 }
-		edge { quarter_1 -1 }
-		edge { quarter_2 .025 }
-		vertices { .083,1 .5,.583 .917,1 .5,1 }
-	}
-}
-.4 * canton_monocolor
-{
-	parts { monocolor canton }
-	monocolor
-	{
-		edge { canton 1 }
-		vertices { 0,0 1,0 1,1 0,1 }
-	}
-	canton
-	{
-		edge { monocolor 1 }
-		vertices { 0,0 .5,0 .5,.5 0,.5 }
-	}
-}
-.05 * gyronny
-{
-	parts { gyronny_0 gyronny_1 gyronny_2 gyronny_3 gyronny_4 gyronny_5 gyronny_6 gyronny_7 }
-	gyronny_0
-	{
-		edge { gyronny_2 -1 }
-		edge { gyronny_4 -1 }
-		edge { gyronny_6 -1 }
-		edge { gyronny_1 1 }
-		edge { gyronny_3 1 }
-		edge { gyronny_5 1 }
-		edge { gyronny_7 1 }
-		vertices
-		{
-			0,0 .25,0 .5,0 .5,.5 
-		}
-	}
-	gyronny_1
-	{
-		edge { gyronny_0 1 }
-		edge { gyronny_2 1 }
-		edge { gyronny_4 1 }
-		edge { gyronny_6 1 }
-		edge { gyronny_3 -1 }
-		edge { gyronny_5 -1 }
-		edge { gyronny_7 -1 }
-		vertices
-		{
-			0,0 .5,.5 .25,.5 0,.5 
-		}
-	}
-	gyronny_2
-	{
-		edge { gyronny_0 -1 }
-		edge { gyronny_4 -1 }
-		edge { gyronny_6 -1 }
-		edge { gyronny_1 1 }
-		edge { gyronny_3 1 }
-		edge { gyronny_5 1 }
-		edge { gyronny_7 1 }
-		vertices
-		{
-			.5,.5 1,0 1,.25 1,.5 
-		}
-	}
-	gyronny_3
-	{
-		edge { gyronny_0 1 }
-		edge { gyronny_2 1 }
-		edge { gyronny_4 1 }
-		edge { gyronny_6 1 }
-		edge { gyronny_1 -1 }
-		edge { gyronny_5 -1 }
-		edge { gyronny_7 -1 }
-		vertices
-		{
-			.5,0 .75,0 1,0 .5,.5 
-		}
-	}
-	gyronny_4
-	{
-		edge { gyronny_0 -1 }
-		edge { gyronny_2 -1 }
-		edge { gyronny_6 -1 }
-		edge { gyronny_1 1 }
-		edge { gyronny_3 1 }
-		edge { gyronny_5 1 }
-		edge { gyronny_7 1 }
-		vertices
-		{
-			.5,.5 1,1 .75,1 .5,1
-		}
-	}
-	gyronny_5
-	{
-		edge { gyronny_0 1 }
-		edge { gyronny_2 1 }
-		edge { gyronny_4 1 }
-		edge { gyronny_6 1 }
-		edge { gyronny_1 -1 }
-		edge { gyronny_3 -1 }
-		edge { gyronny_7 -1 }
-		vertices
-		{
-			.5,.5 .75,.5 1,.5 1,1
-		}
-	}
-	gyronny_6
-	{
-		edge { gyronny_0 -1 }
-		edge { gyronny_2 -1 }
-		edge { gyronny_4 -1 }
-		edge { gyronny_1 1 }
-		edge { gyronny_3 1 }
-		edge { gyronny_5 1 }
-		edge { gyronny_7 1 }
-		vertices
-		{
-			0,.5 .25,.5 .5,.5 0,1
-		}
-	}
-	gyronny_7
-	{
-		edge { gyronny_0 1 }
-		edge { gyronny_2 1 }
-		edge { gyronny_4 1 }
-		edge { gyronny_6 1 }
-		edge { gyronny_1 -1 }
-		edge { gyronny_3 -1 }
-		edge { gyronny_5 -1 }
-		vertices
-		{
-			.5,.5 .5,1 .25,1 0,1
-		}
-	}
-}
-.15 * bend
-{
-	parts { bend_0 bend_1 back_0 back_1 }
-	bend_0
-	{
-		edge { bend_1 .25 }
-		edge { back_0 1 }
-		edge { back_1 1 }
-		vertices { 0,0 1,0 0,1 0,.5 }
-	}
-	bend_1
-	{
-		edge { back_0 1 }
-		edge { back_1 1 }
-		vertices { 0,1 1,0 1,.5 1,1 }
-	}
-	back_0
-	{
-		edge { bend_0 1 }
-		edge { bend_1 1 }
-		edge { back_1 -1 }
-		vertices { 0,0 .875,0 0,.875 0,.5 }
-	}
-	back_1
-	{
-		edge { bend_0 1 }
-		edge { bend_1 1 }
-		edge { back_0 -1 }
-		vertices { 1,.125 1,1 .5,1 .125,1 }
+		3-tuple:_ { !node:_ { parts.bend_0 } !node:_ { parts.bend_1 } float:_ { .25 } }
+		3-tuple:_ { !node:_ { parts.bend_0 } !node:_ { parts.back_0 } float:_ { 1 } }
+		3-tuple:_ { !node:_ { parts.bend_0 } !node:_ { parts.back_1 } float:_ { 1 } }
+
+		3-tuple:_ { !node:_ { parts.bend_1 } !node:_ { parts.back_0 } float:_ { 1 } }
+		3-tuple:_ { !node:_ { parts.bend_1 } !node:_ { parts.back_1 } float:_ { 1 } }
+
+		3-tuple:_ { !node:_ { parts.back_0 } !node:_ { parts.bend_0 } float:_ { 1 } }
+		3-tuple:_ { !node:_ { parts.back_0 } !node:_ { parts.bend_1 } float:_ { 1 } }
+		3-tuple:_ { !node:_ { parts.back_0 } !node:_ { parts.back_0 } float:_ { -1 } }
+
+		3-tuple:_ { !node:_ { parts.back_1 } !node:_ { parts.bend_0 } float:_ { 1 } }
+		3-tuple:_ { !node:_ { parts.back_1 } !node:_ { parts.bend_1 } float:_ { 1 } }
+		3-tuple:_ { !node:_ { parts.back_1 } !node:_ { parts.back_0 } float:_ { -1 } }
 	}
 }

@@ -25,7 +25,7 @@ namespace ROTNS.View
 		Container<Pod> _TradePage = new Container<Pod>();
 		Container<Pod> _DiplomacyPage = new Container<Pod>();
 
-		Table _EconomyTable = new Table("table") { Position = new Vector2f(0, 36)};
+		Table _EconomyTable = new Table("table") { Position = new Vector2f(0, 36) };
 
 		Container<Pod>[] _Pages;
 
@@ -57,7 +57,7 @@ namespace ROTNS.View
 				Button.Value = _Pages[i];
 				Button.OnClick += TogglePage;
 				Add(Button);
-				if (i == 0) TogglePage(Button, new MouseEventArgs(new Vector2f(0,0)));
+				if (i == 0) TogglePage(Button, new MouseEventArgs(new Vector2f(0, 0)));
 			}
 
 			_ExitButton.Position = new Vector2f(756, 0);
@@ -90,10 +90,21 @@ namespace ROTNS.View
 			Region.Region.Administration.Flag.Position = new Vector2f(2, 36);
 
 			_EconomyTable.Clear();
-			foreach (Tangible Tangible in Region.Region.Economy.Goods)
+			foreach (Tangible Tangible in Region.Region.Economy.All.OrderBy(i => i.Name))
 			{
 				_EconomyTable.Add(
-					new TableRow("table-row") { new Button("table-cell") { DisplayedString = Tangible.Name } });
+					new TableRow("table-row")
+					{
+						new Button("table-cell") { DisplayedString = Tangible.Name },
+						new Button("table-cell")
+						{
+							DisplayedString = string.Format("{0:0.00}", Region.Region.Price(Tangible))
+						},
+						new Button("table-cell")
+						{
+							DisplayedString = string.Format("{0:0}", Region.Region[Tangible].Supply)
+						}
+					});
 			}
 		}
 

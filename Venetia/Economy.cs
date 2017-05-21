@@ -2,67 +2,104 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.IO;
 
 using Cardamom.Serialization;
 
 namespace Venetia
 {
-    public class Economy
-    {
-        Service _Labor = new Service("labor", 1, 1, 0);
-        Resource _Property = new Resource("property", 1, 1, .1);
+	public class Economy
+	{
+		private enum Attribute { PROCESSES, TANGIBLES, RESOURCES };
 
-        EconomySet<Process> _Processes = new EconomySet<Process>();
-        EconomySet<Good> _Goods = new EconomySet<Good>();
-        EconomySet<Service> _Services = new EconomySet<Service>();
-        EconomySet<Resource> _Resources = new EconomySet<Resource>();
-        EconomySet<Tangible> _All= new EconomySet<Tangible>();
+		Service _Labor;
 
-        public IEnumerable<Process> Processes { get { foreach (KeyValuePair<string, Process> P in _Processes) yield return P.Value; } }
-        public IEnumerable<Good> Goods { get { foreach (KeyValuePair<string, Good> P in _Goods) yield return P.Value; } }
-        public IEnumerable<Service> Services { get { foreach (KeyValuePair<string, Service> P in _Services) yield return P.Value; } }
-        public IEnumerable<Resource> Resources { get { foreach (KeyValuePair<string, Resource> P in _Resources) yield return P.Value; } }
-        public IEnumerable<Tangible> All { get { foreach (KeyValuePair<string, Tangible> P in _All) yield return P.Value; } }
-        public Service Labor { get { return _Labor; } }
-        public Resource Property { get { return _Property; } }
+		Dictionary<string, Process> _Processes;
+		Dictionary<string, Tangible> _Tangibles;
+		Dictionary<string, Resource> _Resources;
 
-        public Tangible this[string Name] { get { return _All[Name]; } }
+		public IEnumerable<Process> Processes
+		{
+			get
+			{
+				foreach (KeyValuePair<string, Process> P in _Processes)
+					yield return P.Value;
+			}
+		}
+		public IEnumerable<Good> Goods
+		{
+			get
+			{
+				return _Tangibles.Where(i => i.Value is Good).Select(i => (Good)i.Value);
+			}
+		}
+		public IEnumerable<Service> Services
+		{
+			get
+			{
+				return _Tangibles.Where(i => i.Value is Good).Select(i => (Service)i.Value);
+			}
+		}
+		public IEnumerable<Resource> Resources
+		{
+			get
+			{
+				return _Tangibles.Where(i => i.Value is Good).Select(i => (Resource)i.Value);
+			}
+		}
+		public IEnumerable<Tangible> All
+		{
+			get
+			{
+				return _Tangibles.Select(i => i.Value);
+			}
+		}
+		public Service Labor
+		{
+			get
+			{
+				return _Labor;
+			}
+		}
 
-        public Economy()
-        {
-            AddService("labor", _Labor);
-            AddResource("property", _Property);
-        }
+		public Tangible this[string Name] { get { return _Tangibles[Name]; } }
 
-        public void LoadProcesses(ParseBlock Block, Func<ParseBlock, EconomySet<Tangible>, Process> Constructor)
-        {
-            _Processes.Load(Block, _All, Constructor);
-        }
+		public Economy(
+			ParseBlock Block,
+			Func<ParseBlock, Good> GoodParser = null,
+			Func<ParseBlock, Service> ServiceParser = null,
+			Func<ParseBlock, Resource> ResourceParser = null,
+			Func<ParseBlock, Process> ProcessParser = null)
+		{
+			Block.AddParser<Tangible>("tangible", i => new Tangible(i));
+			Block.AddParser<Good>("good", GoodParser != null ? GoodParser : i => new Good(i));
+			Block.AddParser<Service>("service", ServiceParser != null ? ServiceParser : i => new Service(i));
+			Block.AddParser<Resource>("resource", ResourceParser != null ? ResourceParser : i => new Resource(i));
+			Block.AddParser<Process>("process", ProcessParser != null ? ProcessParser : i => new Process(i));
 
-        public void LoadGoods(ParseBlock Block, Func<ParseBlock, Good> Constructor)
-        {
-            EconomySet<Good> Temp = new EconomySet<Good>();
-            Temp.Load(Block, Constructor);
-            foreach (KeyValuePair<string, Good> G in Temp) AddGood(G.Key, G.Value);
-        }
+			object[] attributes = Block.BreakToAttributes<object>(typeof(Attribute), true);
+			_Processes = ((Dictionary<string, Process>)attributes[(int)Attribute.PROCESSES]);
+			_Tangibles = ((Dictionary<string, Tangible>)attributes[(int)Attribute.TANGIBLES]);
+			_Resources = ((Dictionary<string, Resource>)attributes[(int)Attribute.RESOURCES]);
+			_Labor = (Service)_Tangibles["labor"];
+		}
 
-        public void LoadServices(ParseBlock Block, Func<ParseBlock, Service> Constructor)
-        {
-            EconomySet<Service> Temp = new EconomySet<Service>();
-            Temp.Load(Block, Constructor);
-            foreach (KeyValuePair<string, Service> G in Temp) AddService(G.Key, G.Value);
-        }
+		public Economy(
+			string Path,
+			Func<ParseBlock, Good> GoodParser = null,
+			Func<ParseBlock, Service> ServiceParser = null,
+			Func<ParseBlock, Resource> ResourceParser = null,
+			Func<ParseBlock, Process> ProcessParser = null)
+			: this(new ParseBlock(File.ReadAllText(Path)), GoodParser, ServiceParser, ResourceParser, ProcessParser)
+		{ }
 
-        public void LoadResources(ParseBlock Block, Func<ParseBlock, Resource> Constructor)
-        {
-            EconomySet<Resource> Temp = new EconomySet<Resource>();
-            Temp.Load(Block, Constructor);
-            foreach (KeyValuePair<string, Resource> G in Temp) AddResource(G.Key, G.Value);
-        }
-
-        public void AddProcess(string Name, Process Process) { _Processes.Add(Name.ToLower(), Process); }
-        public void AddGood(string Name, Good Good) { _Goods.Add(Name.ToLower(), Good); _All.Add(Name.ToLower(), Good); }
-        public void AddService(string Name, Service Service) { _Services.Add(Name.ToLower(), Service); _All.Add(Name.ToLower(), Service); }
-        public void AddResource(string Name, Resource Resource) { _Resources.Add(Name.ToLower(), Resource); _All.Add(Name.ToLower(), Resource); }
-    }
+		public void AddProcess(string Name, Process Process)
+		{
+			_Processes.Add(Name.ToLower(), Process);
+		}
+		public void AddTangible(string Name, Tangible Tangible)
+		{
+			_Tangibles.Add(Name.ToLower(), Tangible);
+		}
+	}
 }

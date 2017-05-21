@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,29 +7,23 @@ using Cardamom.Serialization;
 
 namespace AndrassyII.LanguageGenerator
 {
-    class SymbolSet
-    {
-        List<Matched> _Symbols = new List<Matched>();
-        double _Frequency;
-        double _Drop;
+	class SymbolSet
+	{
+		private enum Attribute { FREQUENCY, SYMBOLS }
 
-        public List<Matched> Symbols { get { return _Symbols; } }
-        public double Frequency { get { return _Frequency; } set { _Frequency = value; } }
-        public double Drop { get { return _Drop; } set { _Drop = value; foreach (Matched M in _Symbols) M.Drop = value; } }
+		List<Matched> _Symbols = new List<Matched>();
+		double _Frequency;
 
-        public SymbolSet() { }
+		public List<Matched> Symbols { get { return _Symbols; } }
+		public double Frequency { get { return _Frequency; } set { _Frequency = value; } }
 
-        public SymbolSet(ParseBlock Block)
-        {
-            string[] def = Block.Name.Split(':');
-            _Frequency = Convert.ToDouble(def[0], System.Globalization.CultureInfo.InvariantCulture);
-            _Drop = Convert.ToDouble(def[1], System.Globalization.CultureInfo.InvariantCulture);
-            foreach (ParseBlock B in Block.Break())
-            {
-                Matched M = new Matched(new Sound(B));
-                M.Drop = _Drop;
-                _Symbols.Add(M);
-            }
-        }
-    }
+		public SymbolSet() { }
+
+		public SymbolSet(ParseBlock Block)
+		{
+			object[] attributes = Block.BreakToAttributes<object>(typeof(Attribute));
+			_Frequency = (double)attributes[(int)Attribute.FREQUENCY];
+			_Symbols = (List<Matched>)attributes[(int)Attribute.SYMBOLS];
+		}
+	}
 }
