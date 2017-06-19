@@ -45,7 +45,21 @@ namespace Cardamom.Interface.Items
 		public virtual void Add(T Item)
 		{
 			_Items.Add(Item);
+			Item.OnClick += (sender, e) => Value = (T)sender;
 			Item.Parent = this;
+		}
+
+		public virtual void Remove(T Item)
+		{
+			_Items.Remove(Item);
+			if (Item == Value) Value = null;
+		}
+
+		public virtual void Remove(Func<T, bool> Predicate)
+		{
+			IEnumerable<T> toRemove = _Items.Where(Predicate);
+			if (toRemove.Contains(Value)) Value = null;
+			_Items.RemoveAll(i => Predicate(i));
 		}
 
 		public virtual void Clear()

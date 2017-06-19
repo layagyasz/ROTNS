@@ -157,6 +157,8 @@
     <Compile Include="Interface\Items\Table.cs" />
     <Compile Include="Interface\SubClass.cs" />
     <Compile Include="Utilities\Extensions.cs" />
+    <Compile Include="Graphing\Field.cs" />
+    <Compile Include="Interface\Items\PaneLayer.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Utilities\Voronoi\" />

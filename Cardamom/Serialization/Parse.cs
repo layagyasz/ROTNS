@@ -58,5 +58,15 @@ namespace Cardamom.Serialization
 			}
 			return r;
 		}
+
+		public static T DefaultIfNull<T>(object Value, T Default)
+		{
+			return Value == null ? Default : (T)Value;
+		}
+
+		public static Func<ParseBlock, object> EnumParser<T>(Type EnumType)
+		{
+			return i => (T)Enum.Parse(EnumType, i.String.Replace('-', '_').ToUpper());
+		}
 	}
 }
