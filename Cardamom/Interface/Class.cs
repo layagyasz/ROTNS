@@ -50,7 +50,8 @@ namespace Cardamom.Interface
 			if (D.ContainsKey("default"))
 			{
 				SubClass newDefault = ((SubClass)D["default"]).Combine(_SubClasses[(int)Mode.None]);
-				for (int i = 0; i < _SubClasses.Length; ++i) _SubClasses[i] = newDefault;
+				for (int i = 0; i < _SubClasses.Length; ++i)
+					_SubClasses[i] = ((SubClass)D["default"]).Combine(_SubClasses[i]);
 				D.Remove("default");
 			}
 			if (D.ContainsKey("fade"))

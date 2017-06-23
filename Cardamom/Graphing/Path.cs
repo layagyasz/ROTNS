@@ -21,6 +21,14 @@ namespace Cardamom.Graphing
 		public T Destination { get { return _Destination; } }
 		public bool Complete { get { return _Complete; } }
 
+		public IEnumerable<T> Nodes
+		{
+			get
+			{
+				return _Path;
+			}
+		}
+
 		public T this[int i]
 		{
 			get { return _Path[i]; }
@@ -159,7 +167,7 @@ namespace Cardamom.Graphing
 
 		void CalculateDistance(Func<T, T, double> DistanceFunction)
 		{
-			for (int i = 0; i < _Path.Count; ++i)
+			for (int i = 0; i < _Path.Count - 1; ++i)
 			{
 				_Distance += DistanceFunction(_Path[i], _Path[i + 1]);
 			}

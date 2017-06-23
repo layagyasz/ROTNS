@@ -57,15 +57,15 @@ namespace Cardamom.Planar
 				else
 				{
 					double Q = Segment.ProjectDistanceSlope(MoveRay);
-					double A = -2 * Q * Segment.DY * MoveRay.DY + MoveRay.DY * MoveRay.DY + Q * Q * Segment.DY * Segment.DY -
-						2 * Q * Segment.DX * MoveRay.DX + MoveRay.DX * MoveRay.DX + Q * Q * Segment.DX * Segment.DX;
-					double B = -2 * F * MoveRay.DY * Segment.DY + 2 * MoveRay.Point.Y * MoveRay.DY - 2 * Segment.Point.Y * MoveRay.DY +
-						2 * F * Q * Segment.DY * Segment.DY - 2 * MoveRay.Point.Y * Q * Segment.DY + 2 * Q * Segment.Point.Y * Segment.DY -
-						2 * F * MoveRay.DX * Segment.DX + 2 * MoveRay.Point.X * MoveRay.DX - 2 * Segment.Point.X * MoveRay.DX +
-						2 * F * Q * Segment.DX * Segment.DX - 2 * MoveRay.Point.X * Q * Segment.DX + 2 * Q * Segment.Point.X * Segment.DX;
-					double C = F * F * Segment.DY * Segment.DY - 2 * F * MoveRay.Point.Y * Segment.DY + 2 * F * Segment.Point.Y * Segment.DY +
+					double A = -2 * Q * Segment.Direction.Y * MoveRay.DY + MoveRay.DY * MoveRay.DY + Q * Q * Segment.Direction.Y * Segment.Direction.Y -
+						2 * Q * Segment.Direction.X * MoveRay.DX + MoveRay.DX * MoveRay.DX + Q * Q * Segment.Direction.X * Segment.Direction.X;
+					double B = -2 * F * MoveRay.DY * Segment.Direction.Y + 2 * MoveRay.Point.Y * MoveRay.DY - 2 * Segment.Point.Y * MoveRay.DY +
+						2 * F * Q * Segment.Direction.Y * Segment.Direction.Y - 2 * MoveRay.Point.Y * Q * Segment.Direction.Y + 2 * Q * Segment.Point.Y * Segment.Direction.Y -
+						2 * F * MoveRay.DX * Segment.Direction.X + 2 * MoveRay.Point.X * MoveRay.DX - 2 * Segment.Point.X * MoveRay.DX +
+						2 * F * Q * Segment.Direction.X * Segment.Direction.X - 2 * MoveRay.Point.X * Q * Segment.Direction.X + 2 * Q * Segment.Point.X * Segment.Direction.X;
+					double C = F * F * Segment.Direction.Y * Segment.Direction.Y - 2 * F * MoveRay.Point.Y * Segment.Direction.Y + 2 * F * Segment.Point.Y * Segment.Direction.Y +
 						MoveRay.Point.Y * MoveRay.Point.Y - 2 * MoveRay.Point.Y * Segment.Point.Y + Segment.Point.Y * Segment.Point.Y +
-						F * F * Segment.DX * Segment.DX - 2 * F * MoveRay.Point.X * Segment.DX + 2 * F * Segment.Point.X * Segment.DX +
+						F * F * Segment.Direction.X * Segment.Direction.X - 2 * F * MoveRay.Point.X * Segment.Direction.X + 2 * F * Segment.Point.X * Segment.Direction.X +
 						MoveRay.Point.X * MoveRay.Point.X - 2 * MoveRay.Point.X * Segment.Point.X + Segment.Point.X * Segment.Point.X -
 						_Radius * _Radius;
 

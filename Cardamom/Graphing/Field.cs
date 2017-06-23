@@ -46,6 +46,19 @@ namespace Cardamom.Graphing
 			return new Path<T>(path, _DistanceFunction);
 		}
 
+		public IEnumerable<T> GetNodesTo(T Final)
+		{
+			List<T> path = new List<T>();
+			T C = Final;
+			while (C != null)
+			{
+				path.Add(C);
+				C = (T)((DNode<T>)_Nodes[C]).Parent;
+			}
+			path.Reverse();
+			return path;
+		}
+
 		private void Resolve(T Start)
 		{
 			PriorityQueue<DNode<T>, double> open = new PriorityQueue<DNode<T>, double>();

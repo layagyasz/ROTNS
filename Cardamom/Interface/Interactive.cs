@@ -67,7 +67,8 @@ namespace Cardamom.Interface
 						if (Primary) _HoverAck = false;
 						break;
 					case MouseController.RequestType.MouseOver:
-						if ((Primary || !_HoverAck) && OnMouseOver != null) OnMouseOver(this, new MouseEventArgs(Position));
+						if ((Primary || !_HoverAck) && OnMouseOver != null)
+							OnMouseOver(this, new MouseEventArgs(Position));
 						_HoverAck = true;
 						break;
 				}
@@ -101,19 +102,23 @@ namespace Cardamom.Interface
 			base.Update(MouseController, KeyController, DeltaT, Transform);
 			bool m = false;
 
+			Vector2f point = Transform.GetInverse() * MouseController.Position;
 			if (Visible && _Enabled)
 			{
-				m = IsCollision(Transform.GetInverse() * MouseController.Position);
+				m = IsCollision(point);
 				if (m) MouseController.Put(this);
 
-				if ((!_Hover && m) || (_Hover && !_HoverAck)) MouseController.Queue(this, MouseController.RequestType.MouseOver);
-				else if (_Hover && m) MouseController.Queue(this, MouseController.RequestType.Block);
-				if (m && (MouseController.LeftClick || MouseController.RightClick)) MouseController.Queue(this, MouseController.RequestType.Focus);
+				if ((!_Hover && m) || (_Hover && !_HoverAck))
+					MouseController.Queue(this, MouseController.RequestType.MouseOver, point);
+				else if (_Hover && m) MouseController.Queue(this, MouseController.RequestType.Block, point);
+
+				if (m && (MouseController.LeftClick || MouseController.RightClick))
+					MouseController.Queue(this, MouseController.RequestType.Focus, point);
 			}
 			else _Hover = false;
 			_Right = MouseController.RightClick;
-			if (!m && _HoverAck) MouseController.Queue(this, MouseController.RequestType.MouseOut);
-			if (!m && MouseController.LeftClick) MouseController.Queue(this, MouseController.RequestType.Leave);
+			if (!m && _HoverAck) MouseController.Queue(this, MouseController.RequestType.MouseOut, point);
+			if (!m && MouseController.LeftClick) MouseController.Queue(this, MouseController.RequestType.Leave, point);
 			_Hover = m;
 		}
 	}

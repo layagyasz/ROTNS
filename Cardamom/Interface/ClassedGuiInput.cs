@@ -11,15 +11,26 @@ using Cardamom.Planar;
 
 namespace Cardamom.Interface
 {
-    public abstract class ClassedGuiInput<T> : ClassedGuiItem
-    {
-        public EventHandler OnChange;
+	public abstract class ClassedGuiInput<T> : ClassedGuiItem
+	{
+		public EventHandler OnChange;
 
-        protected T _Value;
+		protected T _Value;
 
-        public T Value { get { return _Value; } set { _Value = value; } }
+		public T Value
+		{
+			get
+			{
+				return _Value;
+			}
+			set
+			{
+				_Value = value;
+				if (OnChange != null) OnChange(this, EventArgs.Empty);
+			}
+		}
 
-        public ClassedGuiInput(string ClassName, Series Series = Series.Standard)
-            : base(ClassName, Series) { }
-    }
+		public ClassedGuiInput(string ClassName, Series Series = Series.Standard)
+			: base(ClassName, Series) { }
+	}
 }

@@ -82,7 +82,9 @@ namespace Cardamom.Interface
 		public Vector2f ParseVector2f(string Code)
 		{
 			string[] def = Code.Split(',');
-			return new Vector2f(Convert.ToSingle(def[0], System.Globalization.CultureInfo.InvariantCulture), Convert.ToSingle(def[1], System.Globalization.CultureInfo.InvariantCulture));
+			return new Vector2f(
+				Convert.ToSingle(def[0], System.Globalization.CultureInfo.InvariantCulture),
+				Convert.ToSingle(def[1], System.Globalization.CultureInfo.InvariantCulture));
 		}
 
 		public Color[] ParseColors(string Code)

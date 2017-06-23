@@ -11,10 +11,10 @@ using SFML.Window;
 
 namespace Cardamom.Interface
 {
-    public abstract class GuiConstruct<T> : ClassedGuiInput<T>
-    {
-        protected Component[] _Components;
-        protected Rectangle _Box;
+	public abstract class GuiConstruct<T> : ClassedGuiInput<T>
+	{
+		protected Component[] _Components;
+		protected Rectangle _Box;
 
 		int[] _Padding = new int[4];
 		int[] _Margin = new int[4];
@@ -30,23 +30,23 @@ namespace Cardamom.Interface
 			_Margin = (int[])_Class.GetAttributeWithDefault("margin", ClassLibrary.NullArray);
 		}
 
-        public override bool IsCollision(Vector2f Point)
-        {
-            return _Box.ContainsPoint(Point);
-        }
+		public override bool IsCollision(Vector2f Point)
+		{
+			return _Box.ContainsPoint(Point);
+		}
 
-        public override void Update(MouseController MouseController, KeyController KeyController, int DeltaT, Transform Transform)
-        {
-            Transform.Translate(Position);
-            base.Update(MouseController, KeyController, DeltaT, Transform);
-            Array.ForEach(_Components, Component => Component.Update(MouseController, KeyController, DeltaT, Transform));
-        }
+		public override void Update(MouseController MouseController, KeyController KeyController, int DeltaT, Transform Transform)
+		{
+			Transform.Translate(Position + LeftMargin);
+			base.Update(MouseController, KeyController, DeltaT, Transform);
+			Array.ForEach(_Components, Component => Component.Update(MouseController, KeyController, DeltaT, Transform));
+		}
 
-        public override void Draw(RenderTarget Target, Transform Transform)
-        {
-			Transform.Translate(Position);
+		public override void Draw(RenderTarget Target, Transform Transform)
+		{
+			Transform.Translate(Position + LeftMargin);
 			if (Visible) Array.ForEach(_Components, Component => Component.Draw(Target, Transform));
-        }
+		}
 
 		public override void PerformTransitions(Dictionary<string, float> Transitions)
 		{
@@ -62,5 +62,5 @@ namespace Cardamom.Interface
 			T = _Class[_Mode].GetAttributeWithDefault(Transitions, "transition-margin", "transition", 1);
 			for (int i = 0; i < 4; ++i) _Margin[i] = FromP[i] + (int)(T * (ToP[i] - FromP[i]));
 		}
-    }
+	}
 }

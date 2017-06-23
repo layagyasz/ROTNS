@@ -9,7 +9,7 @@ using Cardamom.Interface.Items.Subcomponents;
 using SFML.Window;
 using SFML.Graphics;
 
-namespace Cardamom.Interface.Items
+namespace Cardamom.Interface
 {
 	public abstract class GuiSerialContainer<T> : GuiConstruct<T>, IEnumerable<T> where T : ClassedGuiItem
 	{
@@ -24,7 +24,7 @@ namespace Cardamom.Interface.Items
 		IEnumerator IEnumerable.GetEnumerator() { return GetEnumerator(); }
 
 		public GuiSerialContainer(string ClassName, bool Foldable = false, bool Vertical = true)
-			: base(ClassName, Series.NoFocus)
+			: base(ClassName, Series.Standard)
 		{
 			RectComponent R = new RectComponent(_Class);
 			_Box = R.GetBoundingBox();
@@ -45,8 +45,14 @@ namespace Cardamom.Interface.Items
 		public virtual void Add(T Item)
 		{
 			_Items.Add(Item);
-			Item.OnClick += (sender, e) => Value = (T)sender;
+			Item.OnClick += (sender, e) => HandleClick((T)sender);
 			Item.Parent = this;
+		}
+
+		protected virtual void HandleClick(T Item)
+		{
+			if (Value != null) Value.Mode = Class.Mode.None;
+			Value = Item;
 		}
 
 		public virtual void Remove(T Item)
@@ -76,23 +82,33 @@ namespace Cardamom.Interface.Items
 		public override void Update(MouseController MouseController, KeyController KeyController, int DeltaT, Transform Transform)
 		{
 			base.Update(MouseController, KeyController, DeltaT, Transform);
+
+			if (!Visible) return;
+
 			Transform.Translate(Position + LeftPadding);
 
 			Vector2f H = new Vector2f(0, 0);
+			bool draw = true;
 			foreach (T Item in _Items)
 			{
-				Item.Visible = _FoldedOpen;
+				Item.Visible = draw;
 				Item.Update(MouseController, KeyController, DeltaT, Transform);
 				Vector2f translateBy = ItemTranslation(Item);
 				Transform.Translate(translateBy);
-				if (_FoldedOpen) H += translateBy;
+				if (draw) H += translateBy;
+				draw = _FoldedOpen;
 			}
-			_Box.SetSize(new Vector2f(Math.Max(_Box.Size.X, H.X), Math.Max(_Box.Size.Y, H.Y)));
+
+			if (_Vertical) _Box.SetSize(new Vector2f(_Box.Size.X, H.Y));
+			else _Box.SetSize(new Vector2f(H.X, _Box.Size.Y));
 		}
 
 		public override void Draw(RenderTarget Target, Transform Transform)
 		{
 			base.Draw(Target, Transform);
+
+			if (!Visible) return;
+
 			Transform.Translate(Position + LeftPadding);
 			if (_FoldedOpen)
 			{
@@ -102,6 +118,7 @@ namespace Cardamom.Interface.Items
 					Transform.Translate(ItemTranslation(Item));
 				}
 			}
+			else if (_Items.Count > 0) _Items[0].Draw(Target, Transform);
 		}
 	}
 }
