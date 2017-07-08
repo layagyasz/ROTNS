@@ -12,18 +12,18 @@ namespace Cardamom.Planar
 		Vector2f _Point;
 		Vector2f _End;
 		Vector2f _Direction;
-		double _Length;
+		float _Length;
 
 		public Vector2f Point { get { return _Point; } }
 		public Vector2f End { get { return _End; } }
 		public Vector2f Direction { get { return _Direction; } }
-		public double Length { get { return _Length; } }
+		public float Length { get { return _Length; } }
 
 		public Segment(Vector2f Start, Vector2f End)
 		{
 			_Point = Start;
 			_End = End;
-			_Length = Math.Sqrt(Math.Pow(End.Y - Start.Y, 2) + Math.Pow(End.X - Start.X, 2));
+			_Length = (float)Math.Sqrt(Math.Pow(End.Y - Start.Y, 2) + Math.Pow(End.X - Start.X, 2));
 			_Direction = (_End - _Point) / (float)_Length;
 		}
 
@@ -90,7 +90,6 @@ namespace Cardamom.Planar
 
 		public static Segment operator +(Segment Segment, Vector2f Shift)
 		{
-			Console.WriteLine("{0} {1}", Segment._Point, Shift);
 			return new Segment(Segment._Point + Shift, Segment._End + Shift);
 		}
 	}

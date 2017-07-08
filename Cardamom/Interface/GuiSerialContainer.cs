@@ -13,10 +13,10 @@ namespace Cardamom.Interface
 {
 	public abstract class GuiSerialContainer<T> : GuiConstruct<T>, IEnumerable<T> where T : ClassedGuiItem
 	{
-		bool _Foldable;
-		bool _FoldedOpen;
-		bool _Vertical;
+		protected bool _Foldable;
+		protected bool _Vertical;
 
+		bool _FoldedOpen;
 
 		protected List<T> _Items = new List<T>();
 

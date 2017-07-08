@@ -19,7 +19,7 @@ namespace Cardamom.Interface.Items
 		private void FocusPane(object sender, MouseEventArgs e)
 		{
 			_Items.Remove((Pane)sender);
-			_Items.Insert(0, (Pane)sender);
+			_Items.Add((Pane)sender);
 		}
 	}
 }

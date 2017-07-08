@@ -32,18 +32,25 @@ namespace Cardamom.Interface.Items
 		{
 			base.HandleClick(Item);
 
-			_Items[0] = new SelectionDummyOption<T>(Item) { Parent = this };
-			_Items[0].Mode = Class.Mode.Focus;
+			if (_Foldable)
+			{
+				_Items[0] = new SelectionDummyOption<T>(Item) { Parent = this };
+				_Items[0].Mode = Class.Mode.Focus;
+			}
 		}
 
 		private void UpdateDummy()
 		{
-			if (_Items.Count == 1 && !(_Items[0] is SelectionDummyOption<T>))
-				_Items.Insert(0, new SelectionDummyOption<T>(_Items[0]) { Parent = this });
-			else if (_Items.Count > 1) _Items[0] = new SelectionDummyOption<T>(_Items[1]) { Parent = this };
-			else _Items.Clear();
+			if (_Foldable)
+			{
+				if (_Items.Count == 1 && !(_Items[0] is SelectionDummyOption<T>))
+					_Items.Insert(0, new SelectionDummyOption<T>(_Items[0]) { Parent = this });
+				else if (_Items.Count > 1) _Items[0] = new SelectionDummyOption<T>(_Items[1]) { Parent = this };
+				else _Items.Clear();
 
-			if (_Items.Count > 1) Value = _Items[1];
+				if (_Items.Count > 1) Value = _Items[1];
+			}
+			else if (_Items.Count > 0) Value = _Items[0];
 		}
 	}
 }

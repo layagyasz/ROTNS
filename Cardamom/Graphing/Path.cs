@@ -111,9 +111,7 @@ namespace Cardamom.Graphing
 				{
 					if (C != null)
 					{
-						double d = DistanceFunction(C, Current.Value)
-							+ Current.Distance
-							+ HeuristicFunction(C, Destination);
+						double d = DistanceFunction(Current.Value, C) + Current.Distance;
 						bool h = HasNode((T)C);
 						ANode<T> N = null;
 						if (h) N = (ANode<T>)GetNode((T)C);
@@ -137,7 +135,7 @@ namespace Cardamom.Graphing
 						}
 						if (!inOpen && !inClosed && PassableFunction(N.Value))
 						{
-							Open.Push(N, d);
+							Open.Push(N, d + HeuristicFunction(C, Destination));
 							OpenCheck.Add(N);
 							N.Update(d, Current.Value);
 						}

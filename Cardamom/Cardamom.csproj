@@ -159,6 +159,8 @@
     <Compile Include="Utilities\Extensions.cs" />
     <Compile Include="Graphing\Field.cs" />
     <Compile Include="Interface\Items\PaneLayer.cs" />
+    <Compile Include="Interface\Items\TextInput.cs" />
+    <Compile Include="Interface\Items\DropDown.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Utilities\Voronoi\" />
