@@ -161,6 +161,8 @@
     <Compile Include="Interface\Items\PaneLayer.cs" />
     <Compile Include="Interface\Items\TextInput.cs" />
     <Compile Include="Interface\Items\DropDown.cs" />
+    <Compile Include="Interface\KeyPressedEventArgs.cs" />
+    <Compile Include="Interface\ValueChangedEventArgs.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Utilities\Voronoi\" />

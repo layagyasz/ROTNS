@@ -17,9 +17,10 @@ namespace Cardamom.Interface
 	public class ClassLibrary
 	{
 		public static readonly Color NullColor = new Color(0, 0, 0, 0);
-		public static readonly Color[] NullColors = new Color[] { NullColor, NullColor, NullColor, NullColor };
-		public static readonly int[] NullArray = new int[] { 0, 0, 0, 0 };
+		public static readonly Color[] NullColors = { NullColor, NullColor, NullColor, NullColor };
+		public static readonly int[] NullArray = { 0, 0, 0, 0 };
 		public static readonly Vector2f NullVector = new Vector2f(0, 0);
+		public static readonly Vector2f[] NullVectors = { NullVector, NullVector, NullVector, NullVector };
 		public static readonly byte[] NullBytes = new byte[] { 0, 0, 0, 0 };
 
 		private static readonly ClassLibrary _ClassLibrary = new ClassLibrary();

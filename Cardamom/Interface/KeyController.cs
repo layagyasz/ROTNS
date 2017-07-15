@@ -9,6 +9,8 @@ namespace Cardamom.Interface
 {
 	public class KeyController
 	{
+		public EventHandler<KeyPressedEventArgs> OnKeyPressed;
+
 		public const char NONE = (char)0;
 		public const char LEFT_ARROW = (char)17;
 		public const char RIGHT_ARROW = (char)19;
@@ -356,13 +358,18 @@ namespace Cardamom.Interface
 				{
 					_OutChar = shift ? DefaultShiftCharMap[i] : DefaultCharMap[i];
 					_HoldTimes[i] = (DeltaT > 0 ? DeltaT : 1);
+					if (OnKeyPressed != null) OnKeyPressed(this, new KeyPressedEventArgs(Keys[i]));
 				}
 				else if (!Keyboard.IsKeyPressed(Keys[i])) _HoldTimes[i] = 0;
 				else if (_HoldTimes[i] > 0 && Keyboard.IsKeyPressed(Keys[i]))
 				{
 					if (_HoldTimes[i] > 600)
 					{
-						if ((_HoldTimes[i] - 600) / 25 < (_HoldTimes[i] - 600 + DeltaT) / 25) _OutChar = shift ? DefaultShiftCharMap[i] : DefaultCharMap[i];
+						if ((_HoldTimes[i] - 600) / 25 < (_HoldTimes[i] - 600 + DeltaT) / 25)
+						{
+							_OutChar = shift ? DefaultShiftCharMap[i] : DefaultCharMap[i];
+							if (OnKeyPressed != null) OnKeyPressed(this, new KeyPressedEventArgs(Keys[i]));
+						}
 					}
 					_HoldTimes[i] += DeltaT;
 				}

@@ -5,12 +5,12 @@ using System.Text;
 
 namespace Cardamom.Interface
 {
-    public abstract class InteractiveInput<T> : Interactive
-    {
-        public EventHandler OnChange;
+	public abstract class InteractiveInput<T> : Interactive
+	{
+		public EventHandler<ValueChangedEventArgs<T>> OnChange;
 
-        protected T _Value;
+		protected T _Value;
 
-        public T Value { get { return _Value; } set { _Value = value; } }
-    }
+		public T Value { get { return _Value; } set { _Value = value; } }
+	}
 }

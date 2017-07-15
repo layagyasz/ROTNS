@@ -44,7 +44,9 @@ namespace Cardamom.Interface.Items
 			if (_Foldable)
 			{
 				if (_Items.Count == 1 && !(_Items[0] is SelectionDummyOption<T>))
+				{
 					_Items.Insert(0, new SelectionDummyOption<T>(_Items[0]) { Parent = this });
+				}
 				else if (_Items.Count > 1) _Items[0] = new SelectionDummyOption<T>(_Items[1]) { Parent = this };
 				else _Items.Clear();
 

@@ -100,14 +100,14 @@ namespace Cardamom.Interface
 			return new Class() { _SubClasses = _SubClasses.Zip(Parent._SubClasses, (i, j) => j.Combine(i)).ToArray() };
 		}
 
-		public object GetAttributeWithDefault(string Name, object Default)
+		public T GetAttributeWithDefault<T>(string Name, T Default)
 		{
-			return this[Mode.None].GetAttributeWithDefault(Name, Default);
+			return (T)this[Mode.None].GetAttributeWithDefault(Name, Default);
 		}
 
-		public object GetAttributeWithDefault(string Name, string Parent, object Default)
+		public T GetAttributeWithDefault<T>(string Name, string Parent, T Default)
 		{
-			return this[Mode.None].GetAttributeWithDefault(Name, Parent, Default);
+			return (T)this[Mode.None].GetAttributeWithDefault(Name, Parent, Default);
 		}
 	}
 }

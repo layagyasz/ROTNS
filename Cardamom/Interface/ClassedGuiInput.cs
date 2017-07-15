@@ -13,7 +13,7 @@ namespace Cardamom.Interface
 {
 	public abstract class ClassedGuiInput<T> : ClassedGuiItem
 	{
-		public EventHandler OnChange;
+		public EventHandler<ValueChangedEventArgs<T>> OnChange;
 
 		protected T _Value;
 
@@ -26,7 +26,7 @@ namespace Cardamom.Interface
 			set
 			{
 				_Value = value;
-				if (OnChange != null) OnChange(this, EventArgs.Empty);
+				if (OnChange != null) OnChange(this, new ValueChangedEventArgs<T>(value));
 			}
 		}
 
