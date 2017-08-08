@@ -89,9 +89,9 @@ namespace Cardamom.Serialization
 			Serializable.Serialize(this);
 		}
 
-		public void Write<T>(T[] Array, Action<T> Serializer)
+		public void Write<T>(IEnumerable<T> Array, Action<T> Serializer)
 		{
-			Write(Array.Length);
+			Write(Array.Count());
 			foreach (T S in Array) Serializer(S);
 		}
 

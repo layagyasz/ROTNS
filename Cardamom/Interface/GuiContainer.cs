@@ -41,6 +41,10 @@ namespace Cardamom.Interface
 		}
 
 		public virtual void Add(T Item) { _Items.Add(Item); }
+		public virtual void Insert(int Index, T Item)
+		{
+			_Items.Insert(Index, Item);
+		}
 		public void Remove(T Item) { _Items.Remove(Item); }
 
 		public override void Update(MouseController MouseController, KeyController KeyController, int DeltaT, Transform Transform)

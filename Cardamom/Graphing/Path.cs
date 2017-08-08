@@ -35,6 +35,14 @@ namespace Cardamom.Graphing
 			set { _Path[i] = value; }
 		}
 
+		public Path(Path<T> Copy)
+		{
+			_Path = Copy._Path.ToList();
+			_Distance = Copy._Distance;
+			_Complete = Copy._Complete;
+			_Destination = Copy._Destination;
+		}
+
 		public Path(T Start, T Destination,
 			Func<T, bool> PassableFunction,
 			Func<T, T, double> DistanceFunction,
@@ -68,6 +76,14 @@ namespace Cardamom.Graphing
 		{
 			_Path = Path.ToList();
 			CalculateDistance(DistanceFunction);
+		}
+
+		public void Add(T Node, double Distance)
+		{
+			_Destination = Node;
+			_Complete = false;
+			_Distance += Distance;
+			_Path.Add(Node);
 		}
 
 		public T Pop()

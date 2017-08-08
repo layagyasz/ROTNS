@@ -30,6 +30,15 @@ namespace Cardamom.Interface.Items
 			}
 		}
 
+		public override void Insert(int Index, Pod Item)
+		{
+			base.Insert(Index, Item);
+			if (Item is Interactive)
+			{
+				((Interactive)Item).Parent = this;
+			}
+		}
+
 		public override void Update(MouseController MouseController, KeyController KeyController, int DeltaT, Transform Transform)
 		{
 			base.Update(MouseController, KeyController, DeltaT, Transform);

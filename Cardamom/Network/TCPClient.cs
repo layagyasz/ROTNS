@@ -9,44 +9,44 @@ using Cardamom.Serialization;
 
 namespace Cardamom.Network
 {
-    public class TCPClient
-    {
-        public delegate void MessageReceivedEventHandler(object Sender, MessageReceivedEventArgs E);
-        public event MessageReceivedEventHandler OnMessageReceived;
-        public event EventHandler OnConnectionLost;
+	public class TCPClient
+	{
+		public delegate void MessageReceivedEventHandler(object Sender, MessageReceivedEventArgs E);
+		public event MessageReceivedEventHandler OnMessageReceived;
+		public event EventHandler OnConnectionLost;
 
-        TCPConnection _Connection;
+		TCPConnection _Connection;
 
-        public TCPClient(string IP, ushort Port, RPCAdapter Adapter)
-        {
-            Socket Socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-            Socket.Connect(IPAddress.Parse(IP), Port);
+		public TCPClient(string IP, ushort Port, RPCAdapter Adapter)
+		{
+			Socket Socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+			Socket.Connect(IPAddress.Parse(IP), Port);
 
-            _Connection = new TCPConnection(Socket, Adapter);
-            _Connection.OnMessageReceived += new TCPConnection.MessageReceivedEventHandler(Received);
-            _Connection.OnConnectionLost += new EventHandler(HandleDrop);
-        }
+			_Connection = new TCPConnection(Socket, Adapter);
+			_Connection.OnMessageReceived += new TCPConnection.MessageReceivedEventHandler(Received);
+			_Connection.OnConnectionLost += new EventHandler(HandleDrop);
+		}
 
-        private void HandleDrop(object Sender, EventArgs E)
-        {
-            if (OnConnectionLost != null) OnConnectionLost(Sender, E);
-        }
+		private void HandleDrop(object Sender, EventArgs E)
+		{
+			if (OnConnectionLost != null) OnConnectionLost(Sender, E);
+		}
 
-        public void Start()
-        {
-            _Connection.Start();
-        }
+		public void Start()
+		{
+			_Connection.Start();
+		}
 
-        public void Close()
-        {
-            _Connection.Close();
-        }
+		public void Close()
+		{
+			_Connection.Close();
+		}
 
-        public void Send(SerializationOutputStream Message) { _Connection.Send(Message); }
+		public void Send(Message Message) { _Connection.Send(Message); }
 
-        private void Received(object Sender, MessageReceivedEventArgs E)
-        {
-            if (OnMessageReceived != null) OnMessageReceived(Sender, E);
-        }
-    }
+		private void Received(object Sender, MessageReceivedEventArgs E)
+		{
+			if (OnMessageReceived != null) OnMessageReceived(Sender, E);
+		}
+	}
 }

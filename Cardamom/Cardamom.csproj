@@ -147,7 +147,6 @@
     <Compile Include="Utilities\TransparentArrayList.cs" />
     <Compile Include="Utilities\Triplet.cs" />
     <Compile Include="Utilities\WeightedVector.cs" />
-    <Compile Include="Network\RPCAdapter.cs" />
     <Compile Include="Interface\Items\ScrollCollection.cs" />
     <Compile Include="Interface\Items\Subcomponents\Component.cs" />
     <Compile Include="Interface\GuiSerialContainer.cs" />
@@ -163,6 +162,8 @@
     <Compile Include="Interface\Items\DropDown.cs" />
     <Compile Include="Interface\KeyPressedEventArgs.cs" />
     <Compile Include="Interface\ValueChangedEventArgs.cs" />
+    <Compile Include="Network\RPCAdapter.cs" />
+    <Compile Include="Network\Message.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Utilities\Voronoi\" />

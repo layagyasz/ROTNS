@@ -7,15 +7,13 @@ using Cardamom.Serialization;
 
 namespace Cardamom.Network
 {
-    public class MessageReceivedEventArgs
-    {
-		SerializationInputStream _Stream;
+	public class MessageReceivedEventArgs
+	{
+		public readonly Message Message;
 
-        public SerializationInputStream Stream { get { return _Stream; } }
-
-        public MessageReceivedEventArgs(SerializationInputStream Stream)
-        {
-            _Stream = Stream;
-        }
-    }
+		public MessageReceivedEventArgs(Message Message)
+		{
+			this.Message = Message;
+		}
+	}
 }

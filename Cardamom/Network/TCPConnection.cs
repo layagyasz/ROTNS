@@ -11,62 +11,62 @@ using Cardamom.Utilities;
 
 namespace Cardamom.Network
 {
-    public class TCPConnection
-    {
-        public delegate void MessageReceivedEventHandler(object Sender, MessageReceivedEventArgs E);
-        public event MessageReceivedEventHandler OnMessageReceived;
-        public event EventHandler OnConnectionLost;
+	public class TCPConnection
+	{
+		public delegate void MessageReceivedEventHandler(object Sender, MessageReceivedEventArgs E);
+		public event MessageReceivedEventHandler OnMessageReceived;
+		public event EventHandler OnConnectionLost;
 
-        Socket _Socket;
-        TCPReceiver _Receiver;
-        TCPSender _Sender;
+		Socket _Socket;
+		TCPReceiver _Receiver;
+		TCPSender _Sender;
 
-        bool _Connected;
-        public bool Connected { get { return _Connected; } }
+		bool _Connected;
+		public bool Connected { get { return _Connected; } }
 
 		public TCPConnection(Socket Socket, RPCAdapter Adapter)
-        {
-            _Socket = Socket;
-            _Receiver = new TCPReceiver(_Socket, Adapter, this);
-            _Sender = new TCPSender(_Socket, Adapter);
-        }
-
-        public void Start()
-        {
-            _Connected = true;
-            _Receiver.Start();
-            _Sender.Start();
-            _Receiver.OnMessageReceived += new TCPReceiver.MessageReceivedEventHandler(Received);
-            _Receiver.OnConnectionLost += new EventHandler(HandleDrop);
-            _Sender.OnConnectionLost += new EventHandler(HandleDrop);
-        }
-
-        public void Close()
-        {
-            _Receiver.Stop();
-            _Sender.Stop();
-            _Socket.Close();
-        }
-
-        private void Received(object Sender, MessageReceivedEventArgs E)
 		{
-            if (OnMessageReceived != null) OnMessageReceived(this, E);
-        }
+			_Socket = Socket;
+			_Receiver = new TCPReceiver(_Socket, Adapter, this);
+			_Sender = new TCPSender(_Socket, Adapter);
+		}
 
-        private void HandleDrop(object Sender, EventArgs E)
-        {
-            _Connected = false;
-            if (OnConnectionLost != null) OnConnectionLost(this, E);
-        }
+		public void Start()
+		{
+			_Connected = true;
+			_Receiver.Start();
+			_Sender.Start();
+			_Receiver.OnMessageReceived += new TCPReceiver.MessageReceivedEventHandler(Received);
+			_Receiver.OnConnectionLost += new EventHandler(HandleDrop);
+			_Sender.OnConnectionLost += new EventHandler(HandleDrop);
+		}
 
-		public void Send(SerializationOutputStream Message)
-        {
-            _Sender.Send(Message);
-        }
+		public void Close()
+		{
+			_Receiver.Stop();
+			_Sender.Stop();
+			_Socket.Close();
+		}
 
-        public override string ToString()
-        {
-            return "[TCPConnection]" + _Socket.LocalEndPoint.ToString();
-        }
-    }
+		private void Received(object Sender, MessageReceivedEventArgs E)
+		{
+			if (OnMessageReceived != null) OnMessageReceived(this, E);
+		}
+
+		private void HandleDrop(object Sender, EventArgs E)
+		{
+			_Connected = false;
+			if (OnConnectionLost != null) OnConnectionLost(this, E);
+		}
+
+		public void Send(Message Message)
+		{
+			_Sender.Send(Message);
+		}
+
+		public override string ToString()
+		{
+			return "[TCPConnection]" + _Socket.LocalEndPoint.ToString();
+		}
+	}
 }

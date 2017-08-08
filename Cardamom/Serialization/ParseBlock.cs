@@ -15,10 +15,12 @@ namespace Cardamom.Serialization
 
 		bool _ParsersOverriden;
 
-		private string _Name;
-		private string _String;
-		private int _End;
+		string _Type;
+		string _Name;
+		string _String;
+		IEnumerable<ParseBlock> _Blocks;
 
+		public string Type { get { return _Type; } }
 		public string Name { get { return _Name; } }
 		public string String { get { return _String; } }
 
@@ -26,8 +28,12 @@ namespace Cardamom.Serialization
 
 		public ParseBlock(string Source)
 		{
-			_End = Source.Length;
 			_String = Source;
+		}
+
+		public ParseBlock(IEnumerable<ParseBlock> Blocks)
+		{
+			_Blocks = Blocks;
 		}
 
 		public void AddParser<T>(string TypeName, Func<ParseBlock, object> Parser, bool AddCollections = true)
@@ -44,50 +50,54 @@ namespace Cardamom.Serialization
 
 		public static ParseBlock FromFile(string Path) { return new ParseBlock(File.ReadAllText(Path)); }
 
-		private ParseBlock(string Source, int i, char[] Delimiters)
+		public ParseBlock(string Type, string Name, string Source)
 		{
-			int Start = Source.IndexOf(Delimiters[0], i);
-			_Name = Source.Substring(i, Start - i).Trim();
-			if (Delimiters[0] == Delimiters[1])
-			{
-				_End = Source.IndexOf(Delimiters[1], Start + 1);
-			}
-			else
-			{
-				int depth = 1;
-				for (_End = Start + 1; _End < Source.Length; _End++)
-				{
-					if (Source[_End] == Delimiters[0]) depth++;
-					else if (Source[_End] == Delimiters[1]) depth--;
-					if (depth == 0) break;
-				}
-			}
-			Start++;
-			_String = Source.Substring(Start, _End - Start).Trim();
+			_Type = Type;
+			_Name = Name;
+			_String = Source;
 		}
 
-		public ParseBlock(string Source, int Start) : this(Source, Start, DELIMITERS) { }
+		public ParseBlock(string Type, string Name, IEnumerable<ParseBlock> Blocks)
+		{
+			_Type = Type;
+			_Name = Name;
+			_Blocks = Blocks;
+		}
 
 		public KeyValuePair<string, T> Parse<T>(Dictionary<string, object> Scope)
 		{
+			if (_Name == null) return Break().First().Parse<T>(Scope);
+
 			if (Scope != null) _Scope = new Dictionary<string, object>(Scope);
 
-			string[] def = Name.ToLower().Split(':');
-			string type = def[0].Trim();
-			string name = string.Join(":", def.Skip(1));
-			_Name = name;
-			if (type[0] == '!')
+			if (_Type[0] == '!')
 			{
-				type = type.Substring(1);
+				string type = _Type.Substring(1);
 				string[] Path = _String.Trim().Split('.');
 				object Current = _Scope;
-				foreach (string Node in Path) Current = ((dynamic)Current)[Node.ToLower()];
-				return new KeyValuePair<string, T>(name, (T)Current);
+				try
+				{
+					foreach (string Node in Path) Current = ((dynamic)Current)[Node.ToLower()];
+					return new KeyValuePair<string, T>(_Name, (T)Current);
+				}
+				catch (KeyNotFoundException exception)
+				{
+					throw new Exception(
+						string.Format("Could not find object '{0}'\n{1}", string.Join(".", Path), exception.Message));
+				}
 			}
 			else
 			{
-				T v = (T)_Parsers[type](this);
-				return new KeyValuePair<string, T>(name, v);
+				try
+				{
+					T v = (T)_Parsers[_Type](this);
+					return new KeyValuePair<string, T>(_Name, v);
+				}
+				catch (KeyNotFoundException exception)
+				{
+					throw new Exception(
+						string.Format("No parser for '{0}'\n{1}", string.Join(".", _Type), exception.Message));
+				}
 			}
 		}
 
@@ -146,20 +156,46 @@ namespace Cardamom.Serialization
 			return Tuple.Create((T1)values[0], (T2)values[1], (T3)values[2]);
 		}
 
-		private IEnumerable<ParseBlock> Break()
+		public IEnumerable<ParseBlock> Break()
 		{
 			return Break(DELIMITERS);
 		}
 
-		private IEnumerable<ParseBlock> Break(char[] Delimiters)
+		public IEnumerable<ParseBlock> Break(char[] Delimiters)
 		{
-			int i = 0;
-			while (i < _String.Length && _String.IndexOf(Delimiters[0], i) > -1)
+			if (_Blocks == null)
 			{
-				ParseBlock newBlock = new ParseBlock(_String, i, Delimiters);
-				newBlock._Parsers = _Parsers;
-				yield return newBlock;
-				i = newBlock._End + 1;
+				int i = 0;
+				while (i < _String.Length && _String.IndexOf(Delimiters[0], i) > -1)
+				{
+					int start = _String.IndexOf(Delimiters[0], i);
+					int end;
+
+					string name = _String.Substring(i, start - i).Trim();
+					string[] def = name.ToLower().Split(':');
+					string type = def[0].Trim();
+					name = string.Join(":", def.Skip(1));
+
+					int depth = 1;
+					for (end = start + 1; end < _String.Length; end++)
+					{
+						if (_String[end] == Delimiters[0]) depth++;
+						else if (_String[end] == Delimiters[1]) depth--;
+						if (depth == 0) break;
+					}
+					start++;
+					string blockString = _String.Substring(start, end - start).Trim();
+					yield return new ParseBlock(type, name, blockString) { _Parsers = this._Parsers };
+					i = end + 1;
+				}
+			}
+			else
+			{
+				foreach (ParseBlock block in _Blocks)
+				{
+					block._Parsers = this._Parsers;
+					yield return block;
+				}
 			}
 		}
 	}

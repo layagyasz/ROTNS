@@ -49,6 +49,13 @@ namespace Cardamom.Interface
 			Item.Parent = this;
 		}
 
+		public virtual void Insert(int Index, T Item)
+		{
+			_Items.Insert(Index, Item);
+			Item.OnClick += (sender, e) => HandleClick((T)sender);
+			Item.Parent = this;
+		}
+
 		protected virtual void HandleClick(T Item)
 		{
 			if (Value != null) Value.Mode = Class.Mode.None;
