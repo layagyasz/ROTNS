@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,13 +20,11 @@ namespace Cardamom.Network
 		Socket _Socket;
 		NetworkStream _Stream;
 		Thread _ReceiverThread;
-		RPCAdapter _Adapter;
 
-		public TCPReceiver(Socket Socket, RPCAdapter Adapter, TCPConnection Connection)
+		public TCPReceiver(Socket Socket)
 		{
 			_Socket = Socket;
 			_Stream = new NetworkStream(_Socket);
-			_Adapter = Adapter;
 		}
 
 		public void Start()
@@ -72,9 +70,8 @@ namespace Cardamom.Network
 				byte[] data = Receive();
 				if (data != null)
 				{
-					SerializationInputStream S = new SerializationInputStream(new MemoryStream(data));
 					if (OnMessageReceived != null)
-						OnMessageReceived(this, new MessageReceivedEventArgs(_Adapter.Deserialize(S)));
+						OnMessageReceived(this, new MessageReceivedEventArgs(data));
 				}
 				else
 				{

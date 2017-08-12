@@ -13,18 +13,21 @@ namespace Cardamom.Interface.Items
 {
 	public class ScrollCollection<T> : GuiConstruct<ClassedGuiInput<T>>, IEnumerable<ClassedGuiInput<T>>
 	{
+		public bool Lock;
+
 		List<ClassedGuiInput<T>> _Items = new List<ClassedGuiInput<T>>();
 		int _StartIndex;
 
 		public IEnumerator<ClassedGuiInput<T>> GetEnumerator() { return _Items.GetEnumerator(); }
 		IEnumerator IEnumerable.GetEnumerator() { return GetEnumerator(); }
 
-		public ScrollCollection(string ClassName)
+		public ScrollCollection(string ClassName, bool Lock = false)
 			: base(ClassName, Series.Standard)
 		{
 			RectComponent R = new RectComponent(_Class);
 			_Box = R.GetBoundingBox();
 			_Components = new Component[] { R };
+			this.Lock = Lock;
 		}
 
 		public virtual void Add(ClassedGuiInput<T> Item)
@@ -89,7 +92,7 @@ namespace Cardamom.Interface.Items
 
 			if (!Visible) return;
 
-			if (Hover)
+			if (Hover && !Lock)
 			{
 				_StartIndex -= MouseController.WheelDelta;
 				_StartIndex = Math.Max(0, Math.Min(_Items.Count - 1, _StartIndex));
@@ -99,7 +102,7 @@ namespace Cardamom.Interface.Items
 
 			Vector2f H = new Vector2f(0, 0);
 			bool draw = true;
-			foreach (ClassedGuiInput<T> Item in _Items.Skip(_StartIndex))
+			foreach (ClassedGuiInput<T> Item in _Items.Skip(Lock ? 0 : _StartIndex))
 			{
 				Vector2f translateBy = ItemTranslation(Item);
 				H += translateBy;
@@ -124,7 +127,7 @@ namespace Cardamom.Interface.Items
 
 			Vector2f H = new Vector2f(0, 0);
 			bool draw = true;
-			foreach (ClassedGuiInput<T> Item in _Items.Skip(_StartIndex))
+			foreach (ClassedGuiInput<T> Item in _Items.Skip(Lock ? 0 : _StartIndex))
 			{
 				Vector2f translateBy = ItemTranslation(Item);
 				H += translateBy;

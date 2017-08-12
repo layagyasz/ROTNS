@@ -7,11 +7,11 @@ using Cardamom.Serialization;
 
 namespace Cardamom.Network
 {
-	public class MessageReceivedEventArgs
+	public class MessageReceivedEventArgs : EventArgs
 	{
-		public readonly Message Message;
+		public readonly byte[] Message;
 
-		public MessageReceivedEventArgs(Message Message)
+		public MessageReceivedEventArgs(byte[] Message)
 		{
 			this.Message = Message;
 		}

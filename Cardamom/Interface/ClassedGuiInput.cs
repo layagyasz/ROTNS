@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,12 +8,13 @@ using SFML.Window;
 
 using Cardamom.Interface.Items.Subcomponents;
 using Cardamom.Planar;
+using Cardamom.Utilities;
 
 namespace Cardamom.Interface
 {
 	public abstract class ClassedGuiInput<T> : ClassedGuiItem
 	{
-		public EventHandler<ValueChangedEventArgs<T>> OnChange;
+		public EventHandler<ValuedEventArgs<T>> OnChange;
 
 		protected T _Value;
 
@@ -26,7 +27,7 @@ namespace Cardamom.Interface
 			set
 			{
 				_Value = value;
-				if (OnChange != null) OnChange(this, new ValueChangedEventArgs<T>(value));
+				if (OnChange != null) OnChange(this, new ValuedEventArgs<T>(value));
 			}
 		}
 

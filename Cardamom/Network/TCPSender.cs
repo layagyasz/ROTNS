@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -16,17 +16,15 @@ namespace Cardamom.Network
 		public event EventHandler OnConnectionLost;
 
 		Socket _Socket;
-		List<Message> _MessageQueue;
+		List<SerializationOutputStream> _MessageQueue;
 		Thread _SenderThread;
 		SerializationOutputStream _Stream;
-		RPCAdapter _Adapter;
 
-		public TCPSender(Socket Socket, RPCAdapter Adapter)
+		public TCPSender(Socket Socket)
 		{
 			_Socket = Socket;
 			_Stream = new SerializationOutputStream(new NetworkStream(_Socket));
-			_Adapter = Adapter;
-			_MessageQueue = new List<Message>();
+			_MessageQueue = new List<SerializationOutputStream>();
 		}
 
 		public void Start()
@@ -41,7 +39,7 @@ namespace Cardamom.Network
 			_Stream.Close();
 		}
 
-		public void Send(Message Message)
+		public void Send(SerializationOutputStream Message)
 		{
 			lock (_MessageQueue)
 			{
@@ -54,7 +52,7 @@ namespace Cardamom.Network
 		{
 			while (_MessageQueue != null && _Socket != null)
 			{
-				Message s = null;
+				SerializationOutputStream s = null;
 
 				lock (_MessageQueue)
 				{
@@ -69,9 +67,7 @@ namespace Cardamom.Network
 				{
 					try
 					{
-						SerializationOutputStream stream = new SerializationOutputStream(new MemoryStream());
-						_Adapter.Serialize(s, stream);
-						_Stream.Write(stream);
+						_Stream.Write(s);
 						_Stream.Flush();
 					}
 					catch (Exception e)

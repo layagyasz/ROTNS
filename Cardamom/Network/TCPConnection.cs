@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -24,11 +24,11 @@ namespace Cardamom.Network
 		bool _Connected;
 		public bool Connected { get { return _Connected; } }
 
-		public TCPConnection(Socket Socket, RPCAdapter Adapter)
+		public TCPConnection(Socket Socket)
 		{
 			_Socket = Socket;
-			_Receiver = new TCPReceiver(_Socket, Adapter, this);
-			_Sender = new TCPSender(_Socket, Adapter);
+			_Receiver = new TCPReceiver(_Socket);
+			_Sender = new TCPSender(_Socket);
 		}
 
 		public void Start()
@@ -36,9 +36,9 @@ namespace Cardamom.Network
 			_Connected = true;
 			_Receiver.Start();
 			_Sender.Start();
-			_Receiver.OnMessageReceived += new TCPReceiver.MessageReceivedEventHandler(Received);
-			_Receiver.OnConnectionLost += new EventHandler(HandleDrop);
-			_Sender.OnConnectionLost += new EventHandler(HandleDrop);
+			_Receiver.OnMessageReceived += Received;
+			_Receiver.OnConnectionLost += HandleDrop;
+			_Sender.OnConnectionLost += HandleDrop;
 		}
 
 		public void Close()
@@ -59,7 +59,7 @@ namespace Cardamom.Network
 			if (OnConnectionLost != null) OnConnectionLost(this, E);
 		}
 
-		public void Send(Message Message)
+		public void Send(SerializationOutputStream Message)
 		{
 			_Sender.Send(Message);
 		}

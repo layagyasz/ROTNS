@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,6 +8,7 @@ using SFML.Window;
 
 using Cardamom.Planar;
 using Cardamom.Interface.Items.Subcomponents;
+using Cardamom.Utilities;
 
 namespace Cardamom.Interface.Items
 {
@@ -55,7 +56,7 @@ namespace Cardamom.Interface.Items
 				_Sliding = true;
 				_Knob.Position += new Vector2f(MouseController.DragDelta.X, 0);
 				Positioning();
-				if (OnChange != null) OnChange(this, new ValueChangedEventArgs<double>(Value));
+				if (OnChange != null) OnChange(this, new ValuedEventArgs<double>(Value));
 			}
 			else if (_Sliding && !MouseController.LeftDown) _Sliding = false;
 		}
